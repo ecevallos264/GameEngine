@@ -55,6 +55,11 @@ float vertices[] = {
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
+glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
+glm::vec3 direction;
+
 glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
         glm::vec3( 2.0f,  5.0f, -15.0f),
@@ -72,6 +77,8 @@ unsigned int indices[] = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
 };
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
 void renderGame(GLFWwindow* window, Shader &shader, unsigned int VAO, unsigned int VBO) {
     shader.use();
 
@@ -80,7 +87,11 @@ void renderGame(GLFWwindow* window, Shader &shader, unsigned int VAO, unsigned i
     glm::mat4 projection    = glm::mat4(1.0f);
 //    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+
+
+//    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     projection = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
     unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
     unsigned int viewLoc  = glGetUniformLocation(shader.ID, "view");
@@ -95,13 +106,26 @@ void renderGame(GLFWwindow* window, Shader &shader, unsigned int VAO, unsigned i
     {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubePositions[i]);
-        float angle = 20.0f * i;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        float angle = 20.0f * 10 * (float)glfwGetTime() * glm::radians(50.0f);
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.5f));
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, &model[0][0]);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
     glBindVertexArray(0);
+}
+
+void processInput(GLFWwindow *window)
+{
+    const float cameraSpeed = 2.5f * deltaTime; // adjust accordingly
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
 
 void setup() {
@@ -113,6 +137,7 @@ void setup() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
+
 
 int main() {
     setup();
@@ -225,6 +250,10 @@ int main() {
 
 
     while (!glfwWindowShouldClose(window)) {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
