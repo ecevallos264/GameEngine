@@ -7,30 +7,22 @@
 #define WINDOW_HEIGHT 600
 #define WINDOW_WIDTH 800
 
-void renderGame(GLFWwindow* window, Shader &shader) {
-    float vertices[] = {
-            //POS                                               //Color
-            -0.5f, -0.5f, 0.0f,      1.0f,0.0f, 1.0f,
-            0.5f, -0.5f, 0.0f,        0.0f,1.0f, 0.0f,
-            0.0f, 0.5f, 0.0f ,   1.0f,0.0f, 1.0f,
-    };
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+float vertices[] = {
+        // positions                                             // colors                                              // texture coords
+        -0.5f, -0.5f, 0.0f,            1.0f, 0.0f, 0.0f,             0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f,          0.0f, 1.0f, 0.0f,       1.0f, 0.0f,
+        0.5f,  0.5f, 0.0f,       0.0f, 0.0f, 1.0f,       1.0f, 1.0f,
+        0.5f,  0.5f, 0.0f,       0.0f, 0.0f, 1.0f,       1.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f,    1.0f, 0.0f, 0.0f,       0.0f, 0.0f
+};
 
+void renderGame(GLFWwindow* window, Shader &shader, unsigned int VAO, unsigned int VBO) {
+    shader.use();
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    shader.use(); // Use the shader program
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glBindVertexArray(0); // Unbind the VAO
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+//    glBindTexture(GL_TEXTURE, texture);
+    glBindVertexArray(0);
 }
 
 void setup() {
@@ -74,9 +66,24 @@ int main() {
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Position
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Color
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // TexCoord
+    glEnableVertexAttribArray(2);
+
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        renderGame(window, shader);
+        renderGame(window, shader, VAO, VBO);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
