@@ -4,8 +4,11 @@
 #include <filesystem>
 #include "shader-compiler.h"
 #include "stb_image.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#define WINDOW_HEIGHT 600
+#define WINDOW_HEIGHT 800
 #define WINDOW_WIDTH 800
 
 float vertices[] = {
@@ -20,9 +23,16 @@ float vertices[] = {
 
 void renderGame(GLFWwindow* window, Shader &shader, unsigned int VAO, unsigned int VBO) {
     shader.use();
+
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::translate(trans, glm::vec3(0.5f, sin(glfwGetTime()) / 1.0f , 0.0f));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-//    glBindTexture(GL_TEXTURE, texture);
     glBindVertexArray(0);
 }
 
