@@ -5,6 +5,7 @@ layout (location = 1) in vec4 aColor;
 
 //out vec2 textureCoordinates;
 out vec4 Color;
+
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;

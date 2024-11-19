@@ -120,7 +120,22 @@ void Game::run(GLFWwindow* window) {
     this->items.push_back(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     this->items.push_back(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
-    this->items.push_back(new xPlane(glm::vec3(0.0f, 0.0f, 0.0f), maxRenderDistance*2, maxRenderDistance*2, glm::vec3(0.53f, 0.53f, 0.53f), 100, 0.5f));
+//    this->items.push_back(new xPlane(glm::vec3(0.0f, 0.0f, 0.0f), maxRenderDistance*2, maxRenderDistance*2, glm::vec3(0.53f, 0.53f, 0.53f), 100, 0.5f));
+
+    float unit = 0.1f;
+    for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
+        if(i == 0) continue;
+        float line = i * unit;
+        this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, line), glm::vec3(-maxRenderDistance, 0.0f, line), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
+    }
+
+    for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
+        if(i == 0) continue;
+        float line = i * unit;
+        this->items.push_back(new Line(glm::vec3(line, 0.0f, maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
+
+    }
+
     for(auto &shape : items) {
         shape->initializeBuffers();
     }
