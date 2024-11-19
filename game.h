@@ -11,7 +11,7 @@
 class Game : public Singleton<Game> {
 private:
     std::vector<Shape*> items;
-
+    int xPos, yPos;
 
 public:
    bool shiftPressed = false;

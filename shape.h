@@ -8,9 +8,11 @@
 
 class Shape {
 protected:
+    bool destroyed = false;
     glm::vec3 position;
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
+    float scaleFactor = 1.0f;
 
 private:
     unsigned int VAO = 0;
@@ -60,6 +62,23 @@ public:
         return EBO;
     }
 
+    float getScaleFactor() const {
+        return this->scaleFactor;
+    }
+
+    void setScaleFactor(float factor) {
+        this->scaleFactor = factor;
+    }
+
+    void setDestroyed() {
+        this->destroyed = true;
+    }
+
+    bool isDestroyed() {
+        return this->destroyed;
+    }
+
+
     void initializeBuffers() {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -94,7 +113,7 @@ public:
     virtual void update(float deltaTime, Shader* shader) {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->getPosition());
-        model = glm::scale(model, glm::vec3(1.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f));
+        model = glm::scale(model, glm::vec3(1.0f, ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT) * scaleFactor, 1.0f));
         shader->setMat4("model", model);
     }
 };

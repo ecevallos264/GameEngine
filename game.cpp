@@ -37,8 +37,7 @@ void Game::processInput(GLFWwindow *window, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
         std::cout << "Adding Particles" << std::endl;
         for(int i = 0; i < 10; i++) {
-            Shape* shape = new Particle(glm::vec3(0.0,0.0,0.0),
-                                        generateRandomLocation(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+            Shape* shape = new Particle(glfwGetTime(), glm::vec3(0.0,0.0,0.0), generateRandomLocation(-1,1.0,-1.0,1.0,-1.0,1.0));
             shape->initializeBuffers();
             items.push_back(shape);
         }
@@ -60,15 +59,12 @@ void Game::renderGame(GLFWwindow* window) {
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
 
-    for (const auto &shape : items) {
-
-
-
-//        model = glm::rotate(model, (float)time * glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        shape->update(deltaTime, shader);
-        shape->draw();
-
-
+    for(int i = 0; i < items.size(); i++) {
+        if(items[i]->isDestroyed()) {
+            items.erase(items.begin() + i);
+        }
+        items[i]->update(deltaTime, shader);
+        items[i]->draw();
     }
 }
 
@@ -80,6 +76,8 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
         lastY = ypos;
         firstMouse = false;
     }
+    this->xPos = xpos;
+    this->yPos = ypos;
 
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos;
@@ -119,8 +117,6 @@ void Game::run(GLFWwindow* window) {
     this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
     this->items.push_back(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     this->items.push_back(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
-
-//    this->items.push_back(new xPlane(glm::vec3(0.0f, 0.0f, 0.0f), maxRenderDistance*2, maxRenderDistance*2, glm::vec3(0.53f, 0.53f, 0.53f), 100, 0.5f));
 
     float unit = 0.1f;
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
