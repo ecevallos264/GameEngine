@@ -794,7 +794,7 @@ extern "C" {
  *  available on the platform.
  *
  *  @analysis Platform or system settings limitation.  Pick another
- *  [standard cursor shape](@ref shapes) or create a
+ *  [standard cursor shape](@ref entities) or create a
  *  [custom cursor](@ref cursor_custom).
  */
 #define GLFW_CURSOR_UNAVAILABLE     0x0001000B
@@ -1181,10 +1181,10 @@ extern "C" {
 
 #define GLFW_ANY_POSITION           0x80000000
 
-/*! @defgroup shapes Standard cursor shapes
- *  @brief Standard system cursor shapes.
+/*! @defgroup entities Standard cursor entities
+ *  @brief Standard system cursor entities.
  *
- *  These are the [standard cursor shapes](@ref cursor_standard) that can be
+ *  These are the [standard cursor entities](@ref cursor_standard) that can be
  *  requested from the platform (window system).
  *
  *  @ingroup input
@@ -5051,7 +5051,7 @@ GLFWAPI GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
  *  @ref glfwSetCursor.  The images for these cursors come from the system
  *  cursor theme and their exact appearance will vary between platforms.
  *
- *  Most of these shapes are guaranteed to exist on every supported platform but
+ *  Most of these entities are guaranteed to exist on every supported platform but
  *  a few may not be present.  See the table below for details.
  *
  *  Cursor shape                   | Windows | macOS | X11    | Wayland
@@ -5074,7 +5074,7 @@ GLFWAPI GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
  *  If the requested shape is not available, this function emits a @ref
  *  GLFW_CURSOR_UNAVAILABLE error and returns `NULL`.
  *
- *  @param[in] shape One of the [standard shapes](@ref shapes).
+ *  @param[in] shape One of the [standard entities](@ref entities).
  *  @return A new cursor ready to use or `NULL` if an
  *  [error](@ref error_handling) occurred.
  *

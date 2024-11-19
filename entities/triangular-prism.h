@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 class TriangularPrism : public Shape {
+
 public:
     explicit TriangularPrism(glm::vec3 pos) {
         position = pos;

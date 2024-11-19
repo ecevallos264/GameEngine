@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <glm/vec3.hpp>
+#include "glm/ext/matrix_transform.hpp"
 
 class Shape {
 protected:
@@ -81,6 +82,22 @@ public:
 
     void setPosition(const glm::vec3& pos) {
         position = pos;
+    }
+
+    virtual void draw() {
+        glBindVertexArray(this->getVAO());
+        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
+    virtual void update(float deltaTime, Shader* shader) {
+        float time = glfwGetTime();
+        glm::mat4 model = glm::mat4(1.0f);
+//        this->setPosition(shape->getPosition() + glm::vec3(sin(time), sin(time), sin(time)));
+
+        model = glm::translate(model, this->getPosition());
+        model = glm::scale(model, glm::vec3(1.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f));
+        shader->setMat4("model", model);
     }
 };
 

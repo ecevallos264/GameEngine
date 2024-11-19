@@ -4,6 +4,7 @@
 #include "../shape.h"
 
 class Cube : public Shape {
+
 public:
     Cube(glm::vec3 pos) {
         position = pos;

@@ -1,7 +1,7 @@
 #ifndef SOFTWAREENGINEERINGPROJECT_GAME_H
 #define SOFTWAREENGINEERINGPROJECT_GAME_H
-#define WINDOW_HEIGHT 600
-#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 1200
+#define WINDOW_WIDTH 1600
 
 #include <glfw/glfw3.h>
 #include "shader-compiler.h"
@@ -19,6 +19,7 @@ public:
     bool firstMouse = true;
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+    float maxRenderDistance = 100.0f;
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
     Shader* shader;

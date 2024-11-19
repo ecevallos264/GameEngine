@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 class Pyramid : public Shape {
+
 public:
     Pyramid(glm::vec3 pos) {
         position = pos;
