@@ -6,6 +6,9 @@
 
 class Camera {
 public:
+    float yaw = -90.0f;
+    float pitch;
+    float roll;
     Camera(const Camera&) = delete;
     Camera& operator=(const Camera&) = delete;
 
@@ -52,6 +55,9 @@ private:
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
+    glm::vec3 direction;
+
+
     float cameraSpeed;
 };
 

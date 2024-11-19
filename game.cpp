@@ -29,27 +29,63 @@ void Game::renderGame(GLFWwindow* window) {
 
     glm::vec3 hexagonPositions[] = {
             glm::vec3(0.0f, 0.0f, 0.0f),   // Center
-//            glm::vec3(2.0f, 0.0f, 0.0f),   // Right
-//            glm::vec3(-2.0f, 0.0f, 0.0f),  // Left
-//            glm::vec3(0.0f, 2.0f, 0.0f),   // Top
-//            glm::vec3(0.0f, -2.0f, 0.0f),  // Bottom
+            glm::vec3(2.0f, 0.0f, 0.0f),   // Right
+            glm::vec3(-2.0f, 0.0f, 0.0f),  // Left
+            glm::vec3(0.0f, 2.0f, 0.0f),   // Top
+            glm::vec3(0.0f, -2.0f, 0.0f),  // Bottom
             glm::vec3(2.0f, 2.0f, 0.0f)    // Diagonal
     };
 
     glBindVertexArray(Game::getInstance().VAO);
 
-    for (int i = 0; i < sizeof (hexagonPositions) / sizeof (glm::vec3); i++) {
+    for (int i = 0; i < sizeof(hexagonPositions) / sizeof(glm::vec3); i++) {
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, hexagonPositions[i]); // Move each hexagon to its position
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 1.0f)); // Optional rotation
+
+        model = glm::translate(model, hexagonPositions[i]);
+
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.0f, 1.0f));
+
+        model = glm::scale(model, glm::vec3(1.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f));
+
         shader->setMat4("model", model);
 
-//        glDrawArrays(GL_TRIANGLES, 0, 36 / (6 * sizeof(float))); // Adjust vertex count if needed
-//        glDrawArrays(GL_TRIANGLES, 0, 36);
         glDrawElements(GL_TRIANGLES, Game::getInstance().indices.size(), GL_UNSIGNED_INT, 0);
     }
 
     glBindVertexArray(0);
+}
+
+void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+    lastX = xpos;
+    lastY = ypos;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    Camera::getInstance().yaw   += xoffset;
+    Camera::getInstance().pitch += yoffset;
+
+    if(Camera::getInstance().pitch > 89.0f)
+        Camera::getInstance().pitch = 89.0f;
+    if(Camera::getInstance().pitch < -89.0f)
+        Camera::getInstance().pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+    direction.y = sin(glm::radians(Camera::getInstance().pitch));
+    direction.z = sin(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+    Camera::getInstance().setFront(glm::normalize(direction));
 }
 
 void Game::setVertices(const std::vector<float>& v) {
@@ -68,7 +104,6 @@ void Game::run(GLFWwindow* window) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         processInput(window, deltaTime);
-        std::cout << deltaTime << std::endl;
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

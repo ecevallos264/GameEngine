@@ -9,6 +9,8 @@
 
 class Game : public Singleton<Game> {
 public:
+    double lastX, lastY;
+    bool firstMouse = true;
     Game() = default;
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
@@ -21,6 +23,7 @@ public:
     void run(GLFWwindow* window);
     void renderGame(GLFWwindow* window);
     static void processInput(GLFWwindow *window, float deltaTime);
+    void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_GAME_H

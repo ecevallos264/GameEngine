@@ -12,6 +12,7 @@ add_executable(SoftwareEngineeringProject main.cpp
         Singleton.h
         game.h
         game.cpp
+        shape.h
 )
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
