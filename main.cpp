@@ -61,28 +61,6 @@ int main() {
     Game::getInstance().shader = &shader;
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, Game::getInstance().vertices.size() * sizeof(float), Game::getInstance().vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Game::getInstance().indices.size() * sizeof(unsigned int), Game::getInstance().indices.data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // TexCoord
-    glEnableVertexAttribArray(1);
-    Game::getInstance().VAO = VAO;
-
-    shader.use();
-
     Game::getInstance().run(window);
 
     glfwTerminate();

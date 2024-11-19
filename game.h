@@ -14,18 +14,17 @@ private:
 
 
 public:
-    bool shiftPressed = false;
+   bool shiftPressed = false;
     double lastX, lastY;
     bool firstMouse = true;
-    Game() = default;
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
-    unsigned int VAO;
     Shader* shader;
-    void setVertices(const std::vector<float>& v);
-    void setIndices(const std::vector<unsigned int>& v);
+
+    Game() = default;
+
     void run(GLFWwindow* window);
     void renderGame(GLFWwindow* window);
     static void processInput(GLFWwindow *window, float deltaTime);

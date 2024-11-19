@@ -26,7 +26,9 @@ set_target_properties(glfw PROPERTIES
 # GLAD
 add_library(glad INTERFACE
         shapes/cube.h
-        shapes/hex-prism.h)
+        shapes/hex-prism.h
+        shapes/triangular-prism.h
+        shapes/pyramid.h)
 target_include_directories(glad INTERFACE "${ProjectDir}/GLAD/include")
 
 # GLM (header-only, no lib needed)
