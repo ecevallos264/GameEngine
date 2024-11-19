@@ -10,8 +10,11 @@
 #include "../shader-compiler.h"
 
 class xPlane : public Shape {
+private:
+    float opacity;
 public:
-    xPlane(const glm::vec3& position, float width, float height, const glm::vec3& color, int gridDivisions) {
+    xPlane(const glm::vec3& position, float width, float height, const glm::vec3& color, int gridDivisions, float opacity) {
+        this->opacity = opacity;
         float halfWidth = width / 2.0f;
         float halfHeight = height / 2.0f;
         float stepX = width / gridDivisions;
@@ -28,6 +31,7 @@ public:
                 vertices.push_back(color.x);
                 vertices.push_back(color.y);
                 vertices.push_back(color.z);
+                vertices.push_back(opacity);
             }
         }
 

@@ -8,6 +8,9 @@
 #include "entities/pyramid.h"
 #include "entities/line.h"
 #include "entities/xPlane.h"
+#include "entities/sphere.h"
+#include "entities/particle.h"
+#include "my_math.h"
 
 
 void Game::processInput(GLFWwindow *window, float deltaTime) {
@@ -31,9 +34,20 @@ void Game::processInput(GLFWwindow *window, float deltaTime) {
         Camera::getInstance().setPosition(Camera::getInstance().getPosition() + glm::normalize(glm::cross(Camera::getInstance().getFront(), Camera::getInstance().getUp())) * Camera::getInstance().getCalcSpeed(deltaTime));
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         Camera::getInstance().setPosition(Camera::getInstance().getPosition() + glm::vec3(0.0f, Camera::getInstance().getCalcSpeed(deltaTime), 0.0f));
+    if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+        std::cout << "Adding Particles" << std::endl;
+        for(int i = 0; i < 10; i++) {
+            Shape* shape = new Particle(glm::vec3(0.0,0.0,0.0),
+                                        generateRandomLocation(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+            shape->initializeBuffers();
+            items.push_back(shape);
+        }
+    }
 }
 
 void Game::renderGame(GLFWwindow* window) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     this->shader->use();
 
     glm::mat4 view = glm::lookAt(
@@ -100,12 +114,13 @@ void Game::run(GLFWwindow* window) {
     this->items.push_back(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
     this->items.push_back(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
     this->items.push_back(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
+    this->items.push_back(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
 
-    this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
-    this->items.push_back(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
-    this->items.push_back(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f)));
+    this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
+    this->items.push_back(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
+    this->items.push_back(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
-    this->items.push_back(new xPlane(glm::vec3(0.0f, 0.0f, 0.0f), maxRenderDistance*2, maxRenderDistance*2, glm::vec3(0.53f, 0.53f, 0.53f), 100));
+    this->items.push_back(new xPlane(glm::vec3(0.0f, 0.0f, 0.0f), maxRenderDistance*2, maxRenderDistance*2, glm::vec3(0.53f, 0.53f, 0.53f), 100, 0.5f));
     for(auto &shape : items) {
         shape->initializeBuffers();
     }

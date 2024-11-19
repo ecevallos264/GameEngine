@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <glm/vec3.hpp>
+#include "shape.h"
 #include "glm/ext/matrix_transform.hpp"
 
 class Shape {
@@ -72,9 +73,9 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0); // Position
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Color
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float))); // Color
         glEnableVertexAttribArray(1);
 
         glBindVertexArray(0);
@@ -91,10 +92,7 @@ public:
     }
 
     virtual void update(float deltaTime, Shader* shader) {
-        float time = glfwGetTime();
         glm::mat4 model = glm::mat4(1.0f);
-//        this->setPosition(shape->getPosition() + glm::vec3(sin(time), sin(time), sin(time)));
-
         model = glm::translate(model, this->getPosition());
         model = glm::scale(model, glm::vec3(1.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 1.0f));
         shader->setMat4("model", model);

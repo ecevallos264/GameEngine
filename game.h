@@ -28,7 +28,7 @@ public:
 
     void run(GLFWwindow* window);
     void renderGame(GLFWwindow* window);
-    static void processInput(GLFWwindow *window, float deltaTime);
+    void processInput(GLFWwindow *window, float deltaTime);
     void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 };
 

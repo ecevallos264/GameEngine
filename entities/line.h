@@ -9,10 +9,10 @@
 
 class Line : public Shape {
 public:
-    Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color) {
+    Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color, float opacity) {
         vertices = {
-                start.x, start.y, start.z, color.x, color.y, color.z,
-                end.x, end.y, end.z, color.x, color.y, color.z,
+                start.x, start.y, start.z, color.x, color.y, color.z, opacity,
+                end.x, end.y, end.z, color.x, color.y, color.z, opacity,
         };
         indices = { 0, 1 };
         initializeBuffers();

@@ -15,6 +15,9 @@ add_executable(SoftwareEngineeringProject main.cpp
         shape.h
         entities/line.h
         entities/xPlane.h
+        my_math.h
+        entities/sphere.h
+        entities/particle.h
 )
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
