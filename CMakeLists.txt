@@ -7,8 +7,12 @@ add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 add_executable(SoftwareEngineeringProject main.cpp
         glad.c
         stb.cpp
-        shader-compiler.cpp
-        shader-compiler.h)
+        shader-compiler.h
+        camera.h
+        Singleton.h
+        game.h
+        game.cpp
+)
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
 
