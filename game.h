@@ -6,9 +6,15 @@
 #include <glfw/glfw3.h>
 #include "shader-compiler.h"
 #include "Singleton.h"
+#include "shape.h"
 
 class Game : public Singleton<Game> {
+private:
+    std::vector<Shape*> items;
+
+
 public:
+    bool shiftPressed = false;
     double lastX, lastY;
     bool firstMouse = true;
     Game() = default;

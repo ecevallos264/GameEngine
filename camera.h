@@ -41,7 +41,11 @@ public:
         return cameraUp;
     }
 
-    float getSpeed(float deltaTime) const {
+    float getSpeed() const {
+        return cameraSpeed;
+    }
+
+    float getCalcSpeed(float deltaTime) const {
         return cameraSpeed * deltaTime;
     }
 
