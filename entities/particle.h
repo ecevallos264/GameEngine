@@ -19,7 +19,7 @@ public:
         this->initializationTime = initTime;
         this->particle = new Cube(this->position);
         this->particle->initializeBuffers();
-        this->particle->setScaleFactor(0.005);
+        this->particle->setScaleFactor(0.0005);
     }
 
     void update(float deltaTime, Shader* shader) override {
