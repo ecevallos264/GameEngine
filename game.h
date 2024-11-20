@@ -13,7 +13,8 @@ private:
     int xPos, yPos;
 
 public:
-   bool shiftPressed = false;
+    bool cursorStatus = false;
+    bool shiftPressed = false;
     double lastX, lastY;
     bool firstMouse = true;
     float deltaTime = 0.0f;

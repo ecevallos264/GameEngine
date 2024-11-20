@@ -7,6 +7,9 @@
 #include <glm/glm.hpp>
 #include "camera.h"
 #include "game.h"
+#include "externals/imgui/imgui.h"
+#include "externals/imgui/backends/imgui_impl_glfw.h"
+#include "externals/imgui/backends/imgui_impl_opengl3.h"
 
 void setup() {
     if (!glfwInit()) {
@@ -61,8 +64,16 @@ int main() {
     Game::getInstance().shader = &shader;
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    Game::getInstance().run(window);
 
+    //ImGui Setup
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    Game::getInstance().run(window);
     glfwTerminate();
     return 0;
 }

@@ -29,6 +29,25 @@ set_target_properties(glfw PROPERTIES
         IMPORTED_LOCATION "${ProjectDir}/GLFW/lib/libglfw3.a"
         INTERFACE_INCLUDE_DIRECTORIES "${ProjectDir}/GLFW/include")
 
+# ImGui
+# Add ImGui library
+add_library(imgui
+        ${ProjectDir}/imgui/imgui.cpp
+        ${ProjectDir}/imgui/imgui_draw.cpp
+        ${ProjectDir}/imgui/imgui_tables.cpp
+        ${ProjectDir}/imgui/imgui_widgets.cpp
+        ${ProjectDir}/imgui/backends/imgui_impl_glfw.cpp
+        ${ProjectDir}/imgui/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui PRIVATE
+        ${ProjectDir}/imgui
+        ${ProjectDir}/imgui/backends
+        ${ProjectDir}
+)
+
+target_link_libraries(imgui glfw)
+
 # GLAD
 add_library(glad INTERFACE
         entities/cube.h
@@ -50,4 +69,4 @@ add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE "${ProjectDir}/STB/include")
 
 # Link Libraries
-target_link_libraries(SoftwareEngineeringProject glfw glad glm khr stb)
+target_link_libraries(SoftwareEngineeringProject glfw glad glm khr stb imgui)

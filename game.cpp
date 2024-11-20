@@ -12,11 +12,17 @@
 #include "entities/particle.h"
 #include "my_math.h"
 #include "Entity_Handler.h"
+#include "externals/imgui/imgui.h"
+#include "externals/imgui/backends/imgui_impl_opengl3.h"
+#include "externals/imgui/backends/imgui_impl_glfw.h"
 
 
 void Game::processInput(GLFWwindow *window, float deltaTime) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        this->cursorStatus = true;
+    }
+
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && !Game::getInstance().shiftPressed) {
         Camera::getInstance().setSpeed(Camera::getInstance().getSpeed() * 2);
         Game::getInstance().shiftPressed = true;
@@ -36,10 +42,9 @@ void Game::processInput(GLFWwindow *window, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         Camera::getInstance().setPosition(Camera::getInstance().getPosition() + glm::vec3(0.0f, Camera::getInstance().getCalcSpeed(deltaTime), 0.0f));
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
-        std::cout << "Adding Particles" << std::endl;
         for(int i = 0; i < 10; i++) {
             Shape* shape = new Particle(glfwGetTime(), glm::vec3(0.0,0.0,0.0), generateRandomLocation(-1,1.0,-1.0,1.0,-1.0,1.0));
-            shape->initializeBuffers();
+            EntityHandler::getInstance().addEntity(shape);
         }
     }
 }
@@ -70,43 +75,53 @@ void Game::renderGame(GLFWwindow* window) {
 
 void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    if (firstMouse)
-    {
+
+    bool cursorInWindow = (xpos >= 0 && xpos <= WINDOW_WIDTH && ypos >= 0 && ypos <= WINDOW_HEIGHT);
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && cursorInWindow) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        this->cursorStatus = false;
+    } else if (!cursorStatus) {
+        if (firstMouse)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            firstMouse = false;
+        }
+        this->xPos = xpos;
+        this->yPos = ypos;
+
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos;
         lastX = xpos;
         lastY = ypos;
-        firstMouse = false;
+
+        float sensitivity = 0.1f;
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
+
+        Camera::getInstance().yaw   += xoffset;
+        Camera::getInstance().pitch += yoffset;
+
+        if(Camera::getInstance().pitch > 89.0f)
+            Camera::getInstance().pitch = 89.0f;
+        if(Camera::getInstance().pitch < -89.0f)
+            Camera::getInstance().pitch = -89.0f;
+
+        glm::vec3 direction;
+        direction.x = cos(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+        direction.y = sin(glm::radians(Camera::getInstance().pitch));
+        direction.z = sin(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+        Camera::getInstance().setFront(glm::normalize(direction));
+    } else {
+        firstMouse = true;
     }
-    this->xPos = xpos;
-    this->yPos = ypos;
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos;
-    lastX = xpos;
-    lastY = ypos;
-
-    float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    Camera::getInstance().yaw   += xoffset;
-    Camera::getInstance().pitch += yoffset;
-
-    if(Camera::getInstance().pitch > 89.0f)
-        Camera::getInstance().pitch = 89.0f;
-    if(Camera::getInstance().pitch < -89.0f)
-        Camera::getInstance().pitch = -89.0f;
-
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
-    direction.y = sin(glm::radians(Camera::getInstance().pitch));
-    direction.z = sin(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
-    Camera::getInstance().setFront(glm::normalize(direction));
 }
 
 void Game::run(GLFWwindow* window) {
     this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
 
-    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+//    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
@@ -130,9 +145,6 @@ void Game::run(GLFWwindow* window) {
 
     }
 
-    for(auto &shape : EntityHandler::getInstance().getEntities()) {
-        shape->initializeBuffers();
-    }
     shader->use();
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -140,10 +152,28 @@ void Game::run(GLFWwindow* window) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+//        ImGui::Begin("Separate ImGui Window");
+//        ImGui::Text("This is a separate ImGui window!");
+//        if (ImGui::Button("Close")) {
+//            // Handle window close logic
+//        }
+//        ImGui::End();
+
         processInput(window, deltaTime);
 
 
         renderGame(window);
+        ImGui::Begin("My name is window, ImGUI window");
+        ImGui::Text("Hello there adventurer!");
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
