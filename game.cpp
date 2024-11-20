@@ -79,10 +79,7 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     bool cursorInWindow = (xpos >= 0 && xpos <= WINDOW_WIDTH && ypos >= 0 && ypos <= WINDOW_HEIGHT);
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && cursorInWindow) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        this->cursorStatus = false;
-    } else if (!cursorStatus) {
+    if (!cursorStatus) {
         if (firstMouse)
         {
             lastX = xpos;
@@ -122,14 +119,14 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void Game::run(GLFWwindow* window) {
     this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
 
-//    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
 
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
-//    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
     float unit = 0.1f;
@@ -163,17 +160,21 @@ void Game::run(GLFWwindow* window) {
         processInput(window, deltaTime);
 
 
-
+        ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
         ImGui::Begin("Project Controls");
         renderGame(window);
 
         static float x = 0.0f, y = 0.0f, z = 0.0f;
         static float opacity = 1.0f;
+        static float color[3] = {1.0f, 1.0f, 0.0f};
+        static float rotation[3] = {0.0f, 0.0f, 0.0f};
 
         ImGui::InputFloat("X", &x);
         ImGui::InputFloat("Y", &y);
         ImGui::InputFloat("Z", &z);
         ImGui::SliderFloat("Opacity", &opacity, 0.0f, 1.0f);
+        ImGui::ColorEdit3("Color", color);
+        ImGui::SliderFloat3("Rotation", rotation, 0.0f, 360.0f);
 
         if (ImGui::Button("Draw Vector")) {
             if (vector != nullptr) {
@@ -181,13 +182,21 @@ void Game::run(GLFWwindow* window) {
                 delete vector;
                 vector = nullptr;
             }
-            vector = new Vector(glm::vec3(x, y, z), 10, glm::vec3(1.0, 1.0, 0.0), opacity);
+            vector = new Vector(glm::vec3(x, y, z), glm::vec3(color[0], color[1], color[2]), opacity);
+            vector->setRotation(glm::vec3(rotation[0], rotation[1], rotation[2]));
             EntityHandler::getInstance().addEntity(vector);
         }
 
         if (vector != nullptr) {
             vector->setPosition(glm::vec3(x, y, z));
             vector->setOpacity(opacity);
+            vector->setRotation(glm::vec3(rotation[0], rotation[1], rotation[2]));
+            vector->setPosition(glm::vec3(x, y, z));
+        }
+
+        if (ImGui::Button("Go Back to Scene")) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            this->cursorStatus = false;
         }
 
         ImGui::End();

@@ -1,13 +1,10 @@
-//
-// Created by eceva on 11/19/2024.
-//
-
 #ifndef SOFTWAREENGINEERINGPROJECT_LINE_H
 #define SOFTWAREENGINEERINGPROJECT_LINE_H
 
 #include "../shape.h"
 
 class Line : public Shape {
+    glm::vec3 rotation = glm::vec3(0.0f);
 public:
     Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color, float opacity) {
         vertices = {
@@ -33,6 +30,11 @@ public:
         this->vertices[6] = opacity;
         this->vertices[13] = opacity;
     }
+
+    void updateRotation(glm::vec3 rotation) {
+        this->rotation = rotation;
+    }
+
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_LINE_H
