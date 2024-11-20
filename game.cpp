@@ -11,6 +11,7 @@
 #include "entities/sphere.h"
 #include "entities/particle.h"
 #include "my_math.h"
+#include "Entity_Handler.h"
 
 
 void Game::processInput(GLFWwindow *window, float deltaTime) {
@@ -39,7 +40,6 @@ void Game::processInput(GLFWwindow *window, float deltaTime) {
         for(int i = 0; i < 10; i++) {
             Shape* shape = new Particle(glfwGetTime(), glm::vec3(0.0,0.0,0.0), generateRandomLocation(-1,1.0,-1.0,1.0,-1.0,1.0));
             shape->initializeBuffers();
-            items.push_back(shape);
         }
     }
 }
@@ -59,12 +59,12 @@ void Game::renderGame(GLFWwindow* window) {
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
 
-    for(int i = 0; i < items.size(); i++) {
-        if(items[i]->isDestroyed()) {
-            items.erase(items.begin() + i);
+    for(int i = 0; i < EntityHandler::getInstance().getEntities().size(); i++) {
+        if(EntityHandler::getInstance().entities[i]->isDestroyed()) {
+            EntityHandler::getInstance().entities.erase(EntityHandler::getInstance().entities.begin() + i);
         }
-        items[i]->update(deltaTime, shader);
-        items[i]->draw();
+        EntityHandler::getInstance().entities[i]->update(deltaTime, shader);
+        EntityHandler::getInstance().entities[i]->draw();
     }
 }
 
@@ -106,33 +106,31 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void Game::run(GLFWwindow* window) {
     this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
 
+    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
+    EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
+    EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
 
-
-    this->items.push_back(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
-    this->items.push_back(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
-    this->items.push_back(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
-    this->items.push_back(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
-    this->items.push_back(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
-
-    this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
-    this->items.push_back(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
-    this->items.push_back(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
     float unit = 0.1f;
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
-        this->items.push_back(new Line(glm::vec3(maxRenderDistance, 0.0f, line), glm::vec3(-maxRenderDistance, 0.0f, line), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
+        EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, line), glm::vec3(-maxRenderDistance, 0.0f, line), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
     }
 
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
-        this->items.push_back(new Line(glm::vec3(line, 0.0f, maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
+        EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f, maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
 
     }
 
-    for(auto &shape : items) {
+    for(auto &shape : EntityHandler::getInstance().getEntities()) {
         shape->initializeBuffers();
     }
     shader->use();

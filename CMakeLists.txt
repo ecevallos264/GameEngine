@@ -18,6 +18,7 @@ add_executable(SoftwareEngineeringProject main.cpp
         my_math.h
         entities/sphere.h
         entities/particle.h
+        Entity_Handler.h
 )
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
