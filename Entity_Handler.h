@@ -25,6 +25,13 @@ public:
         this->entities.push_back(shape);
         shape->initializeBuffers();
     }
+
+    void removeEntity(Shape* shape) {
+        auto it = std::find(entities.begin(), entities.end(), shape);
+        if (it != entities.end()) {
+            entities.erase(it);
+        }
+    }
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_ENTITY_HANDLER_H

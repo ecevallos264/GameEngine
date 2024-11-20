@@ -53,7 +53,8 @@ add_library(glad INTERFACE
         entities/cube.h
         entities/hex-prism.h
         entities/triangular-prism.h
-        entities/pyramid.h)
+        entities/pyramid.h
+        entities/vector_line.h)
 target_include_directories(glad INTERFACE "${ProjectDir}/GLAD/include")
 
 # GLM (header-only, no lib needed)

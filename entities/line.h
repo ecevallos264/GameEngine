@@ -28,6 +28,11 @@ public:
         glm::mat4 model = glm::mat4(1.0f);
         shader->setMat4("model", model);
     }
+
+    void setOpacity(float opacity) {
+        this->vertices[6] = opacity;
+        this->vertices[13] = opacity;
+    }
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_LINE_H

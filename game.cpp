@@ -15,6 +15,7 @@
 #include "externals/imgui/imgui.h"
 #include "externals/imgui/backends/imgui_impl_opengl3.h"
 #include "externals/imgui/backends/imgui_impl_glfw.h"
+#include "entities/vector_line.h"
 
 
 void Game::processInput(GLFWwindow *window, float deltaTime) {
@@ -128,7 +129,7 @@ void Game::run(GLFWwindow* window) {
     EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
 
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
-    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
+//    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
     float unit = 0.1f;
@@ -141,11 +142,13 @@ void Game::run(GLFWwindow* window) {
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
-        EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f, maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
+        EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f,
+                                                                  maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
 
     }
 
     shader->use();
+    Vector* vector = nullptr;
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -157,22 +160,40 @@ void Game::run(GLFWwindow* window) {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-//        ImGui::Begin("Separate ImGui Window");
-//        ImGui::Text("This is a separate ImGui window!");
-//        if (ImGui::Button("Close")) {
-//            // Handle window close logic
-//        }
-//        ImGui::End();
-
         processInput(window, deltaTime);
 
 
+
+        ImGui::Begin("Project Controls");
         renderGame(window);
-        ImGui::Begin("My name is window, ImGUI window");
-        ImGui::Text("Hello there adventurer!");
+
+        static float x = 0.0f, y = 0.0f, z = 0.0f;
+        static float opacity = 1.0f;
+
+        ImGui::InputFloat("X", &x);
+        ImGui::InputFloat("Y", &y);
+        ImGui::InputFloat("Z", &z);
+        ImGui::SliderFloat("Opacity", &opacity, 0.0f, 1.0f);
+
+        if (ImGui::Button("Draw Vector")) {
+            if (vector != nullptr) {
+                EntityHandler::getInstance().removeEntity(vector);
+                delete vector;
+                vector = nullptr;
+            }
+            vector = new Vector(glm::vec3(x, y, z), 10, glm::vec3(1.0, 1.0, 0.0), opacity);
+            EntityHandler::getInstance().addEntity(vector);
+        }
+
+        if (vector != nullptr) {
+            vector->setPosition(glm::vec3(x, y, z));
+            vector->setOpacity(opacity);
+        }
+
         ImGui::End();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
