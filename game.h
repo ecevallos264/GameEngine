@@ -30,6 +30,9 @@ public:
     void renderGame(GLFWwindow* window);
     void processInput(GLFWwindow *window, float deltaTime);
     void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
+private:
+    void renderGrid();
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_GAME_H

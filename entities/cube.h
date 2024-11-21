@@ -29,6 +29,13 @@ public:
             0, 1, 5, 5, 4, 0
         };
     }
+
+    void draw() override {
+        glBindVertexArray(this->getVAO());
+        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
     void update(float deltaTime, Shader* shader) override {
         float time = glfwGetTime();
         Shape::update(deltaTime, shader);

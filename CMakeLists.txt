@@ -23,7 +23,7 @@ add_executable(SoftwareEngineeringProject main.cpp
         entities/hex-prism.h
         entities/triangular-prism.h
         entities/pyramid.h
-        entities/vector_line.h
+        entities/vector.h
 )
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)

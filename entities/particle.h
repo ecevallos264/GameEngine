@@ -1,6 +1,7 @@
 #ifndef SOFTWAREENGINEERINGPROJECT_PARTICLE_H
 #define SOFTWAREENGINEERINGPROJECT_PARTICLE_H
 
+#include <glfw/glfw3.h>
 #include "../shape.h"
 #include "../shader-compiler.h"
 #include "cube.h"
@@ -19,7 +20,7 @@ public:
         this->initializationTime = initTime;
         this->particle = new Cube(this->position);
         this->particle->initializeBuffers();
-        this->particle->setScaleFactor(0.0005);
+        this->particle->setDilation(0.0005);
     }
 
     void update(float deltaTime, Shader* shader) override {
@@ -32,11 +33,11 @@ public:
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->position);
-        model = glm::scale(model, glm::vec3(this->particle->getScaleFactor()));
+        model = glm::scale(model, glm::vec3(this->particle->getDilation()));
         shader->setMat4("model", model);
     }
 
-    void draw() {
+    void draw() override {
         this->particle->draw();
     }
 };

@@ -28,6 +28,12 @@ public:
                 3, 0, 4
         };
     }
+
+    void draw() override {
+        glBindVertexArray(this->getVAO());
+        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_PYRAMID_H

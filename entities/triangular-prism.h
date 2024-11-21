@@ -30,6 +30,12 @@ public:
             2, 0, 3,  3, 5, 2
         };
     }
+
+    void draw() override {
+        glBindVertexArray(this->getVAO());
+        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_TRIANGULAR_PRISM_H

@@ -9,10 +9,13 @@
 class Shape {
 protected:
     bool destroyed = false;
-    glm::vec3 position;
+
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
-    float scaleFactor = 1.0f;
+
+    glm::vec3 position;
+    glm::vec3 rotation;
+    float dilation = 1.0f;
 
 private:
     unsigned int VAO = 0;
@@ -38,18 +41,6 @@ public:
         return position;
     }
 
-    void setVAO(unsigned int vao) {
-        this->VAO = vao;
-    }
-
-    void setVBO(unsigned int vbo) {
-        this->VBO = vbo;
-    }
-
-    void setEBO(unsigned int ebo) {
-        this->EBO = ebo;
-    }
-
     unsigned int getVAO() const {
         return VAO;
     }
@@ -62,14 +53,6 @@ public:
         return EBO;
     }
 
-    float getScaleFactor() const {
-        return this->scaleFactor;
-    }
-
-    void setScaleFactor(float factor) {
-        this->scaleFactor = factor;
-    }
-
     void setDestroyed() {
         this->destroyed = true;
     }
@@ -78,6 +61,21 @@ public:
         return this->destroyed;
     }
 
+    void setRotation(glm::vec3 rotation_matrix) {
+        this->rotation = rotation_matrix;
+    }
+
+    float getDilation() {
+        return this->dilation;
+    }
+
+    void setDilation(float factor) {
+        this->dilation = factor;
+    }
+
+    void setPosition(const glm::vec3& pos) {
+        position = pos;
+    }
 
     void initializeBuffers() {
         glGenVertexArrays(1, &VAO);
@@ -100,20 +98,15 @@ public:
         glBindVertexArray(0);
     }
 
-    void setPosition(const glm::vec3& pos) {
-        position = pos;
-    }
-
-    virtual void draw() {
-        glBindVertexArray(this->getVAO());
-        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-    }
+    virtual void draw() = 0;
 
     virtual void update(float deltaTime, Shader* shader) {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->getPosition());
-        model = glm::scale(model, glm::vec3(1.0f, ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT) * scaleFactor, 1.0f));
+        model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(dilation));
         shader->setMat4("model", model);
     }
 };

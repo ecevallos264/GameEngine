@@ -54,6 +54,12 @@ public:
             6, 8, 1
         };
     }
+
+    void draw() override {
+        glBindVertexArray(this->getVAO());
+        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_HEX_PRISM_H

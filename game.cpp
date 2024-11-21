@@ -15,7 +15,7 @@
 #include "externals/imgui/imgui.h"
 #include "externals/imgui/backends/imgui_impl_opengl3.h"
 #include "externals/imgui/backends/imgui_impl_glfw.h"
-#include "entities/vector_line.h"
+#include "entities/vector.h"
 
 
 void Game::processInput(GLFWwindow *window, float deltaTime) {
@@ -116,19 +116,7 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
     }
 }
 
-void Game::run(GLFWwindow* window) {
-    this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
-
-    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
-    EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
-    EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
-    EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
-    EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
-
-    EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
-    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
-    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
-
+void Game::renderGrid() {
     float unit = 0.1f;
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
         if(i == 0) continue;
@@ -139,13 +127,31 @@ void Game::run(GLFWwindow* window) {
     for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
-        EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f,
-                                                                  maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
-
+        EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f,maxRenderDistance), glm::vec3(line, 0.0f, -maxRenderDistance), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
     }
+}
+
+void Game::run(GLFWwindow* window) {
+    this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
+
+    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
+    EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
+    EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
+
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(maxRenderDistance, 0.0f, 0.0f), glm::vec3(-maxRenderDistance, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f));
+//    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, maxRenderDistance, 0.0f), glm::vec3(0.0f, -maxRenderDistance, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
+    EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, maxRenderDistance), glm::vec3(0.0f, 0.0f, -maxRenderDistance), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
+
+    Vector* vector = new Vector(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(), maxRenderDistance, glm::vec3(1.0f, 1.0f, 0.0f), 1.0f);
+    EntityHandler::getInstance().addEntity(vector);
+
+    renderGrid();
+
 
     shader->use();
-    Vector* vector = nullptr;
+
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -176,24 +182,6 @@ void Game::run(GLFWwindow* window) {
         ImGui::ColorEdit3("Color", color);
         ImGui::SliderFloat3("Rotation", rotation, 0.0f, 360.0f);
 
-        if (ImGui::Button("Draw Vector")) {
-            if (vector != nullptr) {
-                EntityHandler::getInstance().removeEntity(vector);
-                delete vector;
-                vector = nullptr;
-            }
-            vector = new Vector(glm::vec3(x, y, z), glm::vec3(color[0], color[1], color[2]), opacity);
-            vector->setRotation(glm::vec3(rotation[0], rotation[1], rotation[2]));
-            EntityHandler::getInstance().addEntity(vector);
-        }
-
-        if (vector != nullptr) {
-            vector->setPosition(glm::vec3(x, y, z));
-            vector->setOpacity(opacity);
-            vector->setRotation(glm::vec3(rotation[0], rotation[1], rotation[2]));
-            vector->setPosition(glm::vec3(x, y, z));
-        }
-
         if (ImGui::Button("Go Back to Scene")) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             this->cursorStatus = false;
@@ -201,6 +189,7 @@ void Game::run(GLFWwindow* window) {
 
         ImGui::End();
         ImGui::Render();
+        vector->setDirection(glm::vec3(x, y, z));
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
