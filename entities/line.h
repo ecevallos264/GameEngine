@@ -31,10 +31,6 @@ public:
         this->vertices[13] = opacity;
     }
 
-    void updateRotation(glm::vec3 rotation) {
-        this->rotation = rotation;
-    }
-
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_LINE_H

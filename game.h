@@ -13,13 +13,11 @@ private:
     int xPos, yPos;
 
 public:
-    bool cursorStatus = false;
     bool shiftPressed = false;
     double lastX, lastY;
     bool firstMouse = true;
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
-    float maxRenderDistance = 100.0f;
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
     Shader* shader;

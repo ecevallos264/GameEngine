@@ -8,8 +8,8 @@
 #include "camera.h"
 #include "game.h"
 #include "externals/imgui/imgui.h"
-#include "externals/imgui/backends/imgui_impl_glfw.h"
-#include "externals/imgui/backends/imgui_impl_opengl3.h"
+#include "externals/imgui/imgui_impl_glfw.h"
+#include "externals/imgui/imgui_impl_opengl3.h"
 
 void setup() {
     if (!glfwInit()) {

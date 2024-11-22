@@ -24,6 +24,8 @@ add_executable(SoftwareEngineeringProject main.cpp
         entities/triangular-prism.h
         entities/pyramid.h
         entities/vector.h
+        settings.h
+        gui.h
 )
 
 target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
@@ -41,8 +43,8 @@ add_library(imgui
         ${ProjectDir}/imgui/imgui_draw.cpp
         ${ProjectDir}/imgui/imgui_tables.cpp
         ${ProjectDir}/imgui/imgui_widgets.cpp
-        ${ProjectDir}/imgui/backends/imgui_impl_glfw.cpp
-        ${ProjectDir}/imgui/backends/imgui_impl_opengl3.cpp
+        ${ProjectDir}/imgui/imgui_impl_glfw.cpp
+        ${ProjectDir}/imgui/imgui_impl_opengl3.cpp
 )
 
 target_include_directories(imgui PRIVATE
