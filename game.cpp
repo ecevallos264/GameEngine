@@ -149,8 +149,8 @@ void Game::run(GLFWwindow* window) {
 
 
 
-    Vector* vector = new Vector(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 1.0f);
-    EntityHandler::getInstance().addEntity(vector);
+//    Vector* vector = new Vector(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 1.0f);
+//    EntityHandler::getInstance().addEntity(vector);
 
 
 
@@ -171,7 +171,7 @@ void Game::run(GLFWwindow* window) {
         processInput(window, deltaTime);
         renderGame(window);
 
-       gui->render(window);
+        gui->render(window);
 
 
         glfwSwapBuffers(window);

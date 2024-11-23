@@ -7,7 +7,7 @@
 #include "glm/ext/matrix_transform.hpp"
 
 class Shape {
-protected:
+public:
     bool destroyed = false;
 
     std::vector<float> vertices;
@@ -61,7 +61,7 @@ public:
         return this->destroyed;
     }
 
-    void setRotation(glm::vec3 rotation_matrix) {
+    virtual void setRotation(glm::vec3 rotation_matrix) {
         this->rotation = rotation_matrix;
     }
 
@@ -99,6 +99,28 @@ public:
     }
 
     virtual void draw() = 0;
+
+    virtual void setColor(glm::vec3 newColor) {
+        for(int i = 0; i < this->vertices.size(); i += 7) {
+            this->vertices[i + 3] = newColor.x;
+            this->vertices[i + 4] = newColor.y;
+            this->vertices[i + 5] = newColor.z;
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    virtual void setOpacity(float opacity) {
+        for(int i = 0; i < this->vertices.size(); i += 7) {
+            this->vertices[i + 6] = opacity;
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
 
     virtual void update(float deltaTime, Shader* shader) {
         glm::mat4 model = glm::mat4(1.0f);
