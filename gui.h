@@ -33,7 +33,6 @@ void render(GLFWwindow* window) {
     static int selectedEntityType = 0;
     const char* entityTypes[] = {
             "Vector",
-            "Line",
             "Hexagonal Prism",
             "Triangular Prism",
             "Pyramid",
@@ -55,18 +54,15 @@ void render(GLFWwindow* window) {
                 shape = new Vector(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 1:
-                shape = new Line(glm::vec3(x, y, z), glm::vec3(x + 1.0f, y, z), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-                break;
-            case 2:
                 shape = new HexagonalPrism(glm::vec3(x, y, z));
                 break;
-            case 3:
+            case 2:
                 shape = new TriangularPrism(glm::vec3(x, y, z));
                 break;
-            case 4:
+            case 3:
                 shape = new Pyramid(glm::vec3(x, y, z));
                 break;
-            case 5:
+            case 4:
                 shape = new Sphere(glm::vec3(x, y, z), 1.0f, 100, 0.5f);
                 break;
         }
@@ -83,19 +79,27 @@ void render(GLFWwindow* window) {
     }
 
     for (int i = 0; i < entities.size(); i++) {
-        Entity& entity = entities[i];
-        ImGui::Text(entity.name.c_str());
-        ImGui::SliderFloat(("X##" + std::to_string(i)).c_str(), &entity.x, -maxRenderDistance, maxRenderDistance);
-        ImGui::SliderFloat(("Y##" + std::to_string(i)).c_str(), &entity.y, -maxRenderDistance, maxRenderDistance);
-        ImGui::SliderFloat(("Z##" + std::to_string(i)).c_str(), &entity.z, -maxRenderDistance, maxRenderDistance);
-        ImGui::SliderFloat(("Opacity##" + std::to_string(i)).c_str(), &entity.opacity, 0.0f, 1.0f);
-        ImGui::ColorEdit3(("Color##" + std::to_string(i)).c_str(), entity.color);
-        ImGui::SliderFloat3(("Rotation##" + std::to_string(i)).c_str(), entity.rotation, 0.0f, 360.0f);
+        if(ImGui::CollapsingHeader((entities[i].name + '[' + std::to_string(i) + ']' + "##" + std::to_string(i)).c_str())) {
+            Entity& entity = entities[i];
+            ImGui::Text(entity.name.c_str());
+            ImGui::SliderFloat(("X##" + std::to_string(i)).c_str(), &entity.x, -maxRenderDistance, maxRenderDistance);
+            ImGui::SliderFloat(("Y##" + std::to_string(i)).c_str(), &entity.y, -maxRenderDistance, maxRenderDistance);
+            ImGui::SliderFloat(("Z##" + std::to_string(i)).c_str(), &entity.z, -maxRenderDistance, maxRenderDistance);
+            ImGui::SliderFloat(("Opacity##" + std::to_string(i)).c_str(), &entity.opacity, 0.0f, 1.0f);
+            ImGui::ColorEdit3(("Color##" + std::to_string(i)).c_str(), entity.color);
+            ImGui::SliderFloat3(("Rotation##" + std::to_string(i)).c_str(), entity.rotation, 0.0f, 360.0f);
 
-        entity.shape->setPosition(glm::vec3(entity.x, entity.y, entity.z));
-        entity.shape->setRotation(glm::vec3(entity.rotation[0], entity.rotation[1], entity.rotation[2]));
-        entity.shape->setColor(glm::vec3(entity.color[0], entity.color[1], entity.color[2]));
-        entity.shape->setOpacity(entity.opacity);
+            entity.shape->setPosition(glm::vec3(entity.x, entity.y, entity.z));
+            entity.shape->setRotation(glm::vec3(entity.rotation[0], entity.rotation[1], entity.rotation[2]));
+            entity.shape->setColor(glm::vec3(entity.color[0], entity.color[1], entity.color[2]));
+            entity.shape->setOpacity(entity.opacity);
+
+            if (ImGui::Button("Delete Entity")) {
+                EntityHandler::getInstance().removeEntity(entity.shape);
+                entities.erase(entities.begin() + i);
+            }
+        }
+
     }
 
     if (ImGui::Button("Go Back to Scene")) {
