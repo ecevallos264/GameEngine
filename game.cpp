@@ -141,16 +141,11 @@ void Game::run(GLFWwindow* window) {
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f), glm::vec3(0.0f, -Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(0.0f, 0.0f, -Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
-//    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Sphere(glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 100, 0.5f));
-
-
-
-//    Vector* vector = new Vector(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 1.0f);
-//    EntityHandler::getInstance().addEntity(vector);
 
 
 

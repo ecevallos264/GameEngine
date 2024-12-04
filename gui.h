@@ -1,7 +1,3 @@
-//
-// Created by eceva on 11/21/2024.
-//
-
 #ifndef SOFTWAREENGINEERINGPROJECT_GUI_H
 #define SOFTWAREENGINEERINGPROJECT_GUI_H
 
