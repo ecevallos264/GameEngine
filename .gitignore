@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 .gitignore
 cmake-build-debug/*
+=======
+CMakeLists.txt
+buil
+cmake-build-debug
+>>>>>>> origin/_temp
