@@ -11,10 +11,10 @@ struct Entity {
     Shape* shape;
     std::string name;
 
-    float x, y, z;
+    float x,y,z;
     float rotation[3];
     float opacity;
-    float color[3];
+    float color[3] = {1, 1, 1};
 };
 
 class GUI {
@@ -22,7 +22,7 @@ private:
     std::vector<Entity> entities;
 public:
 void render(GLFWwindow* window) {
-    ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 600), ImGuiCond_FirstUseEver);
     ImGui::Begin("Project Controls");
 
     static float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -36,12 +36,13 @@ void render(GLFWwindow* window) {
     };
 
     float maxRenderDistance = Settings::getInstance().MAX_RENDER_DISTANCE;
+    float minRenderDistance = -1 * Settings::getInstance().MAX_RENDER_DISTANCE;
 
     ImGui::SliderFloat("Overall Sensitivity", &Settings::getInstance().CURSOR_SENSITIVITY, 0, 2);
     ImGui::Combo("Entity Type", &selectedEntityType, entityTypes, IM_ARRAYSIZE(entityTypes));
-    ImGui::SliderFloat("X##new", &x, -maxRenderDistance, maxRenderDistance);
-    ImGui::SliderFloat("Y##new", &y, -maxRenderDistance, maxRenderDistance);
-    ImGui::SliderFloat("Z##new", &z, -maxRenderDistance, maxRenderDistance);
+//    ImGui::SliderFloat("X##new", &x, -maxRenderDistance, maxRenderDistance);
+//    ImGui::SliderFloat("Y##new", &y, -maxRenderDistance, maxRenderDistance);
+//    ImGui::SliderFloat("Z##new", &z, -maxRenderDistance, maxRenderDistance);
 
     if (ImGui::Button("Add Entity")) {
         Shape* shape = nullptr;
@@ -51,18 +52,22 @@ void render(GLFWwindow* window) {
                 shape = new Vector(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 1:
-                shape = new HexagonalPrism(glm::vec3(x, y, z));
+                shape = new HexagonalPrism(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 2:
-                shape = new TriangularPrism(glm::vec3(x, y, z));
+                shape = new TriangularPrism(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 3:
-                shape = new Pyramid(glm::vec3(x, y, z));
+                shape = new Pyramid(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 4:
                 shape = new Sphere(glm::vec3(x, y, z), 1.0f, 100, 0.5f);
                 break;
+            case 5:
+                shape = new Cube(glm::vec3(x, y, z), glm::vec3(0.0f, 0.0f, 0.0f));
+                break;
         }
+        shape->setRotation(glm::vec3(0.0,0.0,0.0));
 
         EntityHandler::getInstance().addEntity(shape);
         this->entities.push_back({
@@ -70,7 +75,7 @@ void render(GLFWwindow* window) {
                          shape,
                          entityTypes[selectedEntityType],
                          x, y, z,
-                         0.0f, 0.0f, 0.0f,
+                         1.0f, 1.0f, 1.0f,
                          1.0f,
                  });
     }
@@ -79,9 +84,9 @@ void render(GLFWwindow* window) {
         if(ImGui::CollapsingHeader((entities[i].name + '[' + std::to_string(i) + ']' + "##" + std::to_string(i)).c_str())) {
             Entity& entity = entities[i];
             ImGui::Text(entity.name.c_str());
-            ImGui::SliderFloat(("X##" + std::to_string(i)).c_str(), &entity.x, -maxRenderDistance, maxRenderDistance);
-            ImGui::SliderFloat(("Y##" + std::to_string(i)).c_str(), &entity.y, -maxRenderDistance, maxRenderDistance);
-            ImGui::SliderFloat(("Z##" + std::to_string(i)).c_str(), &entity.z, -maxRenderDistance, maxRenderDistance);
+            ImGui::DragFloat(("X##" + std::to_string(i)).c_str(), &entity.x, 0.25, minRenderDistance, maxRenderDistance);
+            ImGui::DragFloat(("Y##" + std::to_string(i)).c_str(), &entity.y, 0.25, minRenderDistance, maxRenderDistance);
+            ImGui::DragFloat(("Z##" + std::to_string(i)).c_str(), &entity.z, 0.25, minRenderDistance, maxRenderDistance);
             ImGui::SliderFloat(("Opacity##" + std::to_string(i)).c_str(), &entity.opacity, 0.0f, 1.0f);
             ImGui::ColorEdit3(("Color##" + std::to_string(i)).c_str(), entity.color);
             ImGui::SliderFloat3(("Rotation##" + std::to_string(i)).c_str(), entity.rotation, 0.0f, 360.0f);
@@ -91,7 +96,7 @@ void render(GLFWwindow* window) {
             entity.shape->setColor(glm::vec3(entity.color[0], entity.color[1], entity.color[2]));
             entity.shape->setOpacity(entity.opacity);
 
-            if (ImGui::Button("Delete Entity")) {
+            if (ImGui::Button(("Delete Entity##" + std::to_string(i)).c_str())) {
                 EntityHandler::getInstance().removeEntity(entity.shape);
                 entities.erase(entities.begin() + i);
             }

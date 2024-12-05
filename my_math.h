@@ -22,4 +22,8 @@ glm::vec3 generateRandomLocation(float minX, float maxX, float minY, float maxY,
     return glm::vec3(x, y, z);
 }
 
+glm::vec3 generateRandomColor() {
+
+}
+
 #endif //SOFTWAREENGINEERINGPROJECT_MY_MATH_H

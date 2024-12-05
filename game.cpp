@@ -119,7 +119,7 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 }
 
 void Game::renderGrid() {
-    float unit = 2.0f;
+    float unit = 1.0f;
     for(float i = -Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i <= Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
@@ -141,7 +141,7 @@ void Game::run(GLFWwindow* window) {
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f), glm::vec3(0.0f, -Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f));
     EntityHandler::getInstance().addEntity(new Line(glm::vec3(0.0f, 0.0f, Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(0.0f, 0.0f, -Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f));
 
-    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(0.0f, 0.0f, 0.0f)));
+    EntityHandler::getInstance().addEntity(new Cube(glm::vec3(-2.0f, 0.0f, -2.0f)));
     EntityHandler::getInstance().addEntity(new HexagonalPrism(glm::vec3(2.0f, 0.0f, 0.0f)));
     EntityHandler::getInstance().addEntity(new TriangularPrism(glm::vec3(2.0f, 0.0f, 2.0f)));
     EntityHandler::getInstance().addEntity(new Pyramid(glm::vec3(2.0f, 2.0f, 2.0f)));

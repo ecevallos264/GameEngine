@@ -30,6 +30,30 @@ public:
         };
     }
 
+    Cube(glm::vec3 pos, glm::vec3 color) {
+        position = pos;
+        vertices = {
+                -0.5f, -0.5f,  0.5f,    color.x, color.y, color.z,
+                0.5f, -0.5f,  0.5f,     color.x, color.y, color.z,
+                0.5f,  0.5f,  0.5f,     color.x, color.y, color.z,
+                -0.5f,  0.5f,  0.5f,    color.x, color.y, color.z,
+
+                -0.5f, -0.5f, -0.5f,    color.x, color.y, color.z,
+                0.5f, -0.5f, -0.5f,     color.x, color.y, color.z,
+                0.5f,  0.5f, -0.5f,     color.x, color.y, color.z,
+                -0.5f,  0.5f, -0.5f,    color.x, color.y, color.z,
+        };
+
+        indices = {
+                0, 1, 2, 2, 3, 0,
+                4, 5, 6, 6, 7, 4,
+                0, 3, 7, 7, 4, 0,
+                1, 5, 6, 6, 2, 1,
+                3, 2, 6, 6, 7, 3,
+                0, 1, 5, 5, 4, 0
+        };
+    }
+
     void draw() override {
         glBindVertexArray(this->getVAO());
         glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
