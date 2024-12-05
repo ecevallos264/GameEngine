@@ -33,15 +33,15 @@ public:
     Cube(glm::vec3 pos, glm::vec3 color) {
         position = pos;
         vertices = {
-                -0.5f, -0.5f,  0.5f,    color.x, color.y, color.z,
-                0.5f, -0.5f,  0.5f,     color.x, color.y, color.z,
-                0.5f,  0.5f,  0.5f,     color.x, color.y, color.z,
-                -0.5f,  0.5f,  0.5f,    color.x, color.y, color.z,
+                -0.5f, -0.5f,  0.5f,    color.x, color.y, color.z, 1.0f,
+                0.5f, -0.5f,  0.5f,     color.x, color.y, color.z, 1.0f,
+                0.5f,  0.5f,  0.5f,     color.x, color.y, color.z, 1.0f,
+                -0.5f,  0.5f,  0.5f,    color.x, color.y, color.z, 1.0f,
 
-                -0.5f, -0.5f, -0.5f,    color.x, color.y, color.z,
-                0.5f, -0.5f, -0.5f,     color.x, color.y, color.z,
-                0.5f,  0.5f, -0.5f,     color.x, color.y, color.z,
-                -0.5f,  0.5f, -0.5f,    color.x, color.y, color.z,
+                -0.5f, -0.5f, -0.5f,    color.x, color.y, color.z, 1.0f,
+                0.5f, -0.5f, -0.5f,     color.x, color.y, color.z, 1.0f,
+                0.5f,  0.5f, -0.5f,     color.x, color.y, color.z, 1.0f,
+                -0.5f,  0.5f, -0.5f,    color.x, color.y, color.z, 1.0f,
         };
 
         indices = {
