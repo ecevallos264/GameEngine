@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 .gitignore
 cmake-build-debug/*
+.idea
 =======
 CMakeLists.txt
 buil
