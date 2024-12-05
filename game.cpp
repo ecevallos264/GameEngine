@@ -96,7 +96,7 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
         lastX = xpos;
         lastY = ypos;
 
-        float sensitivity = 0.1f;
+        float sensitivity = Settings::getInstance().CURSOR_SENSITIVITY;
         xoffset *= sensitivity;
         yoffset *= sensitivity;
 
@@ -119,14 +119,14 @@ void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 }
 
 void Game::renderGrid() {
-    float unit = 1.0f;
-    for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
+    float unit = 2.0f;
+    for(float i = -Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i <= Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
         EntityHandler::getInstance().addEntity(new Line(glm::vec3(Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f, line), glm::vec3(-Settings::getInstance().MAX_RENDER_DISTANCE, 0.0f, line), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));
     }
 
-    for(float i = -100 * 1/unit; i <= 100 * 1/unit; i++) {
+    for(float i = -Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i <= Settings::getInstance().MAX_RENDER_DISTANCE * 1/unit; i++) {
         if(i == 0) continue;
         float line = i * unit;
         EntityHandler::getInstance().addEntity(new Line(glm::vec3(line, 0.0f,Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(line, 0.0f, -Settings::getInstance().MAX_RENDER_DISTANCE), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f));

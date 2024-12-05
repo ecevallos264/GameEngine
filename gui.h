@@ -37,6 +37,7 @@ void render(GLFWwindow* window) {
 
     float maxRenderDistance = Settings::getInstance().MAX_RENDER_DISTANCE;
 
+    ImGui::SliderFloat("Overall Sensitivity", &Settings::getInstance().CURSOR_SENSITIVITY, 0, 2);
     ImGui::Combo("Entity Type", &selectedEntityType, entityTypes, IM_ARRAYSIZE(entityTypes));
     ImGui::SliderFloat("X##new", &x, -maxRenderDistance, maxRenderDistance);
     ImGui::SliderFloat("Y##new", &y, -maxRenderDistance, maxRenderDistance);

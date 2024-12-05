@@ -9,8 +9,9 @@
 
 class Settings: public Singleton<Settings> {
 public:
-    float MAX_RENDER_DISTANCE = 100.0f;
+    float MAX_RENDER_DISTANCE = 1000.0f;
     bool CURSOR_FOCUS_STATUS = false;
+    float CURSOR_SENSITIVITY = 0.1f;
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_SETTINGS_H

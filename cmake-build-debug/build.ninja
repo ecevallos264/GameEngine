@@ -47,7 +47,7 @@ cmake_ninja_workdir = C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/c
 #############################################
 # Order-only phony target for SoftwareEngineeringProject
 
-build cmake_object_order_depends_target_SoftwareEngineeringProject: phony || .
+build cmake_object_order_depends_target_SoftwareEngineeringProject: phony || cmake_object_order_depends_target_imgui
 
 build CMakeFiles/SoftwareEngineeringProject.dir/main.cpp.obj: CXX_COMPILER__SoftwareEngineeringProject_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/main.cpp || cmake_object_order_depends_target_SoftwareEngineeringProject
   DEFINES = -DGLFW_INCLUDE_NONE -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
@@ -73,9 +73,9 @@ build CMakeFiles/SoftwareEngineeringProject.dir/stb.cpp.obj: CXX_COMPILER__Softw
   OBJECT_DIR = CMakeFiles\SoftwareEngineeringProject.dir
   OBJECT_FILE_DIR = CMakeFiles\SoftwareEngineeringProject.dir
 
-build CMakeFiles/SoftwareEngineeringProject.dir/shader-compiler.cpp.obj: CXX_COMPILER__SoftwareEngineeringProject_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/shader-compiler.cpp || cmake_object_order_depends_target_SoftwareEngineeringProject
+build CMakeFiles/SoftwareEngineeringProject.dir/game.cpp.obj: CXX_COMPILER__SoftwareEngineeringProject_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/game.cpp || cmake_object_order_depends_target_SoftwareEngineeringProject
   DEFINES = -DGLFW_INCLUDE_NONE -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
-  DEP_FILE = CMakeFiles\SoftwareEngineeringProject.dir\shader-compiler.cpp.obj.d
+  DEP_FILE = CMakeFiles\SoftwareEngineeringProject.dir\game.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLAD/include -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLM/include -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/KHR/include -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/STB/include -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
   OBJECT_DIR = CMakeFiles\SoftwareEngineeringProject.dir
@@ -89,15 +89,88 @@ build CMakeFiles/SoftwareEngineeringProject.dir/shader-compiler.cpp.obj: CXX_COM
 #############################################
 # Link the executable SoftwareEngineeringProject.exe
 
-build SoftwareEngineeringProject.exe: CXX_EXECUTABLE_LINKER__SoftwareEngineeringProject_Debug CMakeFiles/SoftwareEngineeringProject.dir/main.cpp.obj CMakeFiles/SoftwareEngineeringProject.dir/glad.c.obj CMakeFiles/SoftwareEngineeringProject.dir/stb.cpp.obj CMakeFiles/SoftwareEngineeringProject.dir/shader-compiler.cpp.obj | C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a
+build SoftwareEngineeringProject.exe: CXX_EXECUTABLE_LINKER__SoftwareEngineeringProject_Debug CMakeFiles/SoftwareEngineeringProject.dir/main.cpp.obj CMakeFiles/SoftwareEngineeringProject.dir/glad.c.obj CMakeFiles/SoftwareEngineeringProject.dir/stb.cpp.obj CMakeFiles/SoftwareEngineeringProject.dir/game.cpp.obj | C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a libimgui.a C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a || libimgui.a
   FLAGS = -g
-  LINK_LIBRARIES = C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a  libimgui.a  C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/lib/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\SoftwareEngineeringProject.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
   TARGET_FILE = SoftwareEngineeringProject.exe
   TARGET_IMPLIB = libSoftwareEngineeringProject.dll.a
   TARGET_PDB = SoftwareEngineeringProject.exe.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target imgui
+
+
+#############################################
+# Order-only phony target for imgui
+
+build cmake_object_order_depends_target_imgui: phony || .
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui_draw.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui_draw.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui_draw.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui_tables.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui_tables.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui_tables.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui_widgets.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui_widgets.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui_impl_glfw.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui_impl_glfw.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+build CMakeFiles/imgui.dir/externals/imgui/imgui_impl_opengl3.cpp.obj: CXX_COMPILER__imgui_unscanned_Debug C$:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
+  DEFINES = -DPROJECT_DIR=\"C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/src/\"
+  DEP_FILE = CMakeFiles\imgui.dir\externals\imgui\imgui_impl_opengl3.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/imgui/backends -IC:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals -isystem C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/externals/GLFW/include
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  OBJECT_FILE_DIR = CMakeFiles\imgui.dir\externals\imgui
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target imgui
+
+
+#############################################
+# Link the static library libimgui.a
+
+build libimgui.a: CXX_STATIC_LIBRARY_LINKER__imgui_Debug CMakeFiles/imgui.dir/externals/imgui/imgui.cpp.obj CMakeFiles/imgui.dir/externals/imgui/imgui_draw.cpp.obj CMakeFiles/imgui.dir/externals/imgui/imgui_tables.cpp.obj CMakeFiles/imgui.dir/externals/imgui/imgui_widgets.cpp.obj CMakeFiles/imgui.dir/externals/imgui/imgui_impl_glfw.cpp.obj CMakeFiles/imgui.dir/externals/imgui/imgui_impl_opengl3.cpp.obj
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles\imgui.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = libimgui.a
+  TARGET_PDB = imgui.a.dbg
 
 
 #############################################
@@ -127,6 +200,8 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build SoftwareEngineeringProject: phony SoftwareEngineeringProject.exe
 
+build imgui: phony libimgui.a
+
 # =============================================================================
 # Folder targets.
 
@@ -135,7 +210,7 @@ build SoftwareEngineeringProject: phony SoftwareEngineeringProject.exe
 #############################################
 # Folder: C:/Users/eceva/CLionProjects/SoftwareEngineeringProject/cmake-build-debug
 
-build all: phony SoftwareEngineeringProject.exe
+build all: phony SoftwareEngineeringProject.exe libimgui.a
 
 # =============================================================================
 # Built-in targets
