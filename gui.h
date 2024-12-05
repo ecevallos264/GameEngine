@@ -32,7 +32,8 @@ void render(GLFWwindow* window) {
             "Hexagonal Prism",
             "Triangular Prism",
             "Pyramid",
-            "Sphere"
+            "Sphere",
+            "Cube"
     };
 
     float maxRenderDistance = Settings::getInstance().MAX_RENDER_DISTANCE;
@@ -61,10 +62,10 @@ void render(GLFWwindow* window) {
                 shape = new Pyramid(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 4:
-                shape = new Sphere(glm::vec3(x, y, z), 1.0f, 100, 0.5f);
+                shape = new Sphere(glm::vec3(x, y, z), 1.0f, 100, 1.0f,glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
             case 5:
-                shape = new Cube(glm::vec3(x, y, z), glm::vec3(0.0f, 0.0f, 0.0f));
+                shape = new Cube(glm::vec3(x, y, z), glm::vec3(1.0f, 1.0f, 1.0f));
                 break;
         }
         shape->setRotation(glm::vec3(0.0,0.0,0.0));
