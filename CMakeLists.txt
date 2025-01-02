@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
-project(SoftwareEngineeringProject)
+project(GameEngine)
 set(ProjectDir ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
-add_executable(SoftwareEngineeringProject main.cpp
+add_executable(GameEngine main.cpp
         glad.c
         stb.cpp
         shader-compiler.h
@@ -28,7 +28,7 @@ add_executable(SoftwareEngineeringProject main.cpp
         gui.h
 )
 
-target_compile_definitions(SoftwareEngineeringProject PRIVATE GLFW_INCLUDE_NONE)
+target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)
 
 # GLFW
 add_library(glfw STATIC IMPORTED)
@@ -73,4 +73,4 @@ add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE "${ProjectDir}/STB/include")
 
 # Link Libraries
-target_link_libraries(SoftwareEngineeringProject glfw glad glm khr stb imgui)
+target_link_libraries(GameEngine glfw glad glm khr stb imgui)

@@ -1,5 +1,5 @@
-#ifndef SOFTWAREENGINEERINGPROJECT_SPHERE_H
-#define SOFTWAREENGINEERINGPROJECT_SPHERE_H
+#ifndef GAME_ENGINE_SPHERE_H
+#define GAME_ENGINE_SPHERE_H
 
 #include "../shape.h"
 #include "glad/glad.h"

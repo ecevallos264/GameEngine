@@ -1,5 +1,5 @@
-#ifndef SOFTWAREENGINEERINGPROJECT_SHAPE_H
-#define SOFTWAREENGINEERINGPROJECT_SHAPE_H
+#ifndef GAME_ENGINE_SHAPE_H
+#define GAME_ENGINE_SHAPE_H
 
 #include <vector>
 #include <glm/vec3.hpp>

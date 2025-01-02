@@ -1,5 +1,5 @@
-#ifndef SOFTWAREENGINEERINGPROJECT_VECTOR_H
-#define SOFTWAREENGINEERINGPROJECT_VECTOR_H
+#ifndef GAME_ENGINE_VECTOR_H
+#define GAME_ENGINE_VECTOR_H
 
 #include "../shape.h"
 #include "../shader-compiler.h"

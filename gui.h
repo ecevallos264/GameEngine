@@ -1,5 +1,5 @@
-#ifndef SOFTWAREENGINEERINGPROJECT_GUI_H
-#define SOFTWAREENGINEERINGPROJECT_GUI_H
+#ifndef GAME_ENGINE_GUI_H
+#define GAME_ENGINE_GUI_H
 
 #include <glfw/glfw3.h>
 #include "externals/imgui/imgui.h"

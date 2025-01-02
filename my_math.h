@@ -1,5 +1,5 @@
-#ifndef SOFTWAREENGINEERINGPROJECT_MY_MATH_H
-#define SOFTWAREENGINEERINGPROJECT_MY_MATH_H
+#ifndef GAME_ENGINE_MY_MATH_H
+#define GAME_ENGINE_MY_MATH_H
 
 #include <glm/vec3.hpp>
 #include <random>
@@ -22,4 +22,4 @@ glm::vec3 generateRandomColor() {
 
 }
 
-#endif //SOFTWAREENGINEERINGPROJECT_MY_MATH_H
+#endif //GAME_ENGINE_MY_MATH_H
