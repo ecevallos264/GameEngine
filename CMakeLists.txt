@@ -4,28 +4,33 @@ set(ProjectDir ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
-add_executable(GameEngine main.cpp
-        glad.c
-        stb.cpp
-        shader-compiler.h
-        camera.h
-        Singleton.h
-        game.h
-        game.cpp
-        shape.h
-        entities/line.h
-        entities/xPlane.h
-        my_math.h
-        entities/sphere.h
-        entities/particle.h
-        Entity_Handler.h
-        entities/cube.h
-        entities/hex-prism.h
-        entities/triangular-prism.h
-        entities/pyramid.h
-        entities/vector.h
-        settings.h
-        gui.h
+add_executable(GameEngine test_game/main.cpp
+        engine/glad.c
+        engine/stb.cpp
+        engine/utils/shaders/shader-compiler.h
+        engine/camera/camera.h
+        engine/utils/patterns/Singleton.h
+        engine/game/game.h
+        engine/game/game.cpp
+        engine/entitities/shape.h
+        engine/utils/my_math.h
+
+        engine/entitities/EntityHandler.h
+        engine/utils/input/InputHandler.h
+        engine/utils/input/InputHandler.cpp
+        engine/utils/settings/settings.h
+        engine/utils/state/game_state.h
+        engine/utils/input/mouse.h
+        engine/utils/input/key.h
+        engine/eventing/Event.h
+        engine/eventing/EventDispatcher.h
+        engine/eventing/EventListener.h
+        engine/eventing/events/KeyEvent.h
+        engine/engine.h
+        engine/utils/shaders/ShaderInfo.h
+        engine/window/window.h
+        engine/window/window.h
+        engine/window/window.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

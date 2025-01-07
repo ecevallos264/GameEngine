@@ -2,7 +2,7 @@
 #define GAME_ENGINE_ENTITY_HANDLER_H
 
 #include <vector>
-#include "Singleton.h"
+#include "../utils/patterns/Singleton.h"
 #include "shape.h"
 
 class EntityHandler : public Singleton<EntityHandler> {

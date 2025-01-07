@@ -1,7 +1,8 @@
 #ifndef GAME_ENGINE_LINE_H
 #define GAME_ENGINE_LINE_H
 
-#include "../shape.h"
+#include "shape.h"
+#include "glad/glad.h"
 
 class Line : public Shape {
     glm::vec3 rotation = glm::vec3(0.0f);
