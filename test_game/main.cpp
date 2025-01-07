@@ -1,5 +1,47 @@
 #include "../engine/engine.h"
 
+//void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+//{
+//
+//    bool cursorInWindow = (xpos >= 0 && xpos <= WINDOW_WIDTH && ypos >= 0 && ypos <= WINDOW_HEIGHT);
+//
+//    if (!Settings::getInstance().CURSOR_FOCUS_STATUS) {
+//        if (firstMouse)
+//        {
+//            lastX = xpos;
+//            lastY = ypos;
+//            firstMouse = false;
+//        }
+//        this->xPos = xpos;
+//        this->yPos = ypos;
+//
+//        float xoffset = xpos - lastX;
+//        float yoffset = lastY - ypos;
+//        lastX = xpos;
+//        lastY = ypos;
+//
+//        float sensitivity = Settings::getInstance().CURSOR_SENSITIVITY;
+//        xoffset *= sensitivity;
+//        yoffset *= sensitivity;
+//
+//        Camera::getInstance().yaw   += xoffset;
+//        Camera::getInstance().pitch += yoffset;
+//
+//        if(Camera::getInstance().pitch > 89.0f)
+//            Camera::getInstance().pitch = 89.0f;
+//        if(Camera::getInstance().pitch < -89.0f)
+//            Camera::getInstance().pitch = -89.0f;
+//
+//        glm::vec3 direction;
+//        direction.x = cos(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+//        direction.y = sin(glm::radians(Camera::getInstance().pitch));
+//        direction.z = sin(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
+//        Camera::getInstance().setFront(glm::normalize(direction));
+//    } else {
+//        firstMouse = true;
+//    }
+//}
+
 int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -23,7 +65,7 @@ int main() {
             .setCameraPosition(glm::vec3(5.0f, 5.0f, 5.0f))
             .setCameraFront(glm::vec3(0.0f, 0.0f, -1.0f))
             .setCameraSpeed(3.0f)
-            .setMouseCallback(window)
+            .setMouseOnEventCallback(window)
             .build(window);
 
     return 0;

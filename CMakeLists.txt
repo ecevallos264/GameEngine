@@ -31,6 +31,7 @@ add_executable(GameEngine test_game/main.cpp
         engine/window/window.h
         engine/window/window.h
         engine/window/window.h
+        engine/utils/state/MouseState.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

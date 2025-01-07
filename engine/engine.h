@@ -116,7 +116,7 @@ public:
         return *this;
     }
 
-    EngineBuilder& setMouseCallback(GLFWwindow* window, GLFWcursorposfun callback) {
+    EngineBuilder& setMouseOnEventCallback(GLFWwindow* window, GLFWcursorposfun callback) {
         glfwSetCursorPosCallback(window, callback);
         return *this;
     }
