@@ -32,6 +32,7 @@ add_executable(GameEngine test_game/main.cpp
         test_game/entities/Player.h
         test_game/mouse.h
         engine/eventing/MouseEvents.h
+        engine/entitities/Entity.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

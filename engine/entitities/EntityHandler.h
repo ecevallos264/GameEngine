@@ -4,28 +4,34 @@
 #include <vector>
 #include "../utils/patterns/Singleton.h"
 #include "shape.h"
+#include "Entity.h"
 
 class EntityHandler : public Singleton<EntityHandler> {
 public:
     EntityHandler() = default;
-    std::vector<Shape*> entities;
+    std::vector<Entity*> entities;
     int getEntitySize() {
         return this->entities.size();
     }
 
-    std::vector<Shape*> getEntities() {
+    std::vector<Entity*> getEntities() {
         return entities;
     }
 
-    void addEntity(Shape* shape) {
-        this->entities.push_back(shape);
-        shape->initializeBuffers();
+    void addEntity(Entity* entity) {
+        this->entities.push_back(entity);
     }
 
-    void removeEntity(Shape* shape) {
-        auto it = std::find(entities.begin(), entities.end(), shape);
+    void removeEntity(Entity* entity) {
+        auto it = std::find(entities.begin(), entities.end(), entity);
         if (it != entities.end()) {
             entities.erase(it);
+        }
+    }
+
+    static void updateEntities(float deltaTime) {
+        for(Entity* entity: EntityHandler::getInstance().getEntities()) {
+            entity->update(deltaTime, Game::getInstance().shader);
         }
     }
 };

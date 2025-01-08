@@ -16,6 +16,7 @@
 #include "eventing/EventDispatcher.h"
 #include "eventing/events/KeyEvent.h"
 #include "utils/state/game_state.h"
+#include "utils/input/InputHandler.h"
 
 class Engine {
 public:
@@ -77,10 +78,14 @@ public:
     Engine(ShaderInfo shaderInfo, GLFWwindow* window): shaderInfo(shaderInfo) {
         initGLFW();
         initCamera();
-        //TODO reenable
-//        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
             KeyEvent event(window, key, action, GameState::getInstance().deltaTime);
+            if(action != GLFW_RELEASE) {
+                InputHandler::setKeyState(key, true);
+            } else {
+                InputHandler::setKeyState(key, false);
+            }
             EventDispatcher::getInstance().dispatch(event);
         });
         initGLAD();

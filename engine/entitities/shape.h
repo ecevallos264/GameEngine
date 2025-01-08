@@ -5,8 +5,9 @@
 #include <glm/vec3.hpp>
 #include "shape.h"
 #include "glm/ext/matrix_transform.hpp"
+#include "Entity.h"
 
-class Shape {
+class Shape : public Entity {
 public:
     bool destroyed = false;
 
@@ -122,7 +123,7 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    virtual void update(float deltaTime, Shader* shader) {
+    virtual void update(float deltaTime, Shader* shader) override {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->getPosition());
         model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));

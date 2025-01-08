@@ -1,6 +1,7 @@
 #include "../engine/engine.h"
 #include "entities/Player.h"
 #include "../engine/eventing/EventDispatcher.h"
+#include "../engine/entitities/EntityHandler.h"
 
 //void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 //{
@@ -58,13 +59,16 @@ int main() {
         exit(EXIT_FAILURE);
     }
     Player* player = new Player();
+    EntityHandler::getInstance().addEntity(player);
 
     glfwMakeContextCurrent(window);
     Engine::initGLAD();
 
     ShaderInfo shaderInfo;
-    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
-    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
+//    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
+//    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
+    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
+    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
 
     EngineBuilder builder;
 

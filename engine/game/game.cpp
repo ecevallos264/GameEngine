@@ -25,9 +25,6 @@ void Game::renderGame(GLFWwindow* window) {
     shader->setMat4("projection", projection);
 
     for(int i = 0; i < EntityHandler::getInstance().getEntities().size(); i++) {
-        if(EntityHandler::getInstance().entities[i]->isDestroyed()) {
-            EntityHandler::getInstance().entities.erase(EntityHandler::getInstance().entities.begin() + i);
-        }
         EntityHandler::getInstance().entities[i]->update(GameState::getInstance().deltaTime, shader);
         EntityHandler::getInstance().entities[i]->draw();
     }
@@ -70,6 +67,7 @@ void Game::run(GLFWwindow* window) {
         float currentFrame = glfwGetTime();
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
+        EntityHandler::updateEntities(GameState::getInstance().deltaTime);
 
         renderGame(window);
 
