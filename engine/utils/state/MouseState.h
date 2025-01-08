@@ -7,28 +7,28 @@
 
 #include "../patterns/Singleton.h"
 
-class MouseState : public Singleton<MouseState> {
+class KeyState : public Singleton<KeyState> {
 protected:
     double xPos = 0;
     double yPos = 0;
 
 public:
-    MouseState() : Singleton<MouseState>() {}
+    KeyState() : Singleton<KeyState>() {}
 
     static double getMousePosX() {
-        return MouseState::getInstance().xPos;
+        return KeyState::getInstance().xPos;
     }
 
     static double getMousePosY() {
-        return MouseState::getInstance().yPos;
+        return KeyState::getInstance().yPos;
     }
 
     static void setMousePosX(double x) {
-        MouseState::getInstance().xPos = x;
+        KeyState::getInstance().xPos = x;
     }
 
     static void setMousePosY(double y) {
-        MouseState::getInstance().yPos = y;
+        KeyState::getInstance().yPos = y;
     }
 };
 

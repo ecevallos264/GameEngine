@@ -7,6 +7,7 @@
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
+#include "../../utils/state/game_state.h"
 
 struct KeyEvent : public Event {
     GLFWwindow* window;
@@ -17,12 +18,11 @@ struct KeyEvent : public Event {
     KeyEvent(
             GLFWwindow* window,
             int keycode,
-            int action,
-            float deltaTime) :
+            int action) :
             window(window),
             keyCode(keycode),
             action(action),
-            Event(deltaTime) {}
+            Event(GameState::getInstance().deltaTime) {}
 };
 
 #endif //GAMEENGINE_KEYEVENT_H

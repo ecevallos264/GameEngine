@@ -79,15 +79,7 @@ public:
         initGLFW();
         initCamera();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-            KeyEvent event(window, key, action, GameState::getInstance().deltaTime);
-            if(action != GLFW_RELEASE) {
-                InputHandler::setKeyState(key, true);
-            } else {
-                InputHandler::setKeyState(key, false);
-            }
-            EventDispatcher::getInstance().dispatch(event);
-        });
+
         initGLAD();
         validateShaders();
         setupDepthTest();

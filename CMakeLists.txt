@@ -33,6 +33,7 @@ add_executable(GameEngine test_game/main.cpp
         test_game/mouse.h
         engine/eventing/MouseEvents.h
         engine/entitities/Entity.h
+        engine/eventing/events/CursorEvent.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

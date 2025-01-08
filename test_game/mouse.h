@@ -11,8 +11,8 @@
 
 void onAnyMouseMovementAction(std::function<void()> userActionCallback) {
 //    Record new mouse metrics (new cursor pos, isMouseInWindow)
-    MouseState::setMousePosX(0);
-    MouseState::setMousePosY(0);
+    KeyState::setMousePosX(0);
+    KeyState::setMousePosY(0);
 
     if(userActionCallback) {
         userActionCallback();

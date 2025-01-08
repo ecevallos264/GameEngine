@@ -27,7 +27,13 @@ public:
 
     void onEvent(const KeyEvent &event) {
         if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
-            std::cout << "Escape key pressed" << std::endl;
+            glfwSetInputMode(event.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            GameState::getInstance().CURSOR_FOCUS_STATUS = true;
+        }
+    }
+
+    void onEvent(const KeyEvent &event) {
+        if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
             glfwSetInputMode(event.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             GameState::getInstance().CURSOR_FOCUS_STATUS = true;
         }
@@ -40,33 +46,28 @@ public:
     void update(float deltaTime, Shader* shader) override {
 
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
-            std::cout << "W key pressed" << std::endl;
             Camera::getInstance().setPosition(
                     Camera::getInstance().getPosition() +
                     (Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime) * Camera::getInstance().getFront()));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_S)) {
-            std::cout << "S key pressed" << std::endl;
             Camera::getInstance().setPosition(
                     Camera::getInstance().getPosition() -
                     (Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime) * Camera::getInstance().getFront()));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_A)) {
-            std::cout << "A key pressed" << std::endl;
             Camera::getInstance().setPosition(
                     Camera::getInstance().getPosition() -
                     glm::normalize(glm::cross(Camera::getInstance().getFront(), Camera::getInstance().getUp())) *
                     Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_D)) {
-            std::cout << "D key pressed" << std::endl;
             Camera::getInstance().setPosition(
                     Camera::getInstance().getPosition() +
                     glm::normalize(glm::cross(Camera::getInstance().getFront(), Camera::getInstance().getUp())) *
                     Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
-            std::cout << "Space key pressed" << std::endl;
             Camera::getInstance().setPosition(
                     Camera::getInstance().getPosition() +
                     glm::vec3(0.0f, Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime), 0.0f));
