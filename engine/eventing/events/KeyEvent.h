@@ -9,9 +9,20 @@
 #include "../Event.h"
 
 struct KeyEvent : public Event {
-    int keyCode;
     GLFWwindow* window;
-    KeyEvent(float deltaTime, int keyCode, GLFWwindow* window) : keyCode(keyCode), window(window), Event(deltaTime) {}
+    int keyCode;
+    int action;
+    float deltaTime;
+
+    KeyEvent(
+            GLFWwindow* window,
+            int keycode,
+            int action,
+            float deltaTime) :
+            window(window),
+            keyCode(keycode),
+            action(action),
+            Event(deltaTime) {}
 };
 
 #endif //GAMEENGINE_KEYEVENT_H

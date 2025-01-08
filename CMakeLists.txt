@@ -20,18 +20,18 @@ add_executable(GameEngine test_game/main.cpp
         engine/utils/input/InputHandler.cpp
         engine/utils/settings/settings.h
         engine/utils/state/game_state.h
-        engine/utils/input/mouse.h
-        engine/utils/input/key.h
+
+
         engine/eventing/Event.h
         engine/eventing/EventDispatcher.h
         engine/eventing/EventListener.h
         engine/eventing/events/KeyEvent.h
         engine/engine.h
         engine/utils/shaders/ShaderInfo.h
-        engine/window/window.h
-        engine/window/window.h
-        engine/window/window.h
         engine/utils/state/MouseState.h
+        test_game/entities/Player.h
+        test_game/mouse.h
+        engine/eventing/MouseEvents.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)
@@ -41,25 +41,6 @@ add_library(glfw STATIC IMPORTED)
 set_target_properties(glfw PROPERTIES
         IMPORTED_LOCATION "${ProjectDir}/GLFW/lib/libglfw3.a"
         INTERFACE_INCLUDE_DIRECTORIES "${ProjectDir}/GLFW/include")
-
-# ImGui
-# Add ImGui library
-add_library(imgui
-        ${ProjectDir}/imgui/imgui.cpp
-        ${ProjectDir}/imgui/imgui_draw.cpp
-        ${ProjectDir}/imgui/imgui_tables.cpp
-        ${ProjectDir}/imgui/imgui_widgets.cpp
-        ${ProjectDir}/imgui/imgui_impl_glfw.cpp
-        ${ProjectDir}/imgui/imgui_impl_opengl3.cpp
-)
-
-target_include_directories(imgui PRIVATE
-        ${ProjectDir}/imgui
-        ${ProjectDir}/imgui/backends
-        ${ProjectDir}
-)
-
-target_link_libraries(imgui glfw)
 
 # GLAD
 add_library(glad INTERFACE
@@ -79,4 +60,4 @@ add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE "${ProjectDir}/STB/include")
 
 # Link Libraries
-target_link_libraries(GameEngine glfw glad glm khr stb imgui)
+target_link_libraries(GameEngine glfw glad glm khr stb)

@@ -61,6 +61,8 @@ void Game::run(GLFWwindow* window) {
     shader->use();
 //    bindKeyListener();
 
+
+
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -69,7 +71,6 @@ void Game::run(GLFWwindow* window) {
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
 
-        EventDispatcher::getInstance();
         renderGame(window);
 
         glfwSwapBuffers(window);

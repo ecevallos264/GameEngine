@@ -13,11 +13,12 @@
 #include "utils/shaders/shader-compiler.h"
 #include "utils/patterns/Singleton.h"
 #include "game/game.h"
+#include "eventing/EventDispatcher.h"
+#include "eventing/events/KeyEvent.h"
+#include "utils/state/game_state.h"
 
 class Engine {
-private:
-    ShaderInfo shaderInfo;
-
+public:
     static void initGLFW() {
         if (!glfwInit()) {
             std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -31,6 +32,9 @@ private:
             exit(EXIT_FAILURE);
         }
     }
+
+private:
+    ShaderInfo shaderInfo;
 
     void initCamera() {
         Camera::getInstance().setPosition(glm::vec3(0.0f, 0.0f,  3.0f));
@@ -73,7 +77,12 @@ public:
     Engine(ShaderInfo shaderInfo, GLFWwindow* window): shaderInfo(shaderInfo) {
         initGLFW();
         initCamera();
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        //TODO reenable
+//        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            KeyEvent event(window, key, action, GameState::getInstance().deltaTime);
+            EventDispatcher::getInstance().dispatch(event);
+        });
         initGLAD();
         validateShaders();
         setupDepthTest();

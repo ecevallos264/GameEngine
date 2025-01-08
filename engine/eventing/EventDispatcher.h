@@ -10,6 +10,7 @@
 #include <vector>
 #include <functional>
 #include "Event.h"
+#include "EventListener.h"
 
 class EventDispatcher : public Singleton<EventDispatcher> {
 private:
@@ -20,6 +21,13 @@ public:
     template<typename EventType>
     void registerListener(std::function<void(const Event&)> callback) {
         listeners[std::type_index(typeid(EventType))].push_back(callback);
+    }
+
+    template<typename EventType>
+    void registerListener(EventListener* listener) {
+        listeners[std::type_index(typeid(EventType))].push_back([listener](Event event) {
+            listener->onEvent(event);
+        });
     }
 
     void dispatch(const Event& event) {
