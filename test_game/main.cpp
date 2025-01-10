@@ -3,48 +3,6 @@
 #include "../engine/eventing/EventDispatcher.h"
 #include "../engine/entitities/EntityHandler.h"
 
-//void Game::mouse_callback(GLFWwindow* window, double xpos, double ypos)
-//{
-//
-//    bool cursorInWindow = (xpos >= 0 && xpos <= WINDOW_WIDTH && ypos >= 0 && ypos <= WINDOW_HEIGHT);
-//
-//    if (!Settings::getInstance().CURSOR_FOCUS_STATUS) {
-//        if (firstMouse)
-//        {
-//            lastX = xpos;
-//            lastY = ypos;
-//            firstMouse = false;
-//        }
-//        this->xPos = xpos;
-//        this->yPos = ypos;
-//
-//        float xoffset = xpos - lastX;
-//        float yoffset = lastY - ypos;
-//        lastX = xpos;
-//        lastY = ypos;
-//
-//        float sensitivity = Settings::getInstance().CURSOR_SENSITIVITY;
-//        xoffset *= sensitivity;
-//        yoffset *= sensitivity;
-//
-//        Camera::getInstance().yaw   += xoffset;
-//        Camera::getInstance().pitch += yoffset;
-//
-//        if(Camera::getInstance().pitch > 89.0f)
-//            Camera::getInstance().pitch = 89.0f;
-//        if(Camera::getInstance().pitch < -89.0f)
-//            Camera::getInstance().pitch = -89.0f;
-//
-//        glm::vec3 direction;
-//        direction.x = cos(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
-//        direction.y = sin(glm::radians(Camera::getInstance().pitch));
-//        direction.z = sin(glm::radians(Camera::getInstance().yaw)) * cos(glm::radians(Camera::getInstance().pitch));
-//        Camera::getInstance().setFront(glm::normalize(direction));
-//    } else {
-//        firstMouse = true;
-//    }
-//}
-
 int main() {
     Engine::initGLFW();
 
@@ -65,15 +23,19 @@ int main() {
     Engine::initGLAD();
 
     ShaderInfo shaderInfo;
-    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
-    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
-//    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
-//    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
+//    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
+//    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
+    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
+    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
 
     EngineBuilder builder;
 
     InputHandler::setKeyPressCallback(window, [](GLFWwindow* window, int key, int scan, int action, int mods) {
        std::cout << "Key {" << key << "} was pressed" << std::endl;
+    });
+
+    InputHandler::setMouseMovementCallback(window, [](GLFWwindow* window, int x, int y) {
+
     });
 
     Engine engine = builder

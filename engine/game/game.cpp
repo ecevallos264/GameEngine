@@ -1,7 +1,7 @@
 #include "game.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
-#include "../camera/camera.h"
+#include "../camera/camera_old.h"
 #include "../utils/patterns/Singleton.h"
 #include "../utils/settings/settings.h"
 #include "../entitities/EntityHandler.h"

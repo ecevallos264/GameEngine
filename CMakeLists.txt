@@ -8,7 +8,7 @@ add_executable(GameEngine test_game/main.cpp
         engine/glad.c
         engine/stb.cpp
         engine/utils/shaders/shader-compiler.h
-        engine/camera/camera.h
+        engine/camera/camera_old.h
         engine/utils/patterns/Singleton.h
         engine/game/game.h
         engine/game/game.cpp
@@ -34,6 +34,11 @@ add_executable(GameEngine test_game/main.cpp
         engine/eventing/MouseEvents.h
         engine/entitities/Entity.h
         engine/eventing/events/CursorEvent.h
+        engine/camera/Camera.h
+        engine/camera/CameraHandler.h
+        engine/camera/CameraHandler.cpp
+        engine/eventing/events/CameraMovementEvent.h
+        engine/camera/CameraMovements.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

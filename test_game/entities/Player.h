@@ -12,6 +12,7 @@
 #include "../../engine/utils/state/game_state.h"
 #include "../../engine/entitities/Entity.h"
 #include "../../engine/utils/input/InputHandler.h"
+#include "../../engine/eventing/events/CursorEvent.h"
 
 class Player : public EventListener, public Entity {
 public:
@@ -32,11 +33,8 @@ public:
         }
     }
 
-    void onEvent(const KeyEvent &event) {
-        if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
-            glfwSetInputMode(event.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            GameState::getInstance().CURSOR_FOCUS_STATUS = true;
-        }
+    void onEvent(const CursorEvent &event) {
+        //...
     }
 
     void draw() {

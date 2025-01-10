@@ -3,6 +3,7 @@
 #define GAME_ENGINE_CAMERA_H
 
 #include <glm/glm.hpp>
+#include "../eventing/EventListener.h"
 
 class Camera {
 public:

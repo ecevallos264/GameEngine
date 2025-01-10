@@ -6,7 +6,7 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 #include <filesystem>
-#include "camera/camera.h"
+#include "camera/camera_old.h"
 #include "utils/shaders/ShaderInfo.h"
 #include "glad/glad.h"
 #include "utils/settings/settings.h"
