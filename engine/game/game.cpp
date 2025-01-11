@@ -1,13 +1,14 @@
 #include "game.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
-#include "../camera/camera_old.h"
+#include "../camera/CameraHandler.h"
 #include "../utils/patterns/Singleton.h"
 #include "../utils/settings/settings.h"
 #include "../entitities/EntityHandler.h"
 #include "../utils/state/game_state.h"
 #include "../eventing/EventDispatcher.h"
 #include "../entitities/line.h"
+#include "../utils/observability/FPSCounter.h"
 
 void Game::renderGame(GLFWwindow* window) {
     glEnable(GL_BLEND);
@@ -15,9 +16,9 @@ void Game::renderGame(GLFWwindow* window) {
     this->shader->use();
 
     glm::mat4 view = glm::lookAt(
-            Camera::getInstance().getPosition(),
-            Camera::getInstance().getPosition() + Camera::getInstance().getFront(),
-            Camera::getInstance().getUp()
+            CameraHandler::getInstance().getCamera()->getPosition(),
+            CameraHandler::getInstance().getCamera()->getPosition() + CameraHandler::getInstance().getCamera()->getFront(),
+            CameraHandler::getInstance().getCamera()->getUp()
     );
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 0.1f, Settings::MAX_RENDER_DISTANCE);
 
@@ -54,13 +55,13 @@ void Game::renderGrid() {
 
 void Game::run(GLFWwindow* window) {
     this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
-    renderGrid();
+//    renderGrid();
     shader->use();
 //    bindKeyListener();
 
 
-
     while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -71,7 +72,9 @@ void Game::run(GLFWwindow* window) {
 
         renderGame(window);
 
+        FPSCounter::getInstance().increment();
+
+//        glfwSetWindowTitle(window, title.c_str());
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 }

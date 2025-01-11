@@ -37,13 +37,14 @@ int main() {
     InputHandler::setMouseMovementCallback(window, [](GLFWwindow* window, int x, int y) {
 
     });
-
+    glfwSwapInterval(0);
     Engine engine = builder
             .setShaderInfo(shaderInfo)
-            .setCameraPosition(glm::vec3(5.0f, 5.0f, 5.0f))
-            .setCameraFront(glm::vec3(0.0f, 0.0f, -1.0f))
-            .setCameraSpeed(3.0f)
-//            .setMouseOnEventCallback(window)
+            .setCamera(new Camera(
+                    glm::vec3(0.0f, 0.0f,  3.0f),
+                    glm::vec3(0.0f, 0.0f, -1.0f),
+                    glm::vec3(0.0f, 1.0f,  0.0f)))
+            .setCameraSpeed(5.0f)
             .build(window);
 
     return 0;

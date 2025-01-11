@@ -9,20 +9,24 @@
 #include "Camera.h"
 #include "../eventing/EventListener.h"
 #include "../eventing/EventDispatcher.h"
+#include "../eventing/events/CameraMovementEvent.h"
 
 class CameraHandler : public Singleton<CameraHandler>, public EventListener {
 private:
-    Camera camera;
+    Camera* camera;
 public:
     CameraHandler() : Singleton<CameraHandler>() {
-        EventDispatcher::getInstance().registerListener<>()
+        EventDispatcher::getInstance().registerListener<CameraMovementEvent>([this](const Event& event) {
+            this->onEvent(dynamic_cast<const CameraMovementEvent&>(event));
+        });
     }
 
-    void setCamera(Camera camera);
+    void setCamera(Camera* camera);
 
-    Camera getCamera();
+    Camera* getCamera();
 
-    void updateCamera(double posX, double posY);
+    void onEvent(const Event& event) override;
+    void onEvent(const CameraMovementEvent& event);
 };
 
 #endif //GAMEENGINE_CAMERAHANDLER_H

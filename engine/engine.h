@@ -6,7 +6,7 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 #include <filesystem>
-#include "camera/camera_old.h"
+#include "camera/CameraHandler.h"
 #include "utils/shaders/ShaderInfo.h"
 #include "glad/glad.h"
 #include "utils/settings/settings.h"
@@ -36,13 +36,6 @@ public:
 
 private:
     ShaderInfo shaderInfo;
-
-    void initCamera() {
-        Camera::getInstance().setPosition(glm::vec3(0.0f, 0.0f,  3.0f));
-        Camera::getInstance().setFront(glm::vec3(0.0f, 0.0f, -1.0f));
-        Camera::getInstance().setUp(glm::vec3(0.0f, 1.0f,  0.0f));
-        Camera::getInstance().setSpeed(2.5);
-    }
 
     void validateShaders() {
         if (!std::filesystem::exists(shaderInfo.VertexShaderPath) || !std::filesystem::exists(shaderInfo.FragmentShaderPath)) {
@@ -77,7 +70,6 @@ private:
 public:
     Engine(ShaderInfo shaderInfo, GLFWwindow* window): shaderInfo(shaderInfo) {
         initGLFW();
-        initCamera();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         initGLAD();
@@ -91,9 +83,7 @@ public:
 class EngineBuilder {
 private:
     ShaderInfo shaderInfo;
-    glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    Camera* camera;
     float cameraSpeed = 2.5f;
 
 public:
@@ -102,18 +92,8 @@ public:
         return *this;
     }
 
-    EngineBuilder& setCameraPosition(const glm::vec3& position) {
-        this->cameraPosition = position;
-        return *this;
-    }
-
-    EngineBuilder& setCameraFront(const glm::vec3& front) {
-        this->cameraFront = front;
-        return *this;
-    }
-
-    EngineBuilder& setCameraUp(const glm::vec3& up) {
-        this->cameraUp = up;
+    EngineBuilder& setCamera(Camera* camera) {
+        this->camera = camera;
         return *this;
     }
 
@@ -134,10 +114,8 @@ public:
 
     Engine build(GLFWwindow* window) {
 
-        Camera::getInstance().setPosition(this->cameraPosition);
-        Camera::getInstance().setFront(this->cameraFront);
-        Camera::getInstance().setUp(this->cameraUp);
-        Camera::getInstance().setSpeed(this->cameraSpeed);
+        CameraHandler::getInstance().setCamera(camera);
+        CameraHandler::getInstance().getCamera()->setSpeed(this->cameraSpeed);
 
         return Engine(shaderInfo, window);
     }

@@ -9,15 +9,24 @@
 #include "../Event.h"
 #include "../../utils/state/game_state.h"
 
-struct CameraMovementEvent : public Event {
-    GLFWwindow* window;
+enum CameraMovementDirection {
+    LEFT,
+    RIGHT,
+    BACKWARD,
+    FORWARD,
+    UP,
+    DOWN
+};
 
+struct CameraMovementEvent : public Event {
+    CameraMovementDirection  direction;
+    double deltaTime;
 
     CameraMovementEvent(
-            GLFWwindow* window,
-            double x, double y) :
-            window(window),
-            Event(GameState::getInstance().deltaTime) {}
+            CameraMovementDirection direction,
+            double deltaTime) :
+            direction(direction),
+            Event(deltaTime) {}
 };
 
 #endif //GAMEENGINE_CAMERAMOVEMENTEVENT_H

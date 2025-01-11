@@ -13,6 +13,7 @@
 #include "../../engine/entitities/Entity.h"
 #include "../../engine/utils/input/InputHandler.h"
 #include "../../engine/eventing/events/CursorEvent.h"
+#include "../../engine/eventing/events/CameraMovementEvent.h"
 
 class Player : public EventListener, public Entity {
 public:
@@ -44,31 +45,28 @@ public:
     void update(float deltaTime, Shader* shader) override {
 
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
-            Camera::getInstance().setPosition(
-                    Camera::getInstance().getPosition() +
-                    (Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime) * Camera::getInstance().getFront()));
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_S)) {
-            Camera::getInstance().setPosition(
-                    Camera::getInstance().getPosition() -
-                    (Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime) * Camera::getInstance().getFront()));
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_A)) {
-            Camera::getInstance().setPosition(
-                    Camera::getInstance().getPosition() -
-                    glm::normalize(glm::cross(Camera::getInstance().getFront(), Camera::getInstance().getUp())) *
-                    Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime));
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_D)) {
-            Camera::getInstance().setPosition(
-                    Camera::getInstance().getPosition() +
-                    glm::normalize(glm::cross(Camera::getInstance().getFront(), Camera::getInstance().getUp())) *
-                    Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime));
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
-            Camera::getInstance().setPosition(
-                    Camera::getInstance().getPosition() +
-                    glm::vec3(0.0f, Camera::getInstance().getCalcSpeed(GameState::getInstance().deltaTime), 0.0f));
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_LEFT_SHIFT)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
         }
     }
 };
