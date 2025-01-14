@@ -14,7 +14,7 @@ enum MouseCursorState {
 
 class MouseHandler : public Singleton<MouseHandler> {
 private:
-    MouseCursorState state;
+    MouseCursorState state = IN_WINDOW;
 public:
     MouseHandler() : Singleton<MouseHandler>() {
 //        EventDispatcher::getInstance().registerListener<>()

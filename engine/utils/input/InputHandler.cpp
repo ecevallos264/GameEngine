@@ -46,15 +46,12 @@ void InputHandler::setKeyDirty(int key) {
 void InputHandler::setMouseMovementCallback(GLFWwindow* window, std::function<void(GLFWwindow *, int, int)> callback) {
     InputHandler::getInstance().onMouseMovementCallback = callback;
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
-        float elapsedTime = calcTime([x, y]{
-            Camera* camera = CameraHandler::getInstance().getCamera();
-            camera->setLastXPosition(camera->getXPosition());
-            camera->setLastYPosition(camera->getYPosition());
-            camera->setXPosition(x);
-            camera->setYPosition(y);
-        });
-        std::cout << elapsedTime << std::endl;
-//        InputHandler::getInstance().onMouseMovementCallback(window, x, y);
+        Camera* camera = CameraHandler::getInstance().getCamera();
+        camera->setDeltaX(x - camera->getXPosition());
+        camera->setDeltaY(camera->getYPosition() - y);
+        camera->setXPosition(x);
+        camera->setYPosition(y);
+        EventDispatcher::getInstance().dispatch(MouseMovementEvent())
     });
 }
 

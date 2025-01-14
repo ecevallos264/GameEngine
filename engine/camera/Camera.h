@@ -5,6 +5,7 @@
 #ifndef GAMEENGINE_CAMERA_H
 #define GAMEENGINE_CAMERA_H
 
+#include <iostream>
 #include "glm/vec3.hpp"
 #include "../utils/patterns/Singleton.h"
 #include "../utils/input/MouseHandler.h"
@@ -14,10 +15,10 @@
 
 class Camera {
 private:
-    float xPosition;
-    float yPosition;
-    float lastXPosition = -1;
-    float lastYPosition = -1;
+    float xPosition = -1;
+    float yPosition = -1;
+    float deltaX = -1;
+    float deltaY = -1;
     float yaw = -90.0f;
     float pitch;
     float roll;
@@ -45,35 +46,35 @@ public:
     float getCalcSpeed(float deltaTime) const;
 
     void setXPosition(float xPosition) {
-        this->lastXPosition = xPosition;
+        this->xPosition = xPosition;
     }
 
     float getXPosition() const {
-        return lastXPosition;
+        return xPosition;
     }
 
     void setYPosition(float yPosition) {
-        this->lastYPosition = yPosition;
+        this->yPosition = yPosition;
     }
 
     float getYPosition() const {
-        return lastYPosition;
+        return yPosition;
     }
 
-    void setLastXPosition(float lastXPosition) {
-        this->lastXPosition = lastXPosition;
+    void setDeltaX(float deltaX) {
+        this->deltaX = deltaX;
     }
 
-    float getLastXPosition() const {
-        return lastXPosition;
+    float getDeltaX() const {
+        return deltaX;
     }
 
-    void setLastYPosition(float lastYPosition) {
-        this->lastYPosition = lastYPosition;
+    void setDeltaY(float deltaY) {
+        this->deltaY = deltaY;
     }
 
-    float getLastYPosition() const {
-        return lastYPosition;
+    float getDeltaY() const {
+        return deltaY;
     }
 
     void setYaw(float yaw) {
@@ -100,36 +101,29 @@ public:
         return roll;
     }
 
-    void update(float deltaX, float deltaY) {
-        if (MouseHandler::getInstance().getMouseCursorState() != MouseCursorState::IN_WINDOW)
-            return;
-//        if(event.prevXPosition == -1 || event.prevYPosition == -1) {
-//            this->setLastXPosition(event.xPosition);
-//            this->setLastYPosition(event.yPosition);
-//            return;
-//        }
+    void update() {
+        if(deltaX == 0 && deltaY == 0) return;
 
-//        float xOffset = (event.xPosition - event.prevXPosition) * Settings::CURSOR_SENSITIVITY;
-//        float yOffset = (event.prevYPosition - event.yPosition) * Settings::CURSOR_SENSITIVITY;
 
-//        this->setLastXPosition(event.xPosition);
-//        this->setLastYPosition(event.yPosition);
+        float xOffset = deltaX * Settings::CURSOR_SENSITIVITY;
+        float yOffset = deltaY * Settings::CURSOR_SENSITIVITY;
 
-        this->setYaw(this->getYaw() + (deltaX * Settings::CURSOR_SENSITIVITY));
-        this->setPitch(this->getPitch() + (deltaX * Settings::CURSOR_SENSITIVITY));
+        this->setYaw(yaw + (xOffset));
+        this->setPitch(pitch + (yOffset));
 
-        // Clamp the pitch to avoid gimbal lock
-        if (this->getPitch() > 89.0f)
-            this->setPitch(89.0f);
-        if (this->getPitch() < -89.0f)
-            this->setPitch(-89.0f);
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
 
         // Calculate the new direction vector
         glm::vec3 direction;
-        direction.x = cos(glm::radians(this->getYaw())) * cos(glm::radians(this->getPitch()));
-        direction.y = sin(glm::radians(this->getPitch()));
-        direction.z = sin(glm::radians(this->getYaw())) * cos(glm::radians(this->getPitch()));
-        this->setFront(glm::normalize(direction));
+        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        direction.y = sin(glm::radians(pitch));
+        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        cameraFront = glm::normalize(direction);
+        deltaX = 0;
+        deltaY = 0;
     }
 };
 

@@ -69,21 +69,15 @@ void Game::run(GLFWwindow* window) {
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
 
-        if (GameState::getInstance().deltaTime > 0.016) {
-            camera->update(
-                    camera->getXPosition() - camera->getLastXPosition(),
-                    camera->getLastYPosition() - camera->getYPosition());
-        }
-        if(FPSCounter::getInstance().prevFPS != FPSCounter::getInstance().fps) {
-            std::cout << FPSCounter::getInstance().getFPS() << std::endl;
-        }
+        camera->update();
+        std::cout << FPSCounter::getInstance().getFPS() << std::endl;
+
         EntityHandler::updateEntities(GameState::getInstance().deltaTime);
 
         renderGame(window);
 
         FPSCounter::getInstance().increment();
 
-//        glfwSetWindowTitle(window, title.c_str());
         glfwSwapBuffers(window);
     }
 }

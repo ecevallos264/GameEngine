@@ -6,18 +6,15 @@
 #include "../../utils/state/game_state.h"
 
 struct MouseMovementEvent : public Event {
-    float xPosition;
-    float yPosition;
-    float prevXPosition;
-    float prevYPosition;
+    float deltaX;
+    float deltaY;
     float deltaTime;
 
     MouseMovementEvent(
-            float xPosition, float yPosition,
-            float prevXPosition, float prevYPosition,
+            float deltaX, float deltaY,
             float deltaTime) :
-            xPosition(xPosition), yPosition(yPosition),
-            prevXPosition(prevXPosition), prevYPosition(prevYPosition),
+            deltaX(deltaX),
+            deltaY(deltaY),
             deltaTime(deltaTime),
             Event(deltaTime) {}
 };
