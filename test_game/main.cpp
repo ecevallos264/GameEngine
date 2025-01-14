@@ -46,6 +46,7 @@ int main() {
                     glm::vec3(0.0f, 1.0f,  0.0f)))
             .setCameraSpeed(5.0f)
             .build(window);
+    engine.run();
 
     return 0;
 }

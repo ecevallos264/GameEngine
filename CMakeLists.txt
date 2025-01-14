@@ -35,10 +35,13 @@ add_executable(GameEngine test_game/main.cpp
         engine/camera/Camera.h
         engine/camera/CameraHandler.h
         engine/camera/CameraHandler.cpp
-        engine/eventing/events/CameraMovementEvent.h
-        engine/camera/CameraMovements.h
+        engine/eventing/events/CameraKeyMovementEvent.h
         engine/camera/Camera.cpp
         engine/utils/observability/FPSCounter.h
+        engine/eventing/events/MouseMovementEvent.h
+        engine/utils/input/MouseHandler.h
+        engine/eventing/events/MouseButtonClickEvent.h
+        engine/utils/observability/CalcTime.h
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

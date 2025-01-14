@@ -2,31 +2,26 @@
 // Created by eceva on 1/9/2025.
 //
 
-#ifndef GAMEENGINE_CAMERAMOVEMENTEVENT_H
-#define GAMEENGINE_CAMERAMOVEMENTEVENT_H
+#ifndef GAMEENGINE_CAMERAKEYMOVEMENTEVENT_H
+#define GAMEENGINE_CAMERAKEYMOVEMENTEVENT_H
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
 #include "../../utils/state/game_state.h"
 
 enum CameraMovementDirection {
-    LEFT,
-    RIGHT,
-    BACKWARD,
-    FORWARD,
-    UP,
-    DOWN
+    UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD
 };
 
-struct CameraMovementEvent : public Event {
+struct CameraKeyMovementEvent : public Event {
     CameraMovementDirection  direction;
     double deltaTime;
 
-    CameraMovementEvent(
+    CameraKeyMovementEvent(
             CameraMovementDirection direction,
             double deltaTime) :
             direction(direction),
             Event(deltaTime) {}
 };
 
-#endif //GAMEENGINE_CAMERAMOVEMENTEVENT_H
+#endif //GAMEENGINE_CAMERAKEYMOVEMENTEVENT_H

@@ -13,7 +13,8 @@
 #include "../../engine/entitities/Entity.h"
 #include "../../engine/utils/input/InputHandler.h"
 #include "../../engine/eventing/events/CursorEvent.h"
-#include "../../engine/eventing/events/CameraMovementEvent.h"
+#include "../../engine/eventing/events/CameraKeyMovementEvent.h"
+#include "../../engine/utils/input/MouseHandler.h"
 
 class Player : public EventListener, public Entity {
 public:
@@ -29,6 +30,7 @@ public:
 
     void onEvent(const KeyEvent &event) {
         if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
+            MouseHandler::getInstance().changeMouseMode(MouseCursorState::OUT_OF_WINDOW);
             glfwSetInputMode(event.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             GameState::getInstance().CURSOR_FOCUS_STATUS = true;
         }
@@ -46,27 +48,27 @@ public:
 
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_S)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_A)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_D)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
         }
         if (InputHandler::isKeyActive(GLFW_KEY_LEFT_SHIFT)) {
             EventDispatcher::getInstance().dispatch(
-                    CameraMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
+                    CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
         }
     }
 };

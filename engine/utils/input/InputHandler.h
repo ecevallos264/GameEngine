@@ -16,15 +16,9 @@ struct KeyboardState {
     std::unordered_map<int, std::unique_ptr<KeyState>> keyState;
 };
 
-struct MouseState {
-    int cursorPositionX;
-    int cursorPositionY;
-};
-
 class InputHandler : public Singleton<InputHandler> {
 protected:
     KeyboardState keyboardState;
-    MouseState mouseState;
 
     // window, xPos, yPos
     std::function<void(GLFWwindow*, int, int)> onMouseMovementCallback;

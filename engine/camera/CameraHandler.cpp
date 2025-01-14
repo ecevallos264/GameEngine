@@ -5,6 +5,9 @@
 #include "CameraHandler.h"
 #include "Camera.h"
 #include "glm/geometric.hpp"
+#include "../utils/settings/settings.h"
+#include "glm/trigonometric.hpp"
+#include "../utils/input/MouseHandler.h"
 
 void CameraHandler::setCamera(Camera* camera) {
     this->camera = camera;
@@ -18,7 +21,7 @@ void CameraHandler::onEvent(const Event &event) {
     return;
 }
 
-void CameraHandler::onEvent(const CameraMovementEvent& event) {
+void CameraHandler::onEvent(const CameraKeyMovementEvent& event) {
     switch (event.direction) {
         case CameraMovementDirection::FORWARD:
             camera->setPosition(
@@ -54,5 +57,10 @@ void CameraHandler::onEvent(const CameraMovementEvent& event) {
                     glm::vec3(0.0f, camera->getCalcSpeed(GameState::getInstance().deltaTime), 0.0f));
             break;
     }
+}
+
+void CameraHandler::onEvent(const MouseMovementEvent& event) {
+
+
 }
 

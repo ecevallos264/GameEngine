@@ -7,6 +7,9 @@
 #include <memory>
 #include "../../eventing/EventDispatcher.h"
 #include "../../utils/state/game_state.h"
+#include "../../eventing/events/MouseMovementEvent.h"
+#include "../../camera/CameraHandler.h"
+#include "../observability/CalcTime.h"
 
 bool InputHandler::isKeyActive(int key) {
     auto& keyState = InputHandler::getInstance().keyboardState.keyState;
@@ -43,14 +46,15 @@ void InputHandler::setKeyDirty(int key) {
 void InputHandler::setMouseMovementCallback(GLFWwindow* window, std::function<void(GLFWwindow *, int, int)> callback) {
     InputHandler::getInstance().onMouseMovementCallback = callback;
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
-//        KeyEvent event(window, key, action);
-//        if(action != GLFW_RELEASE) {
-//            InputHandler::setKeyState(key, true);
-//        } else {
-//            InputHandler::setKeyState(key, false);
-//        }
-//        EventDispatcher::getInstance().dispatch(event);
-//        InputHandler::getInstance().onKeyPressCallback(window, key, scancode, action, mods);
+        float elapsedTime = calcTime([x, y]{
+            Camera* camera = CameraHandler::getInstance().getCamera();
+            camera->setLastXPosition(camera->getXPosition());
+            camera->setLastYPosition(camera->getYPosition());
+            camera->setXPosition(x);
+            camera->setYPosition(y);
+        });
+        std::cout << elapsedTime << std::endl;
+//        InputHandler::getInstance().onMouseMovementCallback(window, x, y);
     });
 }
 

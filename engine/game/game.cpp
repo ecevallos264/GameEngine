@@ -55,19 +55,28 @@ void Game::renderGrid() {
 
 void Game::run(GLFWwindow* window) {
     this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
-//    renderGrid();
+    renderGrid();
     shader->use();
-//    bindKeyListener();
 
+    Camera* camera = CameraHandler::getInstance().getCamera();
 
     while (!glfwWindowShouldClose(window)) {
+        float currentFrame = glfwGetTime();
         glfwPollEvents();
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        float currentFrame = glfwGetTime();
+        
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
+
+        if (GameState::getInstance().deltaTime > 0.016) {
+            camera->update(
+                    camera->getXPosition() - camera->getLastXPosition(),
+                    camera->getLastYPosition() - camera->getYPosition());
+        }
+        if(FPSCounter::getInstance().prevFPS != FPSCounter::getInstance().fps) {
+            std::cout << FPSCounter::getInstance().getFPS() << std::endl;
+        }
         EntityHandler::updateEntities(GameState::getInstance().deltaTime);
 
         renderGame(window);

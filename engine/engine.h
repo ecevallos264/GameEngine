@@ -34,7 +34,15 @@ public:
         }
     }
 
+    void run() {
+        Shader shader(shaderInfo.VertexShaderPath.c_str(), shaderInfo.FragmentShaderPath.c_str());
+        Game::getInstance().shader = &shader;
+        Game::getInstance().run(this->window);
+        glfwTerminate();
+    }
+
 private:
+    GLFWwindow* window;
     ShaderInfo shaderInfo;
 
     void validateShaders() {
@@ -52,12 +60,7 @@ private:
         glViewport(0, 0, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT);
     }
 
-    void runGame(GLFWwindow* window) {
-        Shader shader(shaderInfo.VertexShaderPath.c_str(), shaderInfo.FragmentShaderPath.c_str());
-        Game::getInstance().shader = &shader;
-        Game::getInstance().run(window);
-        glfwTerminate();
-    }
+
 
     static void setMouseCallback(GLFWwindow* window, GLFWcursorposfun callback) {
         glfwSetCursorPosCallback(window, callback);
@@ -69,6 +72,7 @@ private:
 
 public:
     Engine(ShaderInfo shaderInfo, GLFWwindow* window): shaderInfo(shaderInfo) {
+        this->window = window;
         initGLFW();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -76,7 +80,6 @@ public:
         validateShaders();
         setupDepthTest();
         setupViewport();
-        runGame(window);
     }
 };
 

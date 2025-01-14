@@ -8,6 +8,7 @@
 class FPSCounter : public Singleton<FPSCounter> {
 public:
     unsigned int fps;
+    unsigned int prevFPS;
 private:
     unsigned int frameCount;
 
@@ -21,7 +22,7 @@ public:
         auto currentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = currentTime - lastTime;
         if (elapsed.count() >= 1.0) {
-            std::cout << frameCount << std::endl;
+            prevFPS = fps;
             fps = frameCount;
             frameCount = 0;
             lastTime = currentTime;
