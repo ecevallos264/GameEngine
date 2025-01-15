@@ -6,17 +6,17 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 #include <filesystem>
-#include "camera/CameraHandler.h"
-#include "utils/shaders/ShaderInfo.h"
+#include "core/camera/CameraHandler.h"
+#include "core/shaders/ShaderInfo.h"
 #include "glad/glad.h"
-#include "utils/settings/settings.h"
-#include "utils/shaders/shader-compiler.h"
-#include "utils/patterns/Singleton.h"
-#include "game/game.h"
-#include "eventing/EventDispatcher.h"
-#include "eventing/events/KeyEvent.h"
-#include "utils/state/game_state.h"
-#include "utils/input/InputHandler.h"
+#include "core/settings/settings.h"
+#include "core/shaders/shader-compiler.h"
+#include "core/patterns/Singleton.h"
+#include "game.h"
+#include "core/eventing/EventDispatcher.h"
+#include "core/eventing/events/KeyEvent.h"
+#include "core/state/game_state.h"
+#include "core/input/InputHandler.h"
 
 class Engine {
 public:
@@ -60,16 +60,6 @@ private:
         glViewport(0, 0, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT);
     }
 
-
-
-    static void setMouseCallback(GLFWwindow* window, GLFWcursorposfun callback) {
-        glfwSetCursorPosCallback(window, callback);
-    }
-
-    static void setOnKeyActionCallback(GLFWwindow* window, GLFWkeyfun callback) {
-        glfwSetKeyCallback(window, callback);
-    }
-
 public:
     Engine(ShaderInfo shaderInfo, GLFWwindow* window): shaderInfo(shaderInfo) {
         this->window = window;
@@ -102,16 +92,6 @@ public:
 
     EngineBuilder& setCameraSpeed(float speed) {
         this->cameraSpeed = speed;
-        return *this;
-    }
-
-    EngineBuilder& setMouseOnEventCallback(GLFWwindow* window, GLFWcursorposfun callback) {
-        glfwSetCursorPosCallback(window, callback);
-        return *this;
-    }
-
-    EngineBuilder& setOnKeyActionCallback(GLFWwindow* window, GLFWkeyfun callback) {
-        glfwSetKeyCallback(window, callback);
         return *this;
     }
 

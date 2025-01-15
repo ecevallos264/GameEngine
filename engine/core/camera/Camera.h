@@ -7,18 +7,23 @@
 
 #include <iostream>
 #include "glm/vec3.hpp"
-#include "../utils/patterns/Singleton.h"
-#include "../utils/input/MouseHandler.h"
-#include "../utils/settings/settings.h"
+#include "../patterns/Singleton.h"
+#include "../input/MouseHandler.h"
+#include "../settings/settings.h"
 #include "glm/trigonometric.hpp"
 #include "glm/geometric.hpp"
+#include "../eventing/events/MouseMovementEvent.h"
+#include "../eventing/EventDispatcher.h"
+#include "glm/fwd.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
 
-class Camera {
+class Camera : EventListener {
 private:
     float xPosition = -1;
     float yPosition = -1;
-    float deltaX = -1;
-    float deltaY = -1;
+//    float deltaX = -1;
+//    float deltaY = -1;
     float yaw = -90.0f;
     float pitch;
     float roll;
@@ -31,7 +36,11 @@ private:
     float cameraSpeed;
 
 public:
-    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) : cameraPos(position), cameraFront(front), cameraUp(up) {}
+    Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) : cameraPos(position), cameraFront(front), cameraUp(up) {
+        EventDispatcher::getInstance().registerListener<MouseMovementEvent>([this](const Event& event) {
+            this->onEvent(dynamic_cast<const MouseMovementEvent&>(event));
+        });
+    }
 
     void updatePosition(glm::vec3 updateVector);
 
@@ -61,20 +70,16 @@ public:
         return yPosition;
     }
 
-    void setDeltaX(float deltaX) {
-        this->deltaX = deltaX;
+    glm::mat4 getViewMatrix() {
+        return glm::lookAt(
+                cameraPos,
+                cameraPos + cameraFront,
+                cameraUp
+        );
     }
 
-    float getDeltaX() const {
-        return deltaX;
-    }
-
-    void setDeltaY(float deltaY) {
-        this->deltaY = deltaY;
-    }
-
-    float getDeltaY() const {
-        return deltaY;
+    glm::mat4 getProjectionMatrix() {
+        return glm::perspective(glm::radians(45.0f), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 0.1f, Settings::MAX_RENDER_DISTANCE);
     }
 
     void setYaw(float yaw) {
@@ -101,30 +106,8 @@ public:
         return roll;
     }
 
-    void update() {
-        if(deltaX == 0 && deltaY == 0) return;
-
-
-        float xOffset = deltaX * Settings::CURSOR_SENSITIVITY;
-        float yOffset = deltaY * Settings::CURSOR_SENSITIVITY;
-
-        this->setYaw(yaw + (xOffset));
-        this->setPitch(pitch + (yOffset));
-
-        if (pitch > 89.0f)
-            pitch = 89.0f;
-        if (pitch < -89.0f)
-            pitch = -89.0f;
-
-        // Calculate the new direction vector
-        glm::vec3 direction;
-        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        direction.y = sin(glm::radians(pitch));
-        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        cameraFront = glm::normalize(direction);
-        deltaX = 0;
-        deltaY = 0;
-    }
+    void onEvent(const MouseMovementEvent& event);
+    void onEvent(const Event& event) override;
 };
 
 #endif //GAMEENGINE_CAMERA_H

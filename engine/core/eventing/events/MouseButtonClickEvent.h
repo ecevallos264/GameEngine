@@ -1,21 +1,20 @@
 //
-// Created by eceva on 1/6/2025.
+// Created by eceva on 1/12/2025.
 //
 
-#ifndef GAMEENGINE_KEYEVENT_H
-#define GAMEENGINE_KEYEVENT_H
+#ifndef GAMEENGINE_MOUSEBUTTONCLICKEVENT_H
+#define GAMEENGINE_MOUSEBUTTONCLICKEVENT_H
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
-#include "../../utils/state/game_state.h"
 
-struct KeyEvent : public Event {
+struct MouseButtonClickEvent : public Event {
     GLFWwindow* window;
     int keyCode;
     int action;
     float deltaTime;
 
-    KeyEvent(
+    MouseButtonClickEvent(
             GLFWwindow* window,
             int keycode,
             int action) :
@@ -25,4 +24,4 @@ struct KeyEvent : public Event {
             Event(GameState::getInstance().deltaTime) {}
 };
 
-#endif //GAMEENGINE_KEYEVENT_H
+#endif //GAMEENGINE_MOUSEBUTTONCLICKEVENT_H

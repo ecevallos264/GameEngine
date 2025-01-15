@@ -7,18 +7,18 @@
 #define GAMEENGINE_PLAYER_H
 
 #include <iostream>
-#include "../../engine/eventing/EventListener.h"
-#include "../../engine/eventing/events/KeyEvent.h"
-#include "../../engine/utils/state/game_state.h"
-#include "../../engine/entitities/Entity.h"
-#include "../../engine/utils/input/InputHandler.h"
-#include "../../engine/eventing/events/CursorEvent.h"
-#include "../../engine/eventing/events/CameraKeyMovementEvent.h"
-#include "../../engine/utils/input/MouseHandler.h"
+#include "../../engine/core/eventing/EventListener.h"
+#include "../../engine/core/eventing/events/KeyEvent.h"
+#include "../../engine/core/state/game_state.h"
+#include "../../engine/core/input/InputHandler.h"
+#include "../../engine/core/eventing/events/CursorEvent.h"
+#include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
+#include "../../engine/core/input/MouseHandler.h"
+#include "../../engine/rendering/Entity.h"
 
 class Player : public EventListener, public Entity {
 public:
-    Player() : EventListener() {
+    Player(Shader* shader) : EventListener(), Entity(shader) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });
@@ -40,12 +40,7 @@ public:
         //...
     }
 
-    void draw() {
-        return;
-    }
-
-    void update(float deltaTime, Shader* shader) override {
-
+    void update(float deltaTime) override {
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));

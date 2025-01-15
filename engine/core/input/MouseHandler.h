@@ -6,11 +6,8 @@
 #define GAMEENGINE_MOUSEHANDLER_H
 
 #include "../patterns/Singleton.h"
+#include "../types/MouseState.h"
 
-enum MouseCursorState {
-    IN_WINDOW,
-    OUT_OF_WINDOW,
-};
 
 class MouseHandler : public Singleton<MouseHandler> {
 private:

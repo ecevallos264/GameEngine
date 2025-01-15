@@ -2,13 +2,13 @@
 // Created by eceva on 1/3/2025.
 //
 #include "InputHandler.h"
-#include "../../eventing/events/KeyEvent.h"
+#include "../../core/eventing/events/KeyEvent.h"
 #include "../patterns/Singleton.h"
 #include <memory>
-#include "../../eventing/EventDispatcher.h"
-#include "../../utils/state/game_state.h"
-#include "../../eventing/events/MouseMovementEvent.h"
-#include "../../camera/CameraHandler.h"
+#include "../../core/eventing/EventDispatcher.h"
+#include "../../core/state/game_state.h"
+#include "../../core/eventing/events/MouseMovementEvent.h"
+#include "../../core/camera/CameraHandler.h"
 #include "../observability/CalcTime.h"
 
 bool InputHandler::isKeyActive(int key) {
@@ -47,11 +47,16 @@ void InputHandler::setMouseMovementCallback(GLFWwindow* window, std::function<vo
     InputHandler::getInstance().onMouseMovementCallback = callback;
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
         Camera* camera = CameraHandler::getInstance().getCamera();
-        camera->setDeltaX(x - camera->getXPosition());
-        camera->setDeltaY(camera->getYPosition() - y);
+
+        EventDispatcher::getInstance().dispatch(
+                MouseMovementEvent(
+                    x - camera->getXPosition(),
+                    camera->getYPosition() - y,
+                    MouseHandler::getInstance().getMouseCursorState(),
+                    GameState::getInstance().deltaTime));
         camera->setXPosition(x);
         camera->setYPosition(y);
-        EventDispatcher::getInstance().dispatch(MouseMovementEvent())
+        InputHandler::getInstance().onMouseMovementCallback(window, x, y);
     });
 }
 

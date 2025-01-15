@@ -5,12 +5,15 @@
 #ifndef GAMEENGINE_CAMERAHANDLER_H
 #define GAMEENGINE_CAMERAHANDLER_H
 
-#include "../utils/patterns/Singleton.h"
+#include "../patterns/Singleton.h"
 #include "Camera.h"
 #include "../eventing/EventListener.h"
 #include "../eventing/EventDispatcher.h"
 #include "../eventing/events/CameraKeyMovementEvent.h"
 #include "../eventing/events/MouseMovementEvent.h"
+#include "glm/fwd.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
 
 class CameraHandler : public Singleton<CameraHandler>, public EventListener {
 private:
@@ -28,6 +31,8 @@ public:
     void setCamera(Camera* camera);
 
     Camera* getCamera();
+
+
 
     void onEvent(const Event& event) override;
     void onEvent(const CameraKeyMovementEvent& event);

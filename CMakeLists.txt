@@ -4,44 +4,52 @@ set(ProjectDir ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
-add_executable(GameEngine test_game/main.cpp
+add_executable(GameEngine
+        engine/core/camera/Camera.cpp
+        engine/core/camera/Camera.h
+        engine/core/camera/CameraHandler.cpp
+        engine/core/camera/CameraHandler.h
+        engine/core/entitities/shape.h
+        engine/core/eventing/Event.h
+        engine/core/eventing/EventDispatcher.h
+        engine/core/eventing/EventListener.h
+        engine/core/eventing/events/KeyEvent.h
+        engine/core/input/InputHandler.cpp
+        engine/core/input/InputHandler.h
+        engine/core/input/MouseHandler.h
+        engine/core/observability/CalcTime.h
+        engine/core/observability/FPSCounter.h
+        engine/core/patterns/Singleton.h
+        engine/core/settings/settings.h
+        engine/core/shaders/ShaderInfo.h
+        engine/core/shaders/shader-compiler.h
+        engine/core/state/MouseState.h
+        engine/core/state/game_state.h
+        engine/engine.h
+        engine/core/eventing/MouseEvents.h
+        engine/core/eventing/events/CameraKeyMovementEvent.h
+        engine/core/eventing/events/CursorEvent.h
+        engine/core/eventing/events/MouseButtonClickEvent.h
+        engine/core/eventing/events/MouseMovementEvent.h
+        engine/game.cpp
+        engine/game.h
         engine/glad.c
         engine/stb.cpp
-        engine/utils/shaders/shader-compiler.h
-        engine/utils/patterns/Singleton.h
-        engine/game/game.h
-        engine/game/game.cpp
-        engine/entitities/shape.h
 
-        engine/entitities/EntityHandler.h
-        engine/utils/input/InputHandler.h
-        engine/utils/input/InputHandler.cpp
-        engine/utils/settings/settings.h
-        engine/utils/state/game_state.h
-
-
-        engine/eventing/Event.h
-        engine/eventing/EventDispatcher.h
-        engine/eventing/EventListener.h
-        engine/eventing/events/KeyEvent.h
-        engine/engine.h
-        engine/utils/shaders/ShaderInfo.h
-        engine/utils/state/MouseState.h
         test_game/entities/Player.h
+        test_game/main.cpp
         test_game/mouse.h
-        engine/eventing/MouseEvents.h
-        engine/entitities/Entity.h
-        engine/eventing/events/CursorEvent.h
-        engine/camera/Camera.h
-        engine/camera/CameraHandler.h
-        engine/camera/CameraHandler.cpp
-        engine/eventing/events/CameraKeyMovementEvent.h
-        engine/camera/Camera.cpp
-        engine/utils/observability/FPSCounter.h
-        engine/eventing/events/MouseMovementEvent.h
-        engine/utils/input/MouseHandler.h
-        engine/eventing/events/MouseButtonClickEvent.h
-        engine/utils/observability/CalcTime.h
+        engine/core/types/MouseState.h
+        engine/rendering/Scene.h
+        engine/rendering/EntityController.h
+        engine/rendering/Entity.h
+        engine/rendering/Renderer.h
+        engine/rendering/Scene.cpp
+        engine/rendering/EntityController.cpp
+        engine/rendering/Entity.cpp
+        engine/rendering/SceneController.h
+        test_game/scenes/TestScene.h
+
 )
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)

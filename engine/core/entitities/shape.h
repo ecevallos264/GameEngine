@@ -5,7 +5,7 @@
 #include <glm/vec3.hpp>
 #include "shape.h"
 #include "glm/ext/matrix_transform.hpp"
-#include "Entity.h"
+#include "../../rendering/Entity.h"
 
 class Shape : public Entity {
 public:
@@ -24,6 +24,8 @@ private:
     unsigned int EBO = 0;
 
 public:
+    Shape(Shader* shader) : Entity(shader) {}
+
     virtual ~Shape() {
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
@@ -99,8 +101,6 @@ public:
         glBindVertexArray(0);
     }
 
-    virtual void draw() = 0;
-
     virtual void setColor(glm::vec3 newColor) {
         for(int i = 0; i < this->vertices.size(); i += 7) {
             this->vertices[i + 3] = newColor.x;
@@ -121,16 +121,6 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    virtual void update(float deltaTime, Shader* shader) override {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, this->getPosition());
-        model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(dilation));
-        shader->setMat4("model", model);
     }
 };
 

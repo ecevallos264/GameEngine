@@ -5,9 +5,9 @@
 #include "CameraHandler.h"
 #include "Camera.h"
 #include "glm/geometric.hpp"
-#include "../utils/settings/settings.h"
+#include "../settings/settings.h"
 #include "glm/trigonometric.hpp"
-#include "../utils/input/MouseHandler.h"
+#include "../input/MouseHandler.h"
 
 void CameraHandler::setCamera(Camera* camera) {
     this->camera = camera;
@@ -60,7 +60,6 @@ void CameraHandler::onEvent(const CameraKeyMovementEvent& event) {
 }
 
 void CameraHandler::onEvent(const MouseMovementEvent& event) {
-
 
 }
 

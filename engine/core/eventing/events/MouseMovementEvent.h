@@ -3,18 +3,20 @@
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
-#include "../../utils/state/game_state.h"
+#include "../../state/game_state.h"
+#include "MouseMovementEvent.h"
+#include "../../types/MouseState.h"
 
 struct MouseMovementEvent : public Event {
-    float deltaX;
-    float deltaY;
+    double deltaX;
+    double deltaY;
     float deltaTime;
+    MouseCursorState state;
 
-    MouseMovementEvent(
-            float deltaX, float deltaY,
-            float deltaTime) :
+    MouseMovementEvent(double deltaX, double deltaY, MouseCursorState state, float deltaTime) :
             deltaX(deltaX),
             deltaY(deltaY),
+            state(state),
             deltaTime(deltaTime),
             Event(deltaTime) {}
 };

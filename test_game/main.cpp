@@ -1,7 +1,8 @@
 #include "../engine/engine.h"
 #include "entities/Player.h"
-#include "../engine/eventing/EventDispatcher.h"
-#include "../engine/entitities/EntityHandler.h"
+#include "../engine/core/eventing/EventDispatcher.h"
+#include "scenes/TestScene.h"
+#include "../engine/rendering/SceneController.h"
 
 int main() {
     Engine::initGLFW();
@@ -16,17 +17,23 @@ int main() {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-    Player* player = new Player();
-    EntityHandler::getInstance().addEntity(player);
+
+//    EntityController::getInstance().addEntity(player);
 
     glfwMakeContextCurrent(window);
     Engine::initGLAD();
 
     ShaderInfo shaderInfo;
-    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
-    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
-//    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
-//    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
+//    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
+//    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
+    shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
+    shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
+    std::shared_ptr<TestScene> scene = std::make_shared<TestScene>(
+            new Shader(
+                    shaderInfo.VertexShaderPath.c_str(),
+                    shaderInfo.FragmentShaderPath.c_str()));
+    SceneController::getInstance().addScene("testScene", scene);
+    SceneController::getInstance().swapScene("testScene");
 
     EngineBuilder builder;
 
