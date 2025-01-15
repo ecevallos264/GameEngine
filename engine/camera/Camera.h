@@ -7,13 +7,13 @@
 
 #include <iostream>
 #include "glm/vec3.hpp"
-#include "../patterns/Singleton.h"
+#include "../core/patterns/Singleton.h"
 #include "../input/MouseHandler.h"
-#include "../settings/settings.h"
+#include "../core/settings/settings.h"
 #include "glm/trigonometric.hpp"
 #include "glm/geometric.hpp"
-#include "../eventing/events/MouseMovementEvent.h"
-#include "../eventing/EventDispatcher.h"
+#include "../core/eventing/events/MouseMovementEvent.h"
+#include "../core/eventing/EventDispatcher.h"
 #include "glm/fwd.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"

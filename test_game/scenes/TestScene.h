@@ -7,9 +7,10 @@
 
 #include <memory>
 #include "../../engine/rendering/Scene.h"
-#include "../../engine/core/entitities/line.h"
+#include "../../engine/entitities/line.h"
 #include "../../engine/core/settings/settings.h"
 #include "../../engine/core/shaders/shader-compiler.h"
+#include "../../engine/entitities/Cube.h"
 
 class TestScene : public Scene {
 private:
@@ -61,6 +62,8 @@ public:
         }
         std::shared_ptr<Player> player = std::make_shared<Player>(this->shader);
         entityController->addEntity(player);
+
+        entityController->addEntity(std::make_shared<Cube>(glm::vec3(-2.0f, 0.0f, -2.0f), this->shader));
 
     }
 };

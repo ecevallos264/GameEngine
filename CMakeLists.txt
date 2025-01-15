@@ -5,18 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
 add_executable(GameEngine
-        engine/core/camera/Camera.cpp
-        engine/core/camera/Camera.h
-        engine/core/camera/CameraHandler.cpp
-        engine/core/camera/CameraHandler.h
-        engine/core/entitities/shape.h
+        engine/camera/Camera.cpp
+        engine/camera/Camera.h
+        engine/camera/CameraHandler.cpp
+        engine/camera/CameraHandler.h
+        engine/entitities/shape.h
         engine/core/eventing/Event.h
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h
         engine/core/eventing/events/KeyEvent.h
-        engine/core/input/InputHandler.cpp
-        engine/core/input/InputHandler.h
-        engine/core/input/MouseHandler.h
+        engine/input/InputHandler.cpp
+        engine/input/InputHandler.h
+        engine/input/MouseHandler.h
         engine/core/observability/CalcTime.h
         engine/core/observability/FPSCounter.h
         engine/core/patterns/Singleton.h
@@ -49,6 +49,7 @@ add_executable(GameEngine
         engine/rendering/Entity.cpp
         engine/rendering/SceneController.h
         test_game/scenes/TestScene.h
+        engine/entitities/Cube.h
 
 )
 

@@ -5,12 +5,12 @@
 #ifndef GAMEENGINE_CAMERAHANDLER_H
 #define GAMEENGINE_CAMERAHANDLER_H
 
-#include "../patterns/Singleton.h"
+#include "../core/patterns/Singleton.h"
 #include "Camera.h"
-#include "../eventing/EventListener.h"
-#include "../eventing/EventDispatcher.h"
-#include "../eventing/events/CameraKeyMovementEvent.h"
-#include "../eventing/events/MouseMovementEvent.h"
+#include "../core/eventing/EventListener.h"
+#include "../core/eventing/EventDispatcher.h"
+#include "../core/eventing/events/CameraKeyMovementEvent.h"
+#include "../core/eventing/events/MouseMovementEvent.h"
 #include "glm/fwd.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"

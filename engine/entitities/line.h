@@ -3,7 +3,7 @@
 
 #include "shape.h"
 #include "glad/glad.h"
-#include "../shaders/shader-compiler.h"
+#include "../core/shaders/shader-compiler.h"
 
 class Line : public Shape {
     glm::vec3 rotation = glm::vec3(0.0f);

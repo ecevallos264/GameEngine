@@ -2,10 +2,10 @@
 #define GAME_ENGINE_SHAPE_H
 
 #include <vector>
-#include <glm/vec3.hpp>
+#include "glm/vec3.hpp"
 #include "shape.h"
 #include "glm/ext/matrix_transform.hpp"
-#include "../../rendering/Entity.h"
+#include "../rendering/Entity.h"
 
 class Shape : public Entity {
 public:
@@ -24,7 +24,9 @@ private:
     unsigned int EBO = 0;
 
 public:
-    Shape(Shader* shader) : Entity(shader) {}
+    Shape(Shader* shader) : Entity(shader) {
+        initializeBuffers();
+    }
 
     virtual ~Shape() {
         glDeleteBuffers(1, &VBO);

@@ -2,14 +2,14 @@
 // Created by eceva on 1/3/2025.
 //
 #include "InputHandler.h"
-#include "../../core/eventing/events/KeyEvent.h"
-#include "../patterns/Singleton.h"
+#include "../core/eventing/events/KeyEvent.h"
+#include "../core/patterns/Singleton.h"
 #include <memory>
-#include "../../core/eventing/EventDispatcher.h"
-#include "../../core/state/game_state.h"
-#include "../../core/eventing/events/MouseMovementEvent.h"
-#include "../../core/camera/CameraHandler.h"
-#include "../observability/CalcTime.h"
+#include "../core/eventing/EventDispatcher.h"
+#include "../core/state/game_state.h"
+#include "../core/eventing/events/MouseMovementEvent.h"
+#include "../camera/CameraHandler.h"
+#include "../core/observability/CalcTime.h"
 
 bool InputHandler::isKeyActive(int key) {
     auto& keyState = InputHandler::getInstance().keyboardState.keyState;

@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include <functional>
-#include "../patterns/Singleton.h"
+#include "../core/patterns/Singleton.h"
 
 struct KeyState {
     bool state = false;

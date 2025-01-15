@@ -6,7 +6,7 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 #include <filesystem>
-#include "core/camera/CameraHandler.h"
+#include "camera/CameraHandler.h"
 #include "core/shaders/ShaderInfo.h"
 #include "glad/glad.h"
 #include "core/settings/settings.h"
@@ -16,7 +16,7 @@
 #include "core/eventing/EventDispatcher.h"
 #include "core/eventing/events/KeyEvent.h"
 #include "core/state/game_state.h"
-#include "core/input/InputHandler.h"
+#include "input/InputHandler.h"
 
 class Engine {
 public:

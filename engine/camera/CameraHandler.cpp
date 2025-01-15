@@ -5,7 +5,7 @@
 #include "CameraHandler.h"
 #include "Camera.h"
 #include "glm/geometric.hpp"
-#include "../settings/settings.h"
+#include "../core/settings/settings.h"
 #include "glm/trigonometric.hpp"
 #include "../input/MouseHandler.h"
 

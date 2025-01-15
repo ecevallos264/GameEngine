@@ -10,10 +10,10 @@
 #include "../../engine/core/eventing/EventListener.h"
 #include "../../engine/core/eventing/events/KeyEvent.h"
 #include "../../engine/core/state/game_state.h"
-#include "../../engine/core/input/InputHandler.h"
+#include "../../engine/input/InputHandler.h"
 #include "../../engine/core/eventing/events/CursorEvent.h"
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
-#include "../../engine/core/input/MouseHandler.h"
+#include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
 
 class Player : public EventListener, public Entity {

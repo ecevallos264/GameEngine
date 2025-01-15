@@ -5,8 +5,8 @@
 #ifndef GAMEENGINE_MOUSEHANDLER_H
 #define GAMEENGINE_MOUSEHANDLER_H
 
-#include "../patterns/Singleton.h"
-#include "../types/MouseState.h"
+#include "../core/patterns/Singleton.h"
+#include "../core/types/MouseState.h"
 
 
 class MouseHandler : public Singleton<MouseHandler> {
