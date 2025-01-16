@@ -6,12 +6,14 @@
 #include "shape.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "../rendering/Entity.h"
+#include "Vertex.h"
 
 class Shape : public Entity {
 public:
     bool destroyed = false;
 
-    std::vector<float> vertices;
+    std::vector<Vertex> vertices;
+    std::vector<float> vertexBuffer;
     std::vector<unsigned int> indices;
 
     glm::vec3 position;
@@ -24,9 +26,7 @@ private:
     unsigned int EBO = 0;
 
 public:
-    Shape(Shader* shader) : Entity(shader) {
-        initializeBuffers();
-    }
+    Shape(Shader* shader) : Entity(shader) {}
 
     virtual ~Shape() {
         glDeleteBuffers(1, &VBO);
@@ -34,7 +34,7 @@ public:
         glDeleteVertexArrays(1, &VAO);
     }
 
-    virtual const std::vector<float>& getVertices() const {
+    virtual const std::vector<Vertex>& getVertices() const {
         return vertices;
     }
 
@@ -90,7 +90,7 @@ public:
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertexBuffer.size() * sizeof(float), vertexBuffer.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
@@ -104,10 +104,8 @@ public:
     }
 
     virtual void setColor(glm::vec3 newColor) {
-        for(int i = 0; i < this->vertices.size(); i += 7) {
-            this->vertices[i + 3] = newColor.x;
-            this->vertices[i + 4] = newColor.y;
-            this->vertices[i + 5] = newColor.z;
+        for(int i = 0; i < this->vertices.size(); i++) {
+            vertices[i].color = newColor;
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
@@ -116,13 +114,40 @@ public:
     }
 
     virtual void setOpacity(float opacity) {
-        for(int i = 0; i < this->vertices.size(); i += 7) {
-            this->vertices[i + 6] = opacity;
+        for(int i = 0; i < this->vertices.size(); i++) {
+            vertices[i].alpha = opacity;
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    virtual void updateVertexBuffer() {
+        vertexBuffer = std::vector<float>();
+        for(Vertex vertex: vertices) {
+            this->vertexBuffer.push_back(vertex.position.x);
+            this->vertexBuffer.push_back(vertex.position.y);
+            this->vertexBuffer.push_back(vertex.position.z);
+            this->vertexBuffer.push_back(vertex.color.x);
+            this->vertexBuffer.push_back(vertex.color.y);
+            this->vertexBuffer.push_back(vertex.color.z);
+            this->vertexBuffer.push_back(vertex.alpha);
+        }
+    }
+
+    glm::vec3 getSupportPoint(const glm::vec3& direction) const {
+        float maxDot = -FLT_MAX;
+        glm::vec3 supportPoint;
+
+        for (const auto& vertex : vertices) {
+            float dotProduct = glm::dot(vertex.position, direction);
+            if (dotProduct > maxDot) {
+                maxDot = dotProduct;
+                supportPoint = vertex.position;
+            }
+        }
+        return supportPoint;
     }
 };
 

@@ -11,7 +11,6 @@ void Entity::render(glm::mat4 view, glm::mat4 projection) {
     this->shader->use();
     this->shader->setMat4("view", view);
     this->shader->setMat4("projection", projection);
-    this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
 
     glm::mat4 model = glm::mat4(1.0f);
     this->shader->setMat4("model", model);

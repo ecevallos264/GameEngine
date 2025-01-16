@@ -11,7 +11,9 @@
 #include "../../engine/core/settings/settings.h"
 #include "../../engine/core/shaders/shader-compiler.h"
 #include "../../engine/entitities/Cube.h"
-
+#include "../../engine/physics/GJK/GJK.h"
+#include "../../engine/core/patterns/Singleton.h"
+#include "../../engine/physics/CollisionHandler.h"
 class TestScene : public Scene {
 private:
     Shader* shader;
@@ -60,10 +62,17 @@ public:
                     1.0f,
                     this->shader));
         }
+
         std::shared_ptr<Player> player = std::make_shared<Player>(this->shader);
         entityController->addEntity(player);
 
-        entityController->addEntity(std::make_shared<Cube>(glm::vec3(-2.0f, 0.0f, -2.0f), this->shader));
+
+        std::shared_ptr<Cube> cube1 = std::make_shared<Cube>(glm::vec3(-1.0f, 0.0f, -20.0f), this->shader, glm::vec3(0, 0, 1.0f));
+        std::shared_ptr<Cube> cube2 = std::make_shared<Cube>(glm::vec3(-0.0f, 0.0f, -20.0f), this->shader, glm::vec3(0, 0, 1.0f));
+        entityController->addEntity(cube1);
+        entityController->addEntity(cube1);
+        std::cout << (CollisionHandler::getInstance().handleCollision(cube1, cube2) ? "Collision Detected" : "No Collision Detected") << std::endl;
+
 
     }
 };

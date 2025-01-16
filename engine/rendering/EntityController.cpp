@@ -3,6 +3,7 @@
 //
 #include <memory>
 #include "EntityController.h"
+#include "../entitities/shape.h"
 
 void EntityController::update(float deltaTime) {
     for(std::shared_ptr<Entity> entity: this->entities) {

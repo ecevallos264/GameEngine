@@ -50,6 +50,12 @@ add_executable(GameEngine
         engine/rendering/SceneController.h
         test_game/scenes/TestScene.h
         engine/entitities/Cube.h
+        engine/entitities/Vertex.h
+        engine/entitities/Face.h
+        engine/entitities/Edge.h
+        engine/physics/Simplex.h
+        engine/physics/CollisionHandler.h
+        engine/physics/GJK/GJK.h
 
 )
 

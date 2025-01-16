@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Renderer.h"
 #include "memory"
+#include "../entitities/shape.h"
 
 class EntityController : Renderer {
 public:

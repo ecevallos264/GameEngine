@@ -41,6 +41,10 @@ void Camera::setSpeed(float speed) {
 
 void Camera::onEvent(const MouseMovementEvent &event) {
     if(MouseHandler::getInstance().getMouseCursorState() == MouseCursorState::OUT_OF_WINDOW) return;
+    if(firstRenderingIteration) {
+        firstRenderingIteration = false;
+        return;
+    }
     if(event.deltaX == 0 && event.deltaY == 0) return;
 
 

@@ -20,8 +20,10 @@
 
 class Camera : EventListener {
 private:
-    float xPosition = -1;
-    float yPosition = -1;
+    bool firstRenderingIteration = true;
+    
+    float xPosition;
+    float yPosition;
 //    float deltaX = -1;
 //    float deltaY = -1;
     float yaw = -90.0f;
