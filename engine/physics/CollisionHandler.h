@@ -58,12 +58,16 @@ public:
     }
 
     void onEvent(CollisionEvent event) {
-        CollisionEntry entry = {typeid(*event.entityA), typeid(*event.entityB)};
-        std::cout << "Finding Collision" << std::endl;
+
+        CollisionEntry entry = (std::type_index(typeid(*event.entityA)) < std::type_index(typeid(*event.entityB)))
+                               ? CollisionEntry{std::type_index(typeid(*event.entityA)), std::type_index(typeid(*event.entityB))}
+                               : CollisionEntry{std::type_index(typeid(*event.entityB)), std::type_index(typeid(*event.entityA))};
+
         auto it = registry.find(entry);
         if (it != registry.end()) {
             it->second({event.entityA, event.entityB});
-            std::cout << "Sending Collision" << std::endl;
+        } else {
+            std::cout << "No collision callback registered for this event." << std::endl;
         }
     }
 

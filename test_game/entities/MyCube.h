@@ -5,6 +5,7 @@
 #ifndef GAMEENGINE_MYCUBE_H
 #define GAMEENGINE_MYCUBE_H
 
+#include <glfw/glfw3.h>
 #include "../../engine/entitities/shape.h"
 #include "../../engine/physics/CollisionHandler.h"
 
@@ -12,16 +13,20 @@ struct MyCubeCollision {
 
 };
 
+
+
 class MyCube : public Shape {
 private:
+    bool colliding = false;
     void registerCollisionListener() {
         CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
-            this->onCollision(static_cast<MyCube *>(data.entityB));
+            this->onCollision(static_cast<MyCube*>(data.entityB));
         });
     }
 
 public:
     MyCube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
+        registerCollisionListener();
         position = pos;
         this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.5f), color, 1.0f});
         this->vertices.push_back({glm::vec3(0.5f, -0.5f,  0.5f), color, 1.0f});
@@ -56,7 +61,6 @@ public:
         this->shader->setMat4("view", view);
         this->shader->setMat4("projection", projection);
         this->shader->setMat4("model", model);
-        this->shader->setVec3("shapeColor", glm::vec3(1.0f, 0.0f, 0.0f));
 
         glBindVertexArray(this->getVAO());
         glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
@@ -67,13 +71,19 @@ public:
 
     void update(float deltaTime) override {
         Shape::update(deltaTime);
+        if(this->colliding) {
+            this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            this->colliding = false;
+        } else {
+            this->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+        }
         if(this->onUpdate) {
             this->onUpdate(deltaTime);
         }
     }
 
     void onCollision(MyCube* entity) {
-        std::cout << "Collision Detected" << std::endl;
+        this->colliding = true;
     }
 
     static std::type_index getType() {

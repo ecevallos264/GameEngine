@@ -26,7 +26,8 @@ public:
         return instanceId;
     }
 
-    Entity(Shader* shader) : shader(shader) {}
+    Entity(Shader* shader) : shader(shader) {
+    }
     void render(glm::mat4 view, glm::mat4 projection) override;
     void update(float deltaTime) override;
     virtual glm::vec3 getSupportPoint(const glm::vec3& direction) = 0;

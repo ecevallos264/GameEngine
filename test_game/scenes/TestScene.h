@@ -14,6 +14,8 @@
 #include "../../engine/physics/GJK/GJK.h"
 #include "../../engine/core/patterns/Singleton.h"
 #include "../../engine/physics/CollisionHandler.h"
+#include "../entities/MyCube.h"
+
 class TestScene : public Scene {
 private:
     Shader* shader;
@@ -70,16 +72,14 @@ public:
         entityController->addEntity(player);
 
 
-        Cube* cube1 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
-        Cube* cube2 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(0, 0, 1));
+        MyCube* cube1 = new MyCube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
+        MyCube* cube2 = new MyCube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(0, 0, 1));
         cube1->fixed = false;
         cube2->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
-            cube1->position.x += sin(glfwGetTime()) / 1000;
-            cube1->position.y += cos(glfwGetTime()) / 1000;
+            cube1->position.x += sin(glfwGetTime()) / 100;
+            cube1->position.y += cos(glfwGetTime()) / 100;
         });
-        cube1->fixed = true;
-        cube2->fixed = true;
         entityController->addEntity(cube1);
         entityController->addEntity(cube2);
 

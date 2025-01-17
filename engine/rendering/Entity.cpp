@@ -13,6 +13,7 @@ void Entity::render(glm::mat4 view, glm::mat4 projection) {
     this->shader->setMat4("projection", projection);
 
     glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(-1,-1,-1));
     this->shader->setMat4("model", model);
 }
 

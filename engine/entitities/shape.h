@@ -112,8 +112,10 @@ public:
             vertices[i].color = newColor;
         }
 
+        updateVertexBuffer();
+
         glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertexBuffer.size() * sizeof(float), vertexBuffer.data());
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -121,6 +123,8 @@ public:
         for(int i = 0; i < this->vertices.size(); i++) {
             vertices[i].alpha = opacity;
         }
+
+        updateVertexBuffer();
 
         glBindBuffer(GL_ARRAY_BUFFER, this->getVBO());
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
