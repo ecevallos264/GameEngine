@@ -26,6 +26,7 @@ void Game::run(GLFWwindow* window) {
                 if(entity2->fixed) continue;
                 std::cout << "Checking Collision[" << i << ":" << j << "] with " << entity1->getInstanceId() << " and " << entity2->getInstanceId() << std::endl;
                 if(CollisionHandler::getInstance().handleCollision(entity1, entity2)) {
+                    std::cout << "Detected Collision" << std::endl;
                     EventDispatcher::getInstance().dispatch(
                             CollisionEvent(
                                     GameState::getInstance().deltaTime,

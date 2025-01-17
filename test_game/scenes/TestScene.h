@@ -70,13 +70,13 @@ public:
         entityController->addEntity(player);
 
 
-        Cube* cube1 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0.0f));
-        Cube* cube2 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0.0f));
+        Cube* cube1 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
+        Cube* cube2 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(0, 0, 1));
         cube1->fixed = false;
         cube2->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
-            cube1->position.x += sin(glfwGetTime()) / 30;
-            cube1->position.y += cos(glfwGetTime()) / 30;
+            cube1->position.x += sin(glfwGetTime()) / 1000;
+            cube1->position.y += cos(glfwGetTime()) / 1000;
         });
         cube1->fixed = true;
         cube2->fixed = true;
