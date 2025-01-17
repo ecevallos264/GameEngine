@@ -1,6 +1,7 @@
 // Created by eceva on 1/16/2025.
 #include "GJK.h"
 #include "glm/vec3.hpp"
+#include "../../core/settings/settings.h"
 #include <memory>
 
 // Computes the Minkowski difference's support point
@@ -21,8 +22,8 @@ CollisionState GJK(Entity* shapeA, Entity* shapeB) {
     simplex.addPoint(minkowskiSupport(shapeA, shapeB, direction));
 
     direction = -simplex.getLastPoint();
-
-    while (true) {
+    int iteration = 0;
+    while (iteration++ < Settings::MAX_GJK_ITERATION) {
         glm::vec3 newPoint = minkowskiSupport(shapeA, shapeB, direction);
 
         // If the new point doesn't pass the origin in the current direction, no collision

@@ -20,8 +20,11 @@ void Game::run(GLFWwindow* window) {
 
         for(int i = 0; i < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); i++) {
             Entity* entity1 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[i];
+            if(entity1->fixed) continue;
             for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
                 Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
+                if(entity2->fixed) continue;
+                std::cout << "Checking Collision[" << i << ":" << j << "] with " << entity1->getInstanceId() << " and " << entity2->getInstanceId() << std::endl;
                 if(CollisionHandler::getInstance().handleCollision(entity1, entity2)) {
                     EventDispatcher::getInstance().dispatch(
                             CollisionEvent(

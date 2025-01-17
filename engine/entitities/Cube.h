@@ -68,7 +68,7 @@ public:
         }
     }
 
-    std::type_index getType() const override {
+    std::type_index getType() const {
         return typeid(Cube);
     }
 };

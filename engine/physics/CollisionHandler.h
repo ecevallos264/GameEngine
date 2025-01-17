@@ -35,11 +35,14 @@ struct CollisionData {
 
 };
 
-class CollisionHandler : public Singleton<CollisionHandler> {
+class CollisionHandler : public Singleton<CollisionHandler>, EventListener {
 private:
     std::unordered_map<CollisionEntry, std::function<void(CollisionData)>> registry;
 public:
     CollisionHandler() : Singleton<CollisionHandler>() {
+        EventDispatcher::getInstance().registerListener<CollisionEvent>([this](const Event& event) {
+            this->onEvent(static_cast<const CollisionEvent&>(event));
+        });
     }
 
     bool handleCollision(Entity* entityA, Entity* entityB) {
@@ -56,10 +59,16 @@ public:
 
     void onEvent(CollisionEvent event) {
         CollisionEntry entry = {typeid(*event.entityA), typeid(*event.entityB)};
+        std::cout << "Finding Collision" << std::endl;
         auto it = registry.find(entry);
         if (it != registry.end()) {
             it->second({event.entityA, event.entityB});
+            std::cout << "Sending Collision" << std::endl;
         }
+    }
+
+    void onEvent(const Event& event) override {
+
     }
 };
 

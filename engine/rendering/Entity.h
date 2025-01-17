@@ -13,7 +13,7 @@
 
 class Entity : Renderer {
 public:
-    bool fixed = false;
+    bool fixed = true;
     glm::vec3 position;
     glm::vec3 color;
 protected:

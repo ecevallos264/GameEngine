@@ -6,6 +6,7 @@
 #define GAMEENGINE_MYCUBE_H
 
 #include "../../engine/entitities/shape.h"
+#include "../../engine/physics/CollisionHandler.h"
 
 struct MyCubeCollision {
 
@@ -13,7 +14,11 @@ struct MyCubeCollision {
 
 class MyCube : public Shape {
 private:
-
+    void registerCollisionListener() {
+        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
+            this->onCollision(static_cast<MyCube *>(data.entityB));
+        });
+    }
 
 public:
     MyCube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
@@ -67,8 +72,8 @@ public:
         }
     }
 
-    void onCollision(MyCube entity) {
-
+    void onCollision(MyCube* entity) {
+        std::cout << "Collision Detected" << std::endl;
     }
 
     static std::type_index getType() {
