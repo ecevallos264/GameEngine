@@ -18,6 +18,10 @@ public:
     EntityController* getEntityController() {
         return this->entityController;
     }
+
+    EntityController* getController() {
+        return this->entityController;
+    }
 };
 
 #endif //GAMEENGINE_SCENE_H

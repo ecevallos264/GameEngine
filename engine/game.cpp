@@ -1,3 +1,4 @@
+#include <thread>
 #include "game.h"
 #include "camera/CameraHandler.h"
 #include "core/settings/settings.h"
@@ -36,6 +37,7 @@ void Game::run(GLFWwindow* window) {
         }
 
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
+        SceneController::getInstance().getCurrentScene()->getEntityController()->debugRender(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 
         FPSCounter::getInstance().increment();
 //        std::cout << FPSCounter::getInstance().fps << std::endl;

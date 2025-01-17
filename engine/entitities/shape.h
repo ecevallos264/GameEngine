@@ -145,15 +145,23 @@ public:
     }
 
     glm::vec3 getSupportPoint(const glm::vec3& direction) {
+        if (glm::length(direction) < 1e-6f) {
+            throw std::invalid_argument("Direction vector is too small.");
+        }
+
         float maxDot = -std::numeric_limits<float>::infinity();
         glm::vec3 supportPoint;
 
+        // Precompute rotation matrix (if not already stored)
         glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1, 0, 0)) *
                                    glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0, 1, 0)) *
                                    glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
 
         for (const auto& vertex : vertices) {
-            glm::vec3 transformedVertex = position + dilation * glm::vec3(rotationMatrix * glm::vec4(vertex.position, 1.0f));
+            // Scale first, then rotate, and finally translate
+            glm::vec3 scaledVertex = dilation * vertex.position;
+            glm::vec3 transformedVertex = position + glm::vec3(rotationMatrix * glm::vec4(scaledVertex, 1.0f));
+
             float dotProduct = glm::dot(transformedVertex, direction);
             if (dotProduct > maxDot) {
                 maxDot = dotProduct;
@@ -163,6 +171,7 @@ public:
 
         return supportPoint;
     }
+
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_SHAPE_H

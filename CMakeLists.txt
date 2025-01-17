@@ -57,6 +57,7 @@ add_executable(GameEngine
         engine/physics/GJK/GJK.cpp
         test_game/entities/MyCube.h
         engine/physics/CollisionEvent.h
+        engine/entitities/Point.h
 
 )
 

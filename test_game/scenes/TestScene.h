@@ -15,6 +15,7 @@
 #include "../../engine/core/patterns/Singleton.h"
 #include "../../engine/physics/CollisionHandler.h"
 #include "../entities/MyCube.h"
+#include "../../engine/entitities/Point.h"
 
 class TestScene : public Scene {
 private:
@@ -74,15 +75,15 @@ public:
 
         MyCube* cube1 = new MyCube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
         MyCube* cube2 = new MyCube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(0, 0, 1));
+
         cube1->fixed = false;
         cube2->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
-            cube1->position.x += sin(glfwGetTime()) / 100;
-            cube1->position.y += cos(glfwGetTime()) / 100;
+            cube1->position.x += (sin(glfwGetTime())) * deltaTime * 5;
+            cube1->position.y += (cos(glfwGetTime())) * deltaTime * 5;
         });
         entityController->addEntity(cube1);
         entityController->addEntity(cube2);
-
 
     }
 };

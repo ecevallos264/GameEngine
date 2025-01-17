@@ -16,7 +16,6 @@ public:
     bool fixed = true;
     glm::vec3 position;
     glm::vec3 color;
-protected:
     Shader* shader;
     static std::atomic<size_t> nextId;
     size_t instanceId;
