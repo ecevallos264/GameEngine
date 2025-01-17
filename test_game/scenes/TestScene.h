@@ -23,19 +23,19 @@ public:
         this->shader = shader;
         float unit = 1.0f;
 
-        entityController->addEntity(std::make_shared<Line>(
+        entityController->addEntity(new Line(
                 glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
                 glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
                 glm::vec3(1.0f, 0.0f, 0.0f),
                 1.0f, this->shader));
 
-        entityController->addEntity(std::make_shared<Line>(
+        entityController->addEntity(new Line(
                 glm::vec3(0.0f, Settings::MAX_RENDER_DISTANCE, 0.0f),
                 glm::vec3(0.0f, -Settings::MAX_RENDER_DISTANCE, 0.0f),
                 glm::vec3(0.0f, 1.0f, 0.0f),
                 1.0f, this->shader));
 
-        entityController->addEntity(std::make_shared<Line>(
+        entityController->addEntity(new Line(
                 glm::vec3(0.0f, 0.0f, Settings::MAX_RENDER_DISTANCE),
                 glm::vec3(0.0f, 0.0f, -Settings::MAX_RENDER_DISTANCE),
                 glm::vec3(0.0f, 0.0f, 1.0f),
@@ -44,34 +44,42 @@ public:
         for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
             if (i == 0) continue;
             float line = i * unit;
-            entityController->addEntity(std::make_shared<Line>(
+            entityController->addEntity(new Line(
                     glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, line),
                     glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, line),
                     glm::vec3(0.5f, 0.5f, 0.5f),
                     1.0f,
-                    this->shader));
+                    this->shader
+                    ));
         }
 
         for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
             if (i == 0) continue;
             float line = i * unit;
-            entityController->addEntity(std::make_shared<Line>(
-                    glm::vec3(line, 0.0f, Settings::MAX_RENDER_DISTANCE),
-                    glm::vec3(line, 0.0f, -Settings::MAX_RENDER_DISTANCE),
-                    glm::vec3(0.5f, 0.5f, 0.5f),
-                    1.0f,
-                    this->shader));
+            entityController->addEntity(
+                    new Line(glm::vec3(
+                            line,
+                            0.0f,
+                            Settings::MAX_RENDER_DISTANCE),
+                            glm::vec3(line, 0.0f, -Settings::MAX_RENDER_DISTANCE),glm::vec3(0.5f, 0.5f, 0.5f),
+                            1.0f,
+                            this->shader));
         }
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(this->shader);
+        Player* player = new Player(this->shader);
         entityController->addEntity(player);
 
 
-        std::shared_ptr<Cube> cube1 = std::make_shared<Cube>(glm::vec3(-1.0f, 0.0f, -20.0f), this->shader, glm::vec3(0, 0, 1.0f));
-        std::shared_ptr<Cube> cube2 = std::make_shared<Cube>(glm::vec3(-0.0f, 0.0f, -20.0f), this->shader, glm::vec3(0, 0, 1.0f));
+        Cube* cube1 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0.0f));
+        Cube* cube2 = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0.0f));
+        cube1->setOnUpdateCallback([cube1](double deltaTime) {
+            cube1->position.x += sin(glfwGetTime()) / 100;
+            cube1->position.y += cos(glfwGetTime()) / 100;
+        });
+        cube1->fixed = true;
+        cube2->fixed = true;
         entityController->addEntity(cube1);
-        entityController->addEntity(cube1);
-        std::cout << (CollisionHandler::getInstance().handleCollision(cube1, cube2) ? "Collision Detected" : "No Collision Detected") << std::endl;
+        entityController->addEntity(cube2);
 
 
     }

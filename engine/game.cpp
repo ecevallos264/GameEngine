@@ -1,12 +1,10 @@
 #include "game.h"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
 #include "camera/CameraHandler.h"
 #include "core/settings/settings.h"
 #include "entitities/line.h"
 #include "core/observability/FPSCounter.h"
 #include "rendering/SceneController.h"
-
+#include "physics/CollisionHandler.h"
 
 void Game::run(GLFWwindow* window) {
     while (!glfwWindowShouldClose(window)) {
@@ -19,6 +17,20 @@ void Game::run(GLFWwindow* window) {
         GameState::getInstance().lastFrame = currentFrame;
 
         SceneController::getInstance().getCurrentScene()->update(GameState::getInstance().deltaTime);
+
+        for(int i = 0; i < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); i++) {
+            Entity* entity1 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[i];
+            for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
+                Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
+                if(CollisionHandler::getInstance().handleCollision(entity1, entity2)) {
+                    EventDispatcher::getInstance().dispatch(
+                            CollisionEvent(
+                                    GameState::getInstance().deltaTime,
+                                    entity1,
+                                    entity2));
+                }
+            }
+        }
 
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 

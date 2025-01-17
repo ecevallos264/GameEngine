@@ -1,21 +1,22 @@
 //
-// Created by eceva on 1/15/2025.
+// Created by eceva on 1/17/2025.
 //
 
-#ifndef GAMEENGINE_CUBE_H
-#define GAMEENGINE_CUBE_H
+#ifndef GAMEENGINE_MYCUBE_H
+#define GAMEENGINE_MYCUBE_H
 
-#include <glfw/glfw3.h>
-#include "shape.h"
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
+#include "../../engine/entitities/shape.h"
 
-class Cube : public Shape {
+struct MyCubeCollision {
+
+};
+
+class MyCube : public Shape {
 private:
-    std::function<void(double)> onUpdate;
+
 
 public:
-    Cube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
+    MyCube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
         position = pos;
         this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.5f), color, 1.0f});
         this->vertices.push_back({glm::vec3(0.5f, -0.5f,  0.5f), color, 1.0f});
@@ -57,9 +58,7 @@ public:
         glBindVertexArray(0);
     }
 
-    void setOnUpdateCallback(std::function<void(double)> callback) {
-        this->onUpdate = callback;
-    }
+
 
     void update(float deltaTime) override {
         Shape::update(deltaTime);
@@ -68,9 +67,14 @@ public:
         }
     }
 
-    std::type_index getType() const override {
-        return typeid(Cube);
+    void onCollision(MyCube entity) {
+
+    }
+
+    static std::type_index getType() {
+        return typeid(MyCube);
     }
 };
 
-#endif //GAMEENGINE_CUBE_H
+
+#endif //GAMEENGINE_MYCUBE_H

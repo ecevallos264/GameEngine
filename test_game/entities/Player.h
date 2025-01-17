@@ -15,10 +15,11 @@
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
+#include "../../engine/entitities/shape.h"
 
-class Player : public EventListener, public Entity {
+class Player : public EventListener, public Shape {
 public:
-    Player(Shader* shader) : EventListener(), Entity(shader) {
+    Player(Shader* shader) : EventListener(), Shape(shader) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });
@@ -65,6 +66,10 @@ public:
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
         }
+    }
+
+    std::type_index getType() {
+        return typeid(Player);
     }
 };
 

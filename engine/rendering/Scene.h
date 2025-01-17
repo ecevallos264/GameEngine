@@ -14,7 +14,10 @@ protected:
 public:
     void update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void addEntity(std::shared_ptr<Entity> entity);
+    void addEntity(Entity* entity);
+    EntityController* getEntityController() {
+        return this->entityController;
+    }
 };
 
 #endif //GAMEENGINE_SCENE_H

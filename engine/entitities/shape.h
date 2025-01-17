@@ -15,8 +15,8 @@ public:
     std::vector<Vertex> vertices;
     std::vector<float> vertexBuffer;
     std::vector<unsigned int> indices;
+    std::function<void(double)> onUpdate;
 
-    glm::vec3 position;
     glm::vec3 rotation;
     float dilation = 1.0f;
 
@@ -82,6 +82,10 @@ public:
         position = pos;
     }
 
+    void setOnUpdateCallback(std::function<void(double)> callback) {
+        this->onUpdate = callback;
+    }
+
     void initializeBuffers() {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -136,17 +140,23 @@ public:
         }
     }
 
-    glm::vec3 getSupportPoint(const glm::vec3& direction) const {
-        float maxDot = -FLT_MAX;
+    glm::vec3 getSupportPoint(const glm::vec3& direction) {
+        float maxDot = -std::numeric_limits<float>::infinity();
         glm::vec3 supportPoint;
 
+        glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1, 0, 0)) *
+                                   glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0, 1, 0)) *
+                                   glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
+
         for (const auto& vertex : vertices) {
-            float dotProduct = glm::dot(vertex.position, direction);
+            glm::vec3 transformedVertex = position + dilation * glm::vec3(rotationMatrix * glm::vec4(vertex.position, 1.0f));
+            float dotProduct = glm::dot(transformedVertex, direction);
             if (dotProduct > maxDot) {
                 maxDot = dotProduct;
-                supportPoint = vertex.position;
+                supportPoint = transformedVertex;
             }
         }
+
         return supportPoint;
     }
 };

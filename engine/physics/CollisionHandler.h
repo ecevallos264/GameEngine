@@ -9,13 +9,57 @@
 #include "../rendering/Entity.h"
 #include "../entitities/shape.h"
 #include "GJK/GJK.h"
+#include "CollisionEvent.h"
+
+struct CollisionEntry {
+    std::type_index entityA;
+    std::type_index entityB;
+    bool operator==(const CollisionEntry& other) const {
+        return entityA == other.entityA && entityB == other.entityB;
+    }
+};
+
+namespace std {
+    template <>
+    struct hash<CollisionEntry> {
+        std::size_t operator()(const CollisionEntry& entry) const {
+            return hash<std::type_index>()(entry.entityA) ^ hash<std::type_index>()(entry.entityB);
+        }
+    };
+}
+
+struct CollisionData {
+    Entity* entityA;
+    Entity* entityB;
+
+
+};
 
 class CollisionHandler : public Singleton<CollisionHandler> {
+private:
+    std::unordered_map<CollisionEntry, std::function<void(CollisionData)>> registry;
 public:
-    CollisionHandler() : Singleton<CollisionHandler>() {}
+    CollisionHandler() : Singleton<CollisionHandler>() {
+    }
 
-    bool handleCollision(std::shared_ptr<Shape> entityA, std::shared_ptr<Shape> entityB) {
-        return GJK(entityA, entityB);
+    bool handleCollision(Entity* entityA, Entity* entityB) {
+        return check(entityA, entityB);
+    }
+
+    template<typename T>
+    void subscribe(std::type_index index, std::function<void(CollisionData)> callback) {
+        CollisionEntry entry = (T::getType() < index)
+                               ? CollisionEntry{T::getType(), index}
+                               : CollisionEntry{index, T::getType()};
+        registry[entry] = callback;
+    }
+
+    void onEvent(CollisionEvent event) {
+        CollisionEntry entry = {typeid(*event.entityA), typeid(*event.entityB)};
+        auto it = registry.find(entry);
+        if (it != registry.end()) {
+            it->second({event.entityA, event.entityB});
+        }
     }
 };
 

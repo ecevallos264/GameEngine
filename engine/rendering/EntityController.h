@@ -13,11 +13,11 @@
 
 class EntityController : Renderer {
 public:
-    std::vector<std::shared_ptr<Entity>> entities;
+    std::vector<Entity*> entities;
 
     void update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void addEntity(std::shared_ptr<Entity> entity);
+    void addEntity(Entity* entity);
 };
 
 #endif //GAMEENGINE_ENTITYCONTROLLER_H

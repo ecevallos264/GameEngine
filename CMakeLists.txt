@@ -51,11 +51,12 @@ add_executable(GameEngine
         test_game/scenes/TestScene.h
         engine/entitities/Cube.h
         engine/entitities/Vertex.h
-        engine/entitities/Face.h
-        engine/entitities/Edge.h
         engine/physics/Simplex.h
         engine/physics/CollisionHandler.h
         engine/physics/GJK/GJK.h
+        engine/physics/GJK/GJK.cpp
+        test_game/entities/MyCube.h
+        engine/physics/CollisionEvent.h
 
 )
 
