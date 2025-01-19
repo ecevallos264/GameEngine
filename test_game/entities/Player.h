@@ -26,7 +26,6 @@ public:
     }
 
     void onEvent(const Event &event) {
-        std::cout << "Event was Passed" << std::endl;
     }
 
     void onEvent(const KeyEvent &event) {

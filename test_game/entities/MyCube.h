@@ -5,38 +5,34 @@
 #ifndef GAMEENGINE_MYCUBE_H
 #define GAMEENGINE_MYCUBE_H
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
+#include <GL/gl.h>
+
 #include "../../engine/entitities/shape.h"
 #include "../../engine/physics/CollisionHandler.h"
-
-struct MyCubeCollision {
-
-};
-
+#include "../../engine/entitities/Point.h"
 
 
 class MyCube : public Shape {
 private:
     bool colliding = false;
-    void registerCollisionListener() {
-        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
-            this->onCollision(static_cast<MyCube*>(data.entityB));
-        });
-    }
 
 public:
     MyCube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
-        registerCollisionListener();
-        position = pos;
-        this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(0.5f, -0.5f,  0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(0.5f, 0.5f,  0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(-0.5f, 0.5f,  0.5f), color, 1.0f});
+        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
+            this->onCollision(static_cast<MyCube*>(data.entityB));
+        });
 
-        this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  -0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(0.5f, -0.5f,  -0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(0.5f, 0.5f,  -0.5f), color, 1.0f});
-        this->vertices.push_back({glm::vec3(-0.5f, 0.5f,  -0.5f), color, 1.0f});
+        position = pos;
+        this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(0.5f, -0.5f,  0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(0.5f, 0.5f,  0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(-0.5f, 0.5f,  0.5f), color, 0.5f});
+
+        this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  -0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(0.5f, -0.5f,  -0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(0.5f, 0.5f,  -0.5f), color, 0.5f});
+        this->vertices.push_back({glm::vec3(-0.5f, 0.5f,  -0.5f), color, 0.5f});
         updateVertexBuffer();
 
         indices = {
@@ -54,18 +50,35 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        // Set up the model matrix
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->getPosition());
 
+        // Use the shader program and set uniform values
         this->shader->use();
         this->shader->setMat4("view", view);
         this->shader->setMat4("projection", projection);
         this->shader->setMat4("model", model);
 
+        // Handle debug rendering
+        if (Settings::DEBUG_RENDERING) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glPointSize(10.0f);
+
+            glBindVertexArray(this->getVAO());
+            glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(vertices.size()));
+            glBindVertexArray(0);
+
+//            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
         glBindVertexArray(this->getVAO());
-        glDrawElements(GL_TRIANGLES, this->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+
+        glDisable(GL_BLEND);
     }
+
 
 
 

@@ -33,7 +33,6 @@ public:
         this->shader->setMat4("view", view);
         this->shader->setMat4("projection", projection);
         this->shader->setMat4("model", model);
-        this->shader->setVec3("shapeColor", color);
 
         glBindVertexArray(this->getVAO());
         glDrawArrays(GL_POINTS, 0, 1); // Render as a single point

@@ -26,7 +26,6 @@ void Game::run(GLFWwindow* window) {
                 Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
                 if(entity2->fixed) continue;
                 if(CollisionHandler::getInstance().handleCollision(entity1, entity2)) {
-                    std::cout << "Colliding" << std::endl;
                     EventDispatcher::getInstance().dispatch(
                             CollisionEvent(
                                     GameState::getInstance().deltaTime,
@@ -37,10 +36,9 @@ void Game::run(GLFWwindow* window) {
         }
 
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
-        SceneController::getInstance().getCurrentScene()->getEntityController()->debugRender(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 
         FPSCounter::getInstance().increment();
-//        std::cout << FPSCounter::getInstance().fps << std::endl;
+        std::cout << FPSCounter::getInstance().fps << std::endl;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
