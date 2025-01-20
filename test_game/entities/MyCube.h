@@ -96,6 +96,7 @@ public:
     }
 
     void onCollision(MyCube* entity) {
+        std::cout << "Colliding" << std::endl;
         this->colliding = true;
     }
 

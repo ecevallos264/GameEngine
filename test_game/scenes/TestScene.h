@@ -94,8 +94,8 @@ public:
             }
         });
         entityController->addEntity(cube1);
-        for(int i = 0; i < 100; i++) {
-            MyCube* cube2 = new MyCube(glm::vec3(5.0f, i, 0.0f), this->shader, glm::vec3(1, 0, 0));
+        for(int i = 0; i < 1; i++) {
+            MyCube* cube2 = new MyCube(glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0));
 
             cube2->fixed = false;
             entityController->addEntity(cube2);

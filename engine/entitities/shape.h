@@ -146,9 +146,13 @@ public:
         }
     }
 
+#include <iostream>
+#include <glm/gtx/string_cast.hpp> // For printing glm::vec3
+
     glm::vec3 getSupportPoint(const glm::vec3& direction) {
         if (glm::length(direction) < 1e-6f) {
-            return glm::vec3(1.0f, 0.0f, 0.0f); // Default fallback
+            std::cerr << "Direction vector is too small: " << glm::to_string(direction) << std::endl;
+            throw std::invalid_argument("Direction vector is too small.");
         }
 
         float maxDot = -std::numeric_limits<float>::infinity();
@@ -167,10 +171,12 @@ public:
                 maxDot = dotProduct;
                 supportPoint = transformedVertex;
             }
+
         }
 
         return supportPoint;
     }
+
 
 };
 
