@@ -14,14 +14,15 @@
 
 
 class MyCube : public Shape {
-private:
+public:
     bool colliding = false;
+    std::string id;
 
 public:
-    MyCube(glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader) {
-        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
-            this->onCollision(static_cast<MyCube*>(data.entityB));
-        });
+    MyCube(std::string id, glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader), id(id) {
+//        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
+//            this->onCollision(static_cast<MyCube*>(data.entityA));
+//        });
 
         position = pos;
         this->vertices.push_back({glm::vec3(-0.5f, -0.5f,  0.5f), color, 0.5f});
@@ -44,6 +45,7 @@ public:
                 0, 1, 5, 5, 4, 0
         };
         initializeBuffers();
+        this->fixed = false;
     }
 
     void render(glm::mat4 view, glm::mat4 projection) override {
@@ -96,7 +98,7 @@ public:
     }
 
     void onCollision(MyCube* entity) {
-        std::cout << "Colliding" << std::endl;
+        std::cout << "Colliding " << this->id << ":" <<  entity->id << std::endl;
         this->colliding = true;
     }
 

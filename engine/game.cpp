@@ -25,12 +25,12 @@ void Game::run(GLFWwindow* window) {
             for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
                 Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
                 if(entity2->fixed) continue;
-                if(CollisionHandler::getInstance().handleCollision(entity1, entity2)) {
-                    EventDispatcher::getInstance().dispatch(
-                            CollisionEvent(
-                                    GameState::getInstance().deltaTime,
-                                    entity1,
-                                    entity2));
+                if(CollisionHandler::getInstance().checkForCollision(entity1, entity2)) {
+                    MyCube* cube1 = static_cast<MyCube*>(entity1);
+                    MyCube* cube2 = static_cast<MyCube*>(entity2);
+                    std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;
+                    cube1->colliding = true;
+                    cube2->colliding = true;
                 }
             }
         }

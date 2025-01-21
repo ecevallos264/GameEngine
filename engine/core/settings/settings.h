@@ -20,7 +20,7 @@ public:
     constexpr static int WINDOW_HEIGHT = 1200;
     constexpr static char* WINDOW_TITLE = "Open GL Learning Material";
 
-    constexpr static int MAX_GJK_ITERATION = 100;
+    constexpr static int MAX_GJK_ITERATION = 1000;
 
     constexpr static bool DEBUG_RENDERING = false;
 };

@@ -74,31 +74,28 @@ public:
         entityController->addEntity(player);
 
 
-        MyCube* cube1 = new MyCube(glm::vec3(5.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
+        MyCube* cube1 = new MyCube("Main Cube", glm::vec3(5.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
 
         cube1->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_UP)) {
-                cube1->position.y += deltaTime * 1;
+                cube1->position.y += deltaTime * 0.5;
 
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_DOWN)) {
-                cube1->position.y -= deltaTime * 1;
+                cube1->position.y -= deltaTime * 0.5;
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_LEFT)) {
-                cube1->position.x += deltaTime * 1;
+                cube1->position.x -= deltaTime * 0.5;
 
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_RIGHT)) {
-                cube1->position.x -= deltaTime * 1;
+                cube1->position.x += deltaTime * 0.5;
             }
         });
         entityController->addEntity(cube1);
-        for(int i = 0; i < 1; i++) {
-            MyCube* cube2 = new MyCube(glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0));
-
-            cube2->fixed = false;
-            entityController->addEntity(cube2);
+        for(int i = 0; i < 100; i++) {
+            entityController->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)));
         }
     }
 };

@@ -13,6 +13,7 @@
 
 class Entity : Renderer {
 public:
+    std::string id;
     bool fixed = true;
     glm::vec3 position;
     glm::vec3 color;
