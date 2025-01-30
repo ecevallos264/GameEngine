@@ -42,7 +42,7 @@ public:
 
     }
 
-    bool checkForCollision(Entity* entityA, Entity* entityB) {
+    bool checkForCollision(Shape* entityA, Shape* entityB) {
         return check(entityA, entityB);
     }
 

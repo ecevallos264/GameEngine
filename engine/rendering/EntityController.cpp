@@ -25,7 +25,7 @@ void EntityController::addEntity(Entity* entity) {
 void EntityController::debugRender(glm::mat4 view, glm::mat4 projection) {
     for(Entity* entity: this->entities) {
         Shape* shape = static_cast<Shape*>(entity);
-        for (const auto& vertex : shape->vertices) {
+        for (const auto& vertex : shape->getVertices()) {
             Point point(vertex.position, glm::vec3(1.0f, 0.0f, 0.0f), shape->shader); // Red point for debugging
             point.render(view, projection);
         }

@@ -58,6 +58,9 @@ add_executable(GameEngine
         test_game/entities/MyCube.h
         engine/physics/CollisionEvent.h
         engine/entitities/Point.h
+        engine/rendering/BoundingRegion.h
+        engine/entitities/Rectangle.h
+        engine/rendering/RenderableEntity.h
 
 )
 

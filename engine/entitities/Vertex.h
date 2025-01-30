@@ -13,6 +13,8 @@ struct Vertex {
     float alpha;
 
 public:
+    Vertex()
+            : position(glm::vec3()), color(glm::vec3()), alpha(1.0f) {}
     Vertex(const glm::vec3& pos, const glm::vec3& col, float a = 1.0f)
             : position(pos), color(col), alpha(a) {}
 

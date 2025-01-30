@@ -25,7 +25,9 @@ void Game::run(GLFWwindow* window) {
             for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
                 Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
                 if(entity2->fixed) continue;
-                if(CollisionHandler::getInstance().checkForCollision(entity1, entity2)) {
+                Shape* shape1 = static_cast<Shape*>(entity1);
+                Shape* shape2 = static_cast<Shape*>(entity2);
+                if(CollisionHandler::getInstance().checkForCollision(shape1, shape2)) {
                     MyCube* cube1 = static_cast<MyCube*>(entity1);
                     MyCube* cube2 = static_cast<MyCube*>(entity2);
                     std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;

@@ -11,7 +11,7 @@
 #include "Renderer.h"
 #include "../core/shaders/shader-compiler.h"
 
-class Entity : Renderer {
+class Entity : public Renderer {
 public:
     std::string id;
     bool fixed = true;
@@ -30,7 +30,7 @@ public:
     }
     void render(glm::mat4 view, glm::mat4 projection) override;
     void update(float deltaTime) override;
-    virtual glm::vec3 getSupportPoint(const glm::vec3& direction) = 0;
+
 
     static std::type_index getType() {
         return typeid(Entity);
