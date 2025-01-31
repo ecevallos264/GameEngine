@@ -30,7 +30,7 @@ void Game::run(GLFWwindow* window) {
                 if(CollisionHandler::getInstance().checkForCollision(shape1, shape2)) {
                     MyCube* cube1 = static_cast<MyCube*>(entity1);
                     MyCube* cube2 = static_cast<MyCube*>(entity2);
-                    std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;
+//                    std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;
                     cube1->colliding = true;
                     cube2->colliding = true;
                 }
@@ -40,7 +40,8 @@ void Game::run(GLFWwindow* window) {
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 
         FPSCounter::getInstance().increment();
-        std::cout << FPSCounter::getInstance().fps << std::endl;
+//        std::cout << FPSCounter::getInstance().fps << std::endl;
+//        glfwSetWindowTitle(window, std::to_string(FPSCounter::getInstance().getFPS()).c_str());
 
         glfwSwapBuffers(window);
         glfwPollEvents();

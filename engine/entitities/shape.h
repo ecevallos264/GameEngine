@@ -19,7 +19,7 @@ public:
 
     BoundingRegion boundingRegion;
 public:
-    Shape(Shader* shader) : RenderableEntity(shader) {}
+    Shape(Shader* shader) : RenderableEntity(shader), boundingRegion(BoundingRegion::generateBoundingRegion(this->shader, this->vertices, position)) {}
 
     void setDestroyed() {
         this->destroyed = true;
@@ -57,9 +57,15 @@ public:
         return supportPoint;
     }
 
-//    void updateBoundingRegion() {
-//        BoundingRegion
-//    }
+    void updateBoundingRegion() {
+        this->boundingRegion = BoundingRegion::generateBoundingRegion(this->shader, this->vertices, position);
+    }
+
+    void setRenderBoundingRegionVisibility(bool state) {
+        this->regionBoundingVisible = state;
+    }
+
+    bool regionBoundingVisible;
 };
 
 #endif //SOFTWAREENGINEERINGPROJECT_SHAPE_H

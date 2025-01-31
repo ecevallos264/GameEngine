@@ -61,6 +61,7 @@ add_executable(GameEngine
         engine/rendering/BoundingRegion.h
         engine/entitities/Rectangle.h
         engine/rendering/RenderableEntity.h
+        test_game/entities/HexagonalPrism.h
 
 )
 

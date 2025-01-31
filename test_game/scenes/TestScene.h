@@ -17,6 +17,7 @@
 #include "../../engine/physics/CollisionHandler.h"
 
 #include "../../engine/entitities/Point.h"
+#include "../entities/HexagonalPrism.h"
 
 class TestScene : public Scene {
 private:
@@ -94,9 +95,14 @@ public:
             }
         });
         entityController->addEntity(cube1);
-        for(int i = 0; i < 100; i++) {
+        for(int i = 10; i < 10; i++) {
             entityController->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)));
         }
+        HexagonalPrism* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(0, 0, 0), this->shader, glm::vec3(0, 1, 1));
+        prism->setOnUpdateCallback([prism](double deltaTime) {
+           prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+        });
+        entityController->addEntity(prism);
     }
 };
 
