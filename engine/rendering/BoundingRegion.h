@@ -10,22 +10,16 @@
 
 class BoundingRegion : public RenderableEntity {
 private:
-    Shader* shader;
     glm::vec3 color;
-    glm::vec3 position;
     float alpha;
 
     double minX, maxX;
     double minY, maxY;
     double minZ, maxZ;
 
-    GLuint VAO, VBO, EBO;
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-
 public:
     BoundingRegion(Shader* shader, const std::vector<Vertex>& vertexList, glm::vec3 position, glm::vec3 color, float alpha)
-            : RenderableEntity(shader), shader(shader), position(position), color(color), alpha(alpha),
+            : RenderableEntity(shader), color(color), alpha(alpha),
               minX(DBL_MAX), maxX(DBL_MIN), minY(DBL_MAX), maxY(DBL_MIN), minZ(DBL_MAX), maxZ(DBL_MIN) {
 
         if (vertexList.empty()) {
@@ -77,8 +71,26 @@ public:
         return glm::vec3(abs(maxX - minX), abs(maxY - minY), abs(maxZ - minZ));
     }
 
+    void checkOpenGLError(std::string msg) {
+        GLenum err;
+        if((err = glGetError()) != GL_NO_ERROR) {
+            std::cout << "[" << err << "]: " << msg << std::endl;
+        }
+    }
+
     void render(glm::mat4 view, glm::mat4 projection) override {
-        if (!shader || VAO == 0) return;
+        if (!shader) {
+            std::cout << "ERROR: Shader is null!" << std::endl;
+            return;
+        }
+
+        if (VAO == 0) {
+            std::cout << "ERROR: VAO is not initialized!" << std::endl;
+            return;
+        }
+
+        shader->use();
+        checkOpenGLError("After shader->use()");
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -87,23 +99,24 @@ public:
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, position);
 
-        shader->use();
         shader->setMat4("view", view);
         shader->setMat4("projection", projection);
         shader->setMat4("model", model);
         shader->setVec3("shapeColor", color);
+        checkOpenGLError("After setting uniforms");
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
         glBindVertexArray(VAO);
+        checkOpenGLError("After glBindVertexArray()");
+
         glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
+        checkOpenGLError("After glDrawElements()");
+
         glBindVertexArray(0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        GLenum err;
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            std::cout << "OpenGL Error: " << err << std::endl;
-        }
     }
+
 
     void initializeBuffers() {
         glGenVertexArrays(1, &VAO);
