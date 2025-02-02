@@ -9,7 +9,7 @@ add_executable(GameEngine
         engine/camera/Camera.h
         engine/camera/CameraHandler.cpp
         engine/camera/CameraHandler.h
-        engine/entitities/shape.h
+        engine/entitities/Shape.h
         engine/core/eventing/Event.h
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h
@@ -62,6 +62,7 @@ add_executable(GameEngine
         engine/entitities/Rectangle.h
         engine/rendering/RenderableEntity.h
         test_game/entities/HexagonalPrism.h
+        engine/rendering/Oct-Tree.h
 
 )
 

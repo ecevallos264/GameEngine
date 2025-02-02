@@ -1,7 +1,7 @@
 #ifndef GAME_ENGINE_LINE_H
 #define GAME_ENGINE_LINE_H
 
-#include "shape.h"
+#include "Shape.h"
 #include "glad/glad.h"
 #include "../core/shaders/shader-compiler.h"
 

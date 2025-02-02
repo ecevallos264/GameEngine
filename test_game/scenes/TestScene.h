@@ -8,7 +8,7 @@
 #include <memory>
 #include "../entities/MyCube.h"
 #include "../../engine/rendering/Scene.h"
-#include "../../engine/entitities/line.h"
+#include "../../engine/entitities/Line.h"
 #include "../../engine/core/settings/settings.h"
 #include "../../engine/core/shaders/shader-compiler.h"
 #include "../../engine/entitities/Cube.h"

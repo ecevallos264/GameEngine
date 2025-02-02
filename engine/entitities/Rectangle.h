@@ -1,7 +1,7 @@
 #ifndef GAMEENGINE_RECTANGLE_H
 #define GAMEENGINE_RECTANGLE_H
 
-#include "shape.h"
+#include "Shape.h"
 
 class Rectangle : public Shape {
 protected:

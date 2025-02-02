@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "glm/vec3.hpp"
-#include "shape.h"
+#include "Shape.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "../rendering/Entity.h"
 #include "Vertex.h"

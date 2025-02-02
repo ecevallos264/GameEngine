@@ -7,7 +7,7 @@
 
 #include "../core/patterns/Singleton.h"
 #include "../rendering/Entity.h"
-#include "../entitities/shape.h"
+#include "../entitities/Shape.h"
 #include "GJK/GJK.h"
 #include "CollisionEvent.h"
 #include "../../test_game/entities/MyCube.h"

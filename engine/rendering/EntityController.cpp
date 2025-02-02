@@ -3,7 +3,7 @@
 //
 #include <memory>
 #include "EntityController.h"
-#include "../entitities/shape.h"
+#include "../entitities/Shape.h"
 #include "../entitities/Point.h"
 
 void EntityController::update(float deltaTime) {

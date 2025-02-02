@@ -2,7 +2,7 @@
 #include "game.h"
 #include "camera/CameraHandler.h"
 #include "core/settings/settings.h"
-#include "entitities/line.h"
+#include "entitities/Line.h"
 #include "core/observability/FPSCounter.h"
 #include "rendering/SceneController.h"
 #include "physics/CollisionHandler.h"

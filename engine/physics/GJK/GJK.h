@@ -8,7 +8,7 @@
 #include <memory>
 #include "glm/vec3.hpp"
 #include "../Simplex.h"
-#include "../../entitities/shape.h"
+#include "../../entitities/Shape.h"
 
 enum CollisionState {
     EVOLVING,

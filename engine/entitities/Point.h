@@ -5,7 +5,7 @@
 
 #include <glm/vec3.hpp>
 #include <iostream>
-#include "shape.h"
+#include "Shape.h"
 
 class Point : public Shape {
 private:

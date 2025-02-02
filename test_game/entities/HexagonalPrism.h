@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
-#include "../../engine/entitities/shape.h"
+#include "../../engine/entitities/Shape.h"
 #include "../../engine/physics/CollisionHandler.h"
 #include "../../engine/entitities/Point.h"
 #include "../../engine/core/settings/settings.h"

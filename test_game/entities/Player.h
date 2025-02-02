@@ -15,7 +15,7 @@
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
-#include "../../engine/entitities/shape.h"
+#include "../../engine/entitities/Shape.h"
 
 class Player : public EventListener, public Shape {
 public:
