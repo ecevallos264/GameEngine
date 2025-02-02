@@ -76,54 +76,44 @@ public:
     }
 
     void initializeBuffers() {
-            checkOpenGLError("Checkpoint 1");
             glGenVertexArrays(1, &VAO);
             glGenBuffers(1, &VBO);
             glGenBuffers(1, &EBO);
 
-            checkOpenGLError("Checkpoint 2");
             glBindVertexArray(VAO);
 
-            checkOpenGLError("Checkpoint 3");
             // Ensure vertex data is not empty
             if (vertices.empty()) {
                 std::cout << "ERROR: Vertex buffer is empty!" << std::endl;
                 return;
             }
 
-            checkOpenGLError("Checkpoint 4");
             // Bind and upload vertex data
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
             glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
-            checkOpenGLError("Checkpoint 5");
             // Ensure index buffer is not empty
             if (indices.empty()) {
                 std::cout << "ERROR: Index buffer is empty!" << std::endl;
                 return;
             }
 
-            checkOpenGLError("Checkpoint 6");
             // Bind and upload index data
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-            checkOpenGLError("Checkpoint 7");
             // Extract position (location 0)
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
             glEnableVertexAttribArray(0);
 
-            checkOpenGLError("Checkpoint 8");
             // Extract color (location 1)
             glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
             glEnableVertexAttribArray(1);
 
-            checkOpenGLError("Checkpoint 9");
             // Extract alpha (location 2)
             glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, alpha));
             glEnableVertexAttribArray(2);
 
-            checkOpenGLError("Checkpoint 10");
             glBindVertexArray(0);
     }
 
