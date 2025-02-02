@@ -28,54 +28,54 @@ public:
         this->shader = shader;
         float unit = 1.0f;
 
-        entityController->addEntity(new Line(
+        this->addEntity(new Line(
                 glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
                 glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
                 glm::vec3(1.0f, 0.0f, 0.0f),
-                1.0f, this->shader));
+                1.0f, this->shader), "X Line");
 
-        entityController->addEntity(new Line(
+        this->addEntity(new Line(
                 glm::vec3(0.0f, Settings::MAX_RENDER_DISTANCE, 0.0f),
                 glm::vec3(0.0f, -Settings::MAX_RENDER_DISTANCE, 0.0f),
                 glm::vec3(0.0f, 1.0f, 0.0f),
-                1.0f, this->shader));
+                1.0f, this->shader), "Y Line");
 
-        entityController->addEntity(new Line(
+        this->addEntity(new Line(
                 glm::vec3(0.0f, 0.0f, Settings::MAX_RENDER_DISTANCE),
                 glm::vec3(0.0f, 0.0f, -Settings::MAX_RENDER_DISTANCE),
                 glm::vec3(0.0f, 0.0f, 1.0f),
-                1.0f, this->shader));
+                1.0f, this->shader), "Z Line");
 
         for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
             if (i == 0) continue;
             float line = i * unit;
-            entityController->addEntity(new Line(
+            this->addEntity(new Line(
                     glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, line),
                     glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, line),
                     glm::vec3(0.5f, 0.5f, 0.5f),
                     1.0f,
                     this->shader
-                    ));
+                    ), "Line");
         }
 
         for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
             if (i == 0) continue;
             float line = i * unit;
-            entityController->addEntity(
+            this->addEntity(
                     new Line(glm::vec3(
                             line,
                             0.0f,
                             Settings::MAX_RENDER_DISTANCE),
                             glm::vec3(line, 0.0f, -Settings::MAX_RENDER_DISTANCE),glm::vec3(0.5f, 0.5f, 0.5f),
                             1.0f,
-                            this->shader));
+                            this->shader), "Line");
         }
 
         Player* player = new Player(this->shader);
-        entityController->addEntity(player);
+        this->addEntity(player, "Player");
 
 
-        MyCube* cube1 = new MyCube("Main Cube", glm::vec3(5.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
+        MyCube* cube1 = new MyCube("Main Cube", glm::vec3(0.0f, 0.0f, 0.0f), this->shader, glm::vec3(1, 0, 0));
 
         cube1->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
@@ -94,15 +94,16 @@ public:
                 cube1->position.x += deltaTime * 0.5;
             }
         });
-        entityController->addEntity(cube1);
-        for(int i = 10; i < 10; i++) {
-            entityController->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)));
+        this->addEntity(cube1, "Main Cube");
+        for(int i = 3; i < 10; i++) {
+            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)), "Cube");
         }
-        HexagonalPrism* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(0, 0, 0), this->shader, glm::vec3(0, 1, 1));
+
+        HexagonalPrism* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), this->shader, glm::vec3(0));
         prism->setOnUpdateCallback([prism](double deltaTime) {
-           prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
         });
-        entityController->addEntity(prism);
+        this->addEntity(prism, "Hex Prism");
     }
 };
 

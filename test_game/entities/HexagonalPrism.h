@@ -22,6 +22,7 @@ public:
     bool colliding = false;
     std::string id;
 
+
 public:
     HexagonalPrism(std::string id, glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader), id(id), color(color) {
         position = pos;
@@ -43,7 +44,7 @@ public:
                 {glm::vec3(-0.25f,  0.5f, -0.433f), color, 1.0f},
                 {glm::vec3(0.25f,  0.5f, -0.433f), color, 1.0f},
         };
-        updateVertexBuffer();
+
 
         indices = {
                 0, 1, 2,
@@ -73,7 +74,9 @@ public:
                 6, 13, 8,
                 6, 8, 1
         };
+//        updateVertexBuffer();
         initializeBuffers();
+//        updateBoundingRegion();
         this->fixed = false;
 
     }
@@ -99,12 +102,12 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glm::mat4 model = glm::mat4(1.0f);
+        this->model = glm::mat4(1.0f);
         model = glm::translate(model, this->getPosition());
         model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(dilation));
+        model = glm::scale(model, scale);
 
         this->shader->use();
         this->shader->setMat4("view", view);
@@ -116,15 +119,14 @@ public:
         glBindVertexArray(0);
 
         glDisable(GL_BLEND);
-        boundingRegion.render(view, projection);
-
+        if(boundingRegion) boundingRegion->render(view, projection);
     }
 
     void update(float deltaTime) override {
+
         Shape::update(deltaTime);
         this->onUpdate(deltaTime);
-        this->updateBoundingRegion();
-
+        this->updateBoundingRegion(model);
         if (this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;

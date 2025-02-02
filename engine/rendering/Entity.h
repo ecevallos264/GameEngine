@@ -15,11 +15,12 @@ class Entity : public Renderer {
 public:
     std::string id;
     bool fixed = true;
-    glm::vec3 position;
+
     glm::vec3 color;
     Shader* shader;
     static std::atomic<size_t> nextId;
     size_t instanceId;
+
 
 public:
     size_t getInstanceId() const {

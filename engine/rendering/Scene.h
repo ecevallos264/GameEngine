@@ -14,7 +14,7 @@ protected:
 public:
     void update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void addEntity(Entity* entity);
+    void addEntity(Entity* entity, std::string name);
     EntityController* getEntityController() {
         return this->entityController;
     }

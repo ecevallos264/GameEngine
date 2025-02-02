@@ -11,6 +11,7 @@ void Scene::render(glm::mat4 view, glm::mat4 projection) {
     this->entityController->render(view, projection);
 }
 
-void Scene::addEntity(Entity* entity) {
+void Scene::addEntity(Entity* entity, std::string name) {
+    std::cout << "Adding: [" + name + "]" << std::endl;
     this->entityController->addEntity(entity);
 }

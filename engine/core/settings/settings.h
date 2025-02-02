@@ -23,6 +23,8 @@ public:
     constexpr static int MAX_GJK_ITERATION = 1000;
 
     constexpr static bool DEBUG_RENDERING = false;
+
+    constexpr static glm::vec3 BOUNDING_REGION_COLOR = glm::vec3(1.0f);
 };
 
 #endif //GAMEENGINE_SETTINGS_H

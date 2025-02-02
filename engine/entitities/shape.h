@@ -17,9 +17,9 @@ class Shape : public RenderableEntity {
 public:
     bool destroyed = false;
 
-    BoundingRegion boundingRegion;
+    BoundingRegion* boundingRegion;
 public:
-    Shape(Shader* shader) : RenderableEntity(shader), boundingRegion(BoundingRegion::generateBoundingRegion(this->shader, this->vertices, position)) {}
+    Shape(Shader* shader) : RenderableEntity(shader) {}
 
     void setDestroyed() {
         this->destroyed = true;
@@ -43,7 +43,7 @@ public:
                                    glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0, 0, 1));
 
         for (const auto& vertex : vertices) {
-            glm::vec3 scaledVertex = dilation * vertex.position;
+            glm::vec3 scaledVertex = scale * vertex.position;
             glm::vec3 transformedVertex = position + glm::vec3(rotationMatrix * glm::vec4(scaledVertex, 1.0f));
 
             float dotProduct = glm::dot(transformedVertex, direction);
@@ -57,8 +57,8 @@ public:
         return supportPoint;
     }
 
-    void updateBoundingRegion() {
-        this->boundingRegion = BoundingRegion::generateBoundingRegion(this->shader, this->vertices, position);
+    void updateBoundingRegion(glm::mat4 model) {
+        this->boundingRegion = new BoundingRegion(this->shader, this->vertices, model, 1.0f);
     }
 
     void setRenderBoundingRegionVisibility(bool state) {
