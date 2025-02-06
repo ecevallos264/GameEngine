@@ -58,7 +58,52 @@ public:
     }
 
     void updateBoundingRegion(glm::mat4 model) {
-        this->boundingRegion = new BoundingRegion(this->shader, this->vertices, model, 1.0f);
+        double minX, maxX;
+        double minY, maxY;
+        double minZ, maxZ;
+
+        bool minXInitialized = false;
+        bool maxXInitialized = false;
+        bool minYInitialized = false;
+        bool maxYInitialized = false;
+        bool minZInitialized = false;
+        bool maxZInitialized = false;
+
+        for (const auto& vertex : this->vertices) {
+            glm::vec4 transformedPos = model * glm::vec4(vertex.position, 1.0f);
+
+            if (!minXInitialized || transformedPos.x < minX) {
+                minX = transformedPos.x;
+                minXInitialized = true;
+            }
+            if (!maxXInitialized || transformedPos.x > maxX) {
+                maxX = transformedPos.x;
+                maxXInitialized = true;
+            }
+
+            if (!minYInitialized || transformedPos.y < minY) {
+                minY = transformedPos.y;
+                minYInitialized = true;
+            }
+            if (!maxYInitialized || transformedPos.y > maxY) {
+                maxY = transformedPos.y;
+                maxYInitialized = true;
+            }
+
+            if (!minZInitialized || transformedPos.z < minZ) {
+                minZ = transformedPos.z;
+                minZInitialized = true;
+            }
+            if (!maxZInitialized || transformedPos.z > maxZ) {
+                maxZ = transformedPos.z;
+                maxZInitialized = true;
+            }
+        }
+        this->boundingRegion = new BoundingRegion(
+                this->shader,
+                {minX, maxX, minY, maxY, minZ, maxZ},
+                model,
+                1.0f);
     }
 
     void setRenderBoundingRegionVisibility(bool state) {

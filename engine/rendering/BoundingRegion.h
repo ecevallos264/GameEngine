@@ -8,74 +8,37 @@
 #include "Entity.h"
 #include "RenderableEntity.h"
 #include "../core/settings/settings.h"
+#include "../core/structures/List.h"
+
+struct BoundingRegionVertexData {
+    double x1, x2;
+    double y1, y2;
+    double z1, z2;
+};
 
 class BoundingRegion : public RenderableEntity {
 private:
     glm::vec3 color;
     float alpha;
+    BoundingRegionVertexData vertexData;
 
-    double minX, maxX;
-    double minY, maxY;
-    double minZ, maxZ;
+    BoundingRegion* octants[8];
+    List<BoundingRegion*> objects;
+    char activeOctants = 0x00;
 
-    bool minXInitialized = false;
-    bool maxXInitialized = false;
-    bool minYInitialized = false;
-    bool maxYInitialized = false;
-    bool minZInitialized = false;
-    bool maxZInitialized = false;
 
 public:
-    BoundingRegion(Shader* shader, const std::vector<Vertex>& vertexList, glm::mat4 modelMatrix, float alpha)
-            : RenderableEntity(shader), color(Settings::BOUNDING_REGION_COLOR), alpha(alpha),
-              minX(DBL_MAX), maxX(DBL_MIN), minY(DBL_MAX), maxY(DBL_MIN), minZ(DBL_MAX), maxZ(DBL_MIN) {
-
-        if (vertexList.empty()) {
-            return;
-        }
-
-        // Apply transformation to each vertex and find min/max in world space
-        for (const auto& vertex : vertexList) {
-            glm::vec4 transformedPos = modelMatrix * glm::vec4(vertex.position, 1.0f);
-
-            if (!minXInitialized || transformedPos.x < minX) {
-                minX = transformedPos.x;
-                minXInitialized = true;
-            }
-            if (!maxXInitialized || transformedPos.x > maxX) {
-                maxX = transformedPos.x;
-                maxXInitialized = true;
-            }
-
-            if (!minYInitialized || transformedPos.y < minY) {
-                minY = transformedPos.y;
-                minYInitialized = true;
-            }
-            if (!maxYInitialized || transformedPos.y > maxY) {
-                maxY = transformedPos.y;
-                maxYInitialized = true;
-            }
-
-            if (!minZInitialized || transformedPos.z < minZ) {
-                minZ = transformedPos.z;
-                minZInitialized = true;
-            }
-            if (!maxZInitialized || transformedPos.z > maxZ) {
-                maxZ = transformedPos.z;
-                maxZInitialized = true;
-            }
-        }
-
-        // Define transformed bounding box vertices
+    BoundingRegion(Shader* shader, BoundingRegionVertexData data, glm::mat4 modelMatrix, float alpha)
+            : RenderableEntity(shader), color(Settings::BOUNDING_REGION_COLOR), alpha(alpha), vertexData(data) {
         vertices = {
-                Vertex(glm::vec3(minX, minY, minZ), color, alpha), // Bottom-left-back
-                Vertex(glm::vec3(maxX, minY, minZ), color, alpha), // Bottom-right-back
-                Vertex(glm::vec3(minX, maxY, minZ), color, alpha), // Top-left-back
-                Vertex(glm::vec3(maxX, maxY, minZ), color, alpha), // Top-right-back
-                Vertex(glm::vec3(minX, minY, maxZ), color, alpha), // Bottom-left-front
-                Vertex(glm::vec3(maxX, minY, maxZ), color, alpha), // Bottom-right-front
-                Vertex(glm::vec3(minX, maxY, maxZ), color, alpha), // Top-left-front
-                Vertex(glm::vec3(maxX, maxY, maxZ), color, alpha)  // Top-right-front
+                Vertex(glm::vec3(data.x1, data.y1, data.z1), color, alpha), // Bottom-left-back
+                Vertex(glm::vec3(data.x2, data.y1, data.z1), color, alpha), // Bottom-right-back
+                Vertex(glm::vec3(data.x1, data.y2, data.z1), color, alpha), // Top-left-back
+                Vertex(glm::vec3(data.x2, data.y2, data.z1), color, alpha), // Top-right-back
+                Vertex(glm::vec3(data.x1, data.y1, data.z2), color, alpha), // Bottom-left-front
+                Vertex(glm::vec3(data.x2, data.y1, data.z2), color, alpha), // Bottom-right-front
+                Vertex(glm::vec3(data.x1, data.y2, data.z2), color, alpha), // Top-left-front
+                Vertex(glm::vec3(data.x2, data.y2, data.z2), color, alpha)  // Top-right-front
         };
 
         // Define indices for wireframe rendering
@@ -90,11 +53,11 @@ public:
 
 
     glm::vec3 getCenter() const {
-        return glm::vec3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, (minZ + maxZ) * 0.5f);
+        return glm::vec3((vertexData.x1 + vertexData.x2) * 0.5f, (vertexData.y1 + vertexData.y2) * 0.5f, (vertexData.z1 + vertexData.z2) * 0.5f);
     }
 
     glm::vec3 getSize() const {
-        return glm::vec3(abs(maxX - minX), abs(maxY - minY), abs(maxZ - minZ));
+        return glm::vec3(abs(vertexData.x2 - vertexData.x1), abs(vertexData.y2 - vertexData.y1), abs(vertexData.z2 - vertexData.z1));
     }
 
     void render(glm::mat4 view, glm::mat4 projection) override {
@@ -124,10 +87,6 @@ public:
 
         glBindVertexArray(0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-
-    void update(float deltaTime) override {
-        initializeBuffers();
     }
 
     ~BoundingRegion() {

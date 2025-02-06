@@ -12,6 +12,7 @@
 /*
  * Should be able to render the entity without anything else
  * */
+
 class RenderableEntity : public Entity {
 protected:
     unsigned int VAO = 0;

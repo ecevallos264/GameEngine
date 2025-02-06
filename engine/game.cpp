@@ -39,7 +39,7 @@ void Game::run(GLFWwindow* window) {
 
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 
-        FPSCounter::getInstance().increment();
+//        FPSCounter::getInstance().increment();
 //        std::cout << FPSCounter::getInstance().fps << std::endl;
 //        glfwSetWindowTitle(window, std::to_string(FPSCounter::getInstance().getFPS()).c_str());
 
