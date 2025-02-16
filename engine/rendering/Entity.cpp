@@ -17,7 +17,7 @@ void Entity::render(glm::mat4 view, glm::mat4 projection) {
     this->shader->setMat4("model", model);
 }
 
-void Entity::update(float deltaTime) {
+int Entity::update(float deltaTime) {
 
 }
 

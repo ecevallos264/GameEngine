@@ -59,7 +59,7 @@ public:
         this->onUpdate = callback;
     }
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
         Shape::update(deltaTime);
         if(this->onUpdate) {
             this->onUpdate(deltaTime);

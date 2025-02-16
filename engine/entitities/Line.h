@@ -31,7 +31,7 @@ public:
         glBindVertexArray(0);
     }
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
         glm::mat4 model = glm::mat4(1.0f);
         this->shader->setMat4("model", model);
     }

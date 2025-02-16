@@ -122,7 +122,7 @@ public:
         if(boundingRegion) boundingRegion->render(view, projection);
     }
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
 
         Shape::update(deltaTime);
         this->onUpdate(deltaTime);

@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "../entitities/Vertex.h"
 #include "../core/shaders/shader-compiler.h"
+#include "../core/structures/BoundingBox.h"
 
 /*
  * Should be able to render the entity without anything else
@@ -30,7 +31,12 @@ protected:
 
 
 public:
-    RenderableEntity(Shader* shader) : Entity(shader) {}
+    BoundingBox boundingBox;
+    RenderableEntity(Shader* shader) : Entity(shader) {
+        //TODO implement boundingBoxLogic
+        this->boundingBox = BoundingBox();
+
+    }
 
     virtual const std::vector<Vertex>& getVertices() const {
         return vertices;

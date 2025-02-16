@@ -12,7 +12,7 @@ class Scene : Renderer {
 protected:
     EntityController* entityController = new EntityController();
 public:
-    void update(float deltaTime) override;
+    int update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
     void addEntity(Entity* entity, std::string name);
     EntityController* getEntityController() {

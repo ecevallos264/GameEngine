@@ -30,7 +30,7 @@ public:
     Entity(Shader* shader) : shader(shader) {
     }
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void update(float deltaTime) override;
+    int update(float deltaTime) override;
 
 
     static std::type_index getType() {

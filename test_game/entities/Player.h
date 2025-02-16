@@ -40,7 +40,7 @@ public:
         //...
     }
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));

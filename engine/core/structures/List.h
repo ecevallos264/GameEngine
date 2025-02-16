@@ -24,6 +24,26 @@ public:
     T peekNextElement() {
         return queue.front();
     }
+
+    bool empty() {
+        return queue.empty();
+    }
+
+    void remove(T object) {
+        std::queue<T> newQueue;
+        while (!queue.empty()) {
+            T item = queue.front();
+            queue.pop();
+            if (item != object) {
+                newQueue.push(item);
+            }
+        }
+        queue = newQueue;
+    }
+
+    unsigned int size() {
+        return queue.size();
+    }
 };
 
 #endif //GAMEENGINE_LIST_H

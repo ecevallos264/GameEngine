@@ -3,7 +3,7 @@
 //
 #include "Scene.h"
 
-void Scene::update(float deltaTime) {
+int Scene::update(float deltaTime) {
     this->entityController->update(deltaTime);
 }
 

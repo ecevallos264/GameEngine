@@ -6,7 +6,7 @@
 #include "../entitities/Shape.h"
 #include "../entitities/Point.h"
 
-void EntityController::update(float deltaTime) {
+int EntityController::update(float deltaTime) {
     for(Entity* entity: this->entities) {
         entity->update(deltaTime);
     }

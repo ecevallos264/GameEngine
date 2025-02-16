@@ -54,7 +54,7 @@ public:
         return typeid(Point);
     }
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
         Shape::update(deltaTime);
         // No additional logic for points currently
     }

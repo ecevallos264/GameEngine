@@ -15,7 +15,7 @@ class EntityController : Renderer {
 public:
     std::vector<Entity*> entities;
 
-    void update(float deltaTime) override;
+    int update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
     void addEntity(Entity* entity);
     void debugRender(glm::mat4 view, glm::mat4 projection);

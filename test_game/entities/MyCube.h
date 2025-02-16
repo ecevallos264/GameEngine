@@ -89,7 +89,7 @@ public:
 
 
 
-    void update(float deltaTime) override {
+    int update(float deltaTime) override {
         Shape::update(deltaTime);
         this->updateBoundingRegion(model);
         if(this->colliding) {
