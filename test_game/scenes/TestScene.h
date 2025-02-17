@@ -79,29 +79,35 @@ public:
 
         cube1->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
+            int dirty = false;
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_UP)) {
                 cube1->position.y += deltaTime * 0.5;
-
+                dirty = true;
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_DOWN)) {
                 cube1->position.y -= deltaTime * 0.5;
+                dirty = true;
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_LEFT)) {
                 cube1->position.x -= deltaTime * 0.5;
+                dirty = true;
 
             }
             if(InputHandler::getInstance().isKeyActive(GLFW_KEY_RIGHT)) {
                 cube1->position.x += deltaTime * 0.5;
+                dirty = true;
             }
+            return dirty;
         });
         this->addEntity(cube1, "Main Cube");
-        for(int i = 3; i < 10; i++) {
-            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)), "Cube");
-        }
+//        for(int i = 3; i < 10; i++) {
+//            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), this->shader, glm::vec3(1, 0, 0)), "Cube");
+//        }
 
         HexagonalPrism* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), this->shader, glm::vec3(0));
         prism->setOnUpdateCallback([prism](double deltaTime) {
             prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+            return 1;
         });
         this->addEntity(prism, "Hex Prism");
     }

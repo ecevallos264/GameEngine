@@ -23,6 +23,10 @@ public:
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });
+        this->boundingBox = BoundingBox::fromPoints(shader, {
+                glm::vec3(1.0f),
+                glm::vec3(-1.0f),
+        });
     }
 
     void onEvent(const Event &event) {
@@ -41,30 +45,38 @@ public:
     }
 
     int update(float deltaTime) override {
+        bool dirty = false;
         if (InputHandler::isKeyActive(GLFW_KEY_W)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
+            dirty = true;
         }
         if (InputHandler::isKeyActive(GLFW_KEY_S)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
+            dirty = true;
         }
         if (InputHandler::isKeyActive(GLFW_KEY_A)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
+            dirty = true;
         }
         if (InputHandler::isKeyActive(GLFW_KEY_D)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
+            dirty = true;
         }
         if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
+            dirty = true;
         }
         if (InputHandler::isKeyActive(GLFW_KEY_LEFT_SHIFT)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
+            dirty = true;
         }
+        return dirty;
     }
 
     std::type_index getType() {

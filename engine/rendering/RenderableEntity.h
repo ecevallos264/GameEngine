@@ -8,7 +8,6 @@
 #include "Entity.h"
 #include "../entitities/Vertex.h"
 #include "../core/shaders/shader-compiler.h"
-#include "../core/structures/BoundingBox.h"
 
 /*
  * Should be able to render the entity without anything else
@@ -23,7 +22,7 @@ protected:
     std::vector<Vertex> vertices;
     std::vector<float> vertexBuffer;
     std::vector<unsigned int> indices;
-    std::function<void(double)> onUpdate;
+    std::function<int(double)> onUpdate;
 
     glm::vec3 rotation = glm::vec3(0.0f);
     glm::vec3 scale = glm::vec3(1.0f);
@@ -31,10 +30,10 @@ protected:
 
 
 public:
-    BoundingBox boundingBox;
+    bool isAlive = true;
+
     RenderableEntity(Shader* shader) : Entity(shader) {
         //TODO implement boundingBoxLogic
-        this->boundingBox = BoundingBox();
 
     }
 
@@ -78,7 +77,7 @@ public:
         position = pos;
     }
 
-    void setOnUpdateCallback(std::function<void(double)> callback) {
+    void setOnUpdateCallback(std::function<int(double)> callback) {
         this->onUpdate = callback;
     }
 

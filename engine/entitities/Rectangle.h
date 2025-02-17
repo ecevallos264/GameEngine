@@ -55,7 +55,7 @@ public:
         glBindVertexArray(0);
     }
 
-    void setOnUpdateCallback(std::function<void(double)> callback) {
+    void setOnUpdateCallback(std::function<int(double)> callback) {
         this->onUpdate = callback;
     }
 

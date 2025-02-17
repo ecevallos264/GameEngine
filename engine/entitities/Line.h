@@ -14,6 +14,7 @@ public:
         this->vertices.push_back({end, color, opacity});
 
         indices = { 0, 1 };
+        updateBoundingBoxRegion(model);
         updateVertexBuffer();
         initializeBuffers();
     }
@@ -33,7 +34,9 @@ public:
 
     int update(float deltaTime) override {
         glm::mat4 model = glm::mat4(1.0f);
+        updateBoundingBoxRegion(model);
         this->shader->setMat4("model", model);
+        return 0;
     }
 
     void setOpacity(float opacity) {

@@ -76,7 +76,7 @@ public:
         };
 //        updateVertexBuffer();
         initializeBuffers();
-//        updateBoundingRegion();
+        updateBoundingBoxRegion(model);
         this->fixed = false;
 
     }
@@ -119,20 +119,21 @@ public:
         glBindVertexArray(0);
 
         glDisable(GL_BLEND);
-        if(boundingRegion) boundingRegion->render(view, projection);
+//        if(boundingRegion) boundingRegion->render(view, projection);
     }
 
     int update(float deltaTime) override {
-
-        Shape::update(deltaTime);
-        this->onUpdate(deltaTime);
-        this->updateBoundingRegion(model);
+        bool dirty = false;
+        dirty &= Shape::update(deltaTime);
+        dirty &= this->onUpdate(deltaTime);
+        this->updateBoundingBoxRegion(model);
         if (this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;
         } else {
             this->setColor(color);
         }
+        return dirty;
     }
 
     void onCollision(HexagonalPrism* entity) {

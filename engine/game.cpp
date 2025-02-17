@@ -19,23 +19,23 @@ void Game::run(GLFWwindow* window) {
 
         SceneController::getInstance().getCurrentScene()->update(GameState::getInstance().deltaTime);
 
-        for(int i = 0; i < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); i++) {
-            Entity* entity1 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[i];
-            if(entity1->fixed) continue;
-            for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
-                Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
-                if(entity2->fixed) continue;
-                Shape* shape1 = static_cast<Shape*>(entity1);
-                Shape* shape2 = static_cast<Shape*>(entity2);
-                if(CollisionHandler::getInstance().checkForCollision(shape1, shape2)) {
-                    MyCube* cube1 = static_cast<MyCube*>(entity1);
-                    MyCube* cube2 = static_cast<MyCube*>(entity2);
-//                    std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;
-                    cube1->colliding = true;
-                    cube2->colliding = true;
-                }
-            }
-        }
+//        for(int i = 0; i < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); i++) {
+//            Entity* entity1 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[i];
+//            if(entity1->fixed) continue;
+//            for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
+//                Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
+//                if(entity2->fixed) continue;
+//                Shape* shape1 = static_cast<Shape*>(entity1);
+//                Shape* shape2 = static_cast<Shape*>(entity2);
+//                if(CollisionHandler::getInstance().checkForCollision(shape1, shape2)) {
+//                    MyCube* cube1 = static_cast<MyCube*>(entity1);
+//                    MyCube* cube2 = static_cast<MyCube*>(entity2);
+////                    std::cout << "Found" << (cube1)->id << ":" << (cube2)->id << std::endl;
+//                    cube1->colliding = true;
+//                    cube2->colliding = true;
+//                }
+//            }
+//        }
 
         SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
 

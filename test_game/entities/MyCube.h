@@ -46,7 +46,7 @@ public:
         };
         initializeBuffers();
         this->fixed = false;
-        this->updateBoundingRegion(model);
+        this->updateBoundingBoxRegion(model);
     }
 
     void render(glm::mat4 view, glm::mat4 projection) override {
@@ -83,7 +83,7 @@ public:
         glBindVertexArray(0);
 
         glDisable(GL_BLEND);
-        this->boundingRegion->render(view, projection);
+//        this->boundingRegion->render(view, projection);
     }
 
 
@@ -91,7 +91,7 @@ public:
 
     int update(float deltaTime) override {
         Shape::update(deltaTime);
-        this->updateBoundingRegion(model);
+        this->updateBoundingBoxRegion(model);
         if(this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;
@@ -101,6 +101,7 @@ public:
         if(this->onUpdate) {
             this->onUpdate(deltaTime);
         }
+        return 0;
     }
 
     void onCollision(MyCube* entity) {

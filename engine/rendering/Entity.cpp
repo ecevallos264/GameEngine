@@ -18,6 +18,6 @@ void Entity::render(glm::mat4 view, glm::mat4 projection) {
 }
 
 int Entity::update(float deltaTime) {
-
+    return 0;
 }
 

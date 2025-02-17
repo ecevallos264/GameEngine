@@ -5,20 +5,21 @@
 #ifndef GAMEENGINE_LIST_H
 #define GAMEENGINE_LIST_H
 
-#include <queue>
-
 template <typename T>
 class List {
 private:
-    std::queue<T> queue;
+    std::vector<T> queue;
 public:
     List() {}
-    void append(T item) {
-        queue.push(item);
+
+    void add(T item) {
+        queue.push_back(item);
     }
 
     T getNextElement() {
-        return queue.pop();
+        T item = queue.front();
+        queue.erase(queue.begin());
+        return item;
     }
 
     T peekNextElement() {
@@ -29,16 +30,45 @@ public:
         return queue.empty();
     }
 
+    bool contains(T object) {
+        return std::find(queue.begin(), queue.end(), object) != queue.end();
+    }
+
     void remove(T object) {
-        std::queue<T> newQueue;
-        while (!queue.empty()) {
-            T item = queue.front();
-            queue.pop();
-            if (item != object) {
-                newQueue.push(item);
-            }
+        auto it = std::find(queue.begin(), queue.end(), object);
+        if (it != queue.end()) {
+            queue.erase(it);
         }
-        queue = newQueue;
+    }
+
+    void removeAt(size_t index) {
+        if (index < queue.size()) {
+            queue.erase(queue.begin() + index);
+        }
+    }
+
+    typename std::vector<T>::iterator begin() {
+        return queue.begin();
+    }
+
+    typename std::vector<T>::iterator end() {
+        return queue.end();
+    }
+
+    typename std::vector<T>::const_iterator begin() const {
+        return queue.begin();
+    }
+
+    typename std::vector<T>::const_iterator end() const {
+        return queue.end();
+    }
+
+    T& operator[](size_t index) {
+        return queue[index];
+    }
+
+    const T& operator[](size_t index) const {
+        return queue[index];
     }
 
     unsigned int size() {

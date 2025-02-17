@@ -7,21 +7,20 @@
 
 #define MIN_SIZE 1
 
-
-#include <list>
 #include <queue>
 
 #include "BoundingBox.h"
-#include "../../rendering/RenderableEntity.h"
+#include "List.h"
+#include "../../entitities/Shape.h"
 
 class OctTreeNode {
 private:
     BoundingBox* region;
-    std::list<RenderableEntity *> objects;
+    List<Shape *> objects = List<Shape*>();
 
-    std::queue<RenderableEntity *> pendingInsertion;
+    std::queue<Shape *> pendingInsertion;
 
-    OctTreeNode* children = new OctTreeNode[8];
+    OctTreeNode* children[8];
 
     unsigned char m_activeNodes = 0;
 
@@ -42,18 +41,22 @@ private:
 public:
     OctTreeNode* parent;
 
-    OctTreeNode(BoundingBox* region, std::list<RenderableEntity*> entities);
+    OctTreeNode(BoundingBox* region, List<Shape*> entities);
     OctTreeNode();
     OctTreeNode(BoundingBox* region);
 
     void build();
 
-private:
+    void render(glm::mat4 mat1, glm::mat4 mat2);
+
+public:
     void updateTree();
     void update(double delta);
-    void insert(RenderableEntity* entity);
-    OctTreeNode* CreateNode(BoundingBox* region, std::list<RenderableEntity*> objList);
-    OctTreeNode* CreateNode(BoundingBox* region, RenderableEntity* Item);
+    bool insert(Shape* entity);
+
+private:
+    OctTreeNode* CreateNode(BoundingBox* region, List<Shape*> objList);
+    OctTreeNode* CreateNode(BoundingBox* region, Shape* Item);
 
 };
 

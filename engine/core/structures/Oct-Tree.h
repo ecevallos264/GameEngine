@@ -1,34 +1,32 @@
-//
-// Created by eceva on 2/2/2025.
-//
-
+// Oct-Tree.h
 #ifndef GAMEENGINE_OCT_TREE_H
 #define GAMEENGINE_OCT_TREE_H
 
 #include "../../rendering/BoundingRegion.h"
 #include "List.h"
 #include "BoundingBox.h"
+#include "OctTreeNode.h"
+#include <memory>
 
-struct Node {
-    List<BoundingRegion*> objects;
-    char active;
-};
+class OctTree : public Singleton<OctTree> {
+    OctTreeNode* root;
+public:
+    OctTree() : Singleton<OctTree>() {}
 
-enum class Octants : unsigned char {
-    O1 = 0x01,
-    O2 = 0x02,
-    O3 = 0x04,
-    O4 = 0x08,
-    O5 = 0x10,
-    O6 = 0x20,
-    O7 = 0x40,
-    O8 = 0x80,
-};
+    OctTreeNode* getRoot() {
+        return root;
+    }
 
-
-
-class OctTree {
-
+    void insert(Shape* entity) {
+        if (root == nullptr) {
+            List<RenderableEntity*> list = List<RenderableEntity*>();
+            list.add(entity);
+            root = new OctTreeNode(entity->boundingBox, list);
+            root->updateTree();
+        } else {
+            root->insert(entity);
+        }
+    }
 };
 
 #endif //GAMEENGINE_OCT_TREE_H

@@ -11,13 +11,14 @@
 #include "glm/gtx/string_cast.hpp"
 #include "../rendering/BoundingRegion.h"
 #include "../rendering/RenderableEntity.h"
+#include "../core/structures/BoundingBox.h"
 
 //TODO rename to CollidableEntity or similar
 class Shape : public RenderableEntity {
 public:
     bool destroyed = false;
 
-    BoundingRegion* boundingRegion;
+    BoundingBox* boundingBox;
 public:
     Shape(Shader* shader) : RenderableEntity(shader) {}
 
@@ -57,7 +58,7 @@ public:
         return supportPoint;
     }
 
-    void updateBoundingRegion(glm::mat4 model) {
+    void updateBoundingBoxRegion(glm::mat4 model) {
         double minX, maxX;
         double minY, maxY;
         double minZ, maxZ;
@@ -99,11 +100,10 @@ public:
                 maxZInitialized = true;
             }
         }
-        this->boundingRegion = new BoundingRegion(
-                this->shader,
-                {minX, maxX, minY, maxY, minZ, maxZ},
-                model,
-                1.0f);
+        this->boundingBox = BoundingBox::fromPoints(shader, {
+                glm::vec3(minX, minY, minZ),
+                glm::vec3(maxX, maxY, maxZ)
+        });
     }
 
     void setRenderBoundingRegionVisibility(bool state) {

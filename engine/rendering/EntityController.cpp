@@ -10,6 +10,7 @@ int EntityController::update(float deltaTime) {
     for(Entity* entity: this->entities) {
         entity->update(deltaTime);
     }
+    return 0;
 }
 
 void EntityController::render(glm::mat4 view, glm::mat4 projection) {
