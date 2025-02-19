@@ -19,7 +19,7 @@ public:
 
     void insert(Shape* entity) {
         if (root == nullptr) {
-            List<RenderableEntity*> list = List<RenderableEntity*>();
+            List<Shape*> list = List<Shape*>();
             list.add(entity);
             root = new OctTreeNode(entity->boundingBox, list);
             root->updateTree();

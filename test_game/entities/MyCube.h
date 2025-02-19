@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
+#include "../../engine/core/shaders/ShaderManager.h"
 #include "../../engine/entitities/Shape.h"
 #include "../../engine/physics/CollisionHandler.h"
 #include "../../engine/entitities/Point.h"
@@ -19,7 +20,9 @@ public:
     std::string id;
 
 public:
-    MyCube(std::string id, glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader), id(id) {
+    MyCube(std::string id, glm::vec3 pos, glm::vec3 color) :
+    Shape(ShaderManager::getInstance().getShader("shader1")),
+    id(id) {
 //        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
 //            this->onCollision(static_cast<MyCube*>(data.entityA));
 //        });

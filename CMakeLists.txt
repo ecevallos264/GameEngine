@@ -69,6 +69,7 @@ add_executable(GameEngine
         engine/core/structures/OctTreeNode.cpp
         engine/core/structures/OctTreeNode.h
         engine/rendering/EntityUpdateType.h
+        engine/core/shaders/ShaderManager.h
 
 )
 

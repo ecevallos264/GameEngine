@@ -113,7 +113,7 @@ void OctTreeNode::build() {
     glm::vec3 center = this->region->min + half;
 
     BoundingBox* octants[8];
-    octants[0] = new BoundingBox(shader, region->min, center);
+    octants[0] = new BoundingBox(region->min, center);
     octants[1] = new BoundingBox(glm::vec3(center.x, region->min.y, region->min.z), glm::vec3(region->max.x, center.y, center.z));
     octants[2] = new BoundingBox(glm::vec3(center.x, region->min.y, center.z), glm::vec3(region->max.x, center.y, region->max.z));
     octants[3] = new BoundingBox(glm::vec3(region->min.x, region->min.y, center.z), glm::vec3(center.x, center.y, region->max.z));

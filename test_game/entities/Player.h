@@ -19,7 +19,7 @@
 
 class Player : public EventListener, public Shape {
 public:
-    Player(Shader* shader) : EventListener(), Shape(shader) {
+    Player() : EventListener(), Shape(ShaderManager::getInstance().getShader("shader1di")) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });

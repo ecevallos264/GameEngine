@@ -24,7 +24,7 @@ public:
 
 
 public:
-    HexagonalPrism(std::string id, glm::vec3 pos, Shader* shader, glm::vec3 color) : Shape(shader), id(id), color(color) {
+    HexagonalPrism(std::string id, glm::vec3 pos, glm::vec3 color) : Shape(ShaderManager::getInstance().getShader("shader1")), id(id), color(color) {
         position = pos;
 
         this->vertices = {
