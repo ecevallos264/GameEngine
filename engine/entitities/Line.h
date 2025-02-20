@@ -10,8 +10,7 @@ class Line : public Shape {
     glm::vec3 rotation = glm::vec3(0.0f);
 public:
     Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color, float opacity) :
-        Shape(ShaderManager::getInstance().getShader("shader1"))
-    {
+        Shape(ShaderManager::getInstance().getShader("shader1")) {
         this->vertices.push_back({start, color, opacity});
         this->vertices.push_back({end, color, opacity});
 

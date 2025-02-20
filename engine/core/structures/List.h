@@ -74,6 +74,10 @@ public:
     unsigned int size() {
         return queue.size();
     }
+
+    void clear() {
+        queue.clear();
+    }
 };
 
 #endif //GAMEENGINE_LIST_H

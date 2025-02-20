@@ -19,7 +19,6 @@ protected:
     unsigned int VBO = 0;
     unsigned int EBO = 0;
 
-    std::vector<Vertex> vertices;
     std::vector<float> vertexBuffer;
     std::vector<unsigned int> indices;
     std::function<int(double)> onUpdate;
@@ -175,6 +174,7 @@ public:
     }
 
     glm::vec3 position;
+    std::vector<Vertex> vertices;
 };
 
 #endif //GAMEENGINE_RENDERABLEENTITY_H

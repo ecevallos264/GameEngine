@@ -100,7 +100,7 @@ public:
                 maxZInitialized = true;
             }
         }
-        this->boundingBox = BoundingBox::fromPoints(shader, {
+        this->boundingBox = BoundingBox::fromPoints({
                 glm::vec3(minX, minY, minZ),
                 glm::vec3(maxX, maxY, maxZ)
         });

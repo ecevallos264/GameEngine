@@ -21,6 +21,7 @@ class TestScene : public Scene {
 public:
     TestScene(Shader* shader) : Scene() {
         ShaderManager::getInstance().setShader("shader1", shader);
+        setup();
         float unit = 1.0f;
 
         this->addEntity(new Line(
@@ -98,10 +99,16 @@ public:
 
         auto* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), glm::vec3(0));
         prism->setOnUpdateCallback([prism](double deltaTime) {
-            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+//            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
             return 1;
         });
         this->addEntity(prism, "Hex Prism");
+    }
+
+    void setup() override {
+        this->root = new Octree(new BoundingBox(glm::vec3(-Settings::MAX_RENDER_DISTANCE, -Settings::MAX_RENDER_DISTANCE, -Settings::MAX_RENDER_DISTANCE), glm::vec3(Settings::MAX_RENDER_DISTANCE, Settings::MAX_RENDER_DISTANCE, Settings::MAX_RENDER_DISTANCE)));
+        std::cout << "root dimensions: " << this->root->region->calculateDimensions().x << ":" << this->root->region->calculateDimensions().y << ":" << this->root->region->calculateDimensions().z << std::endl;
+        this->root->build();
     }
 };
 

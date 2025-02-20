@@ -62,12 +62,11 @@ add_executable(GameEngine
         engine/entitities/Rectangle.h
         engine/rendering/RenderableEntity.h
         test_game/entities/HexagonalPrism.h
-        engine/core/structures/Oct-Tree.h
         engine/core/structures/List.h
         engine/core/structures/BoundingBox.cpp
         engine/core/structures/BoundingBox.h
-        engine/core/structures/OctTreeNode.cpp
-        engine/core/structures/OctTreeNode.h
+        engine/core/structures/Octree.cpp
+        engine/core/structures/Octree.h
         engine/rendering/EntityUpdateType.h
         engine/core/shaders/ShaderManager.h
 

@@ -19,11 +19,11 @@
 
 class Player : public EventListener, public Shape {
 public:
-    Player() : EventListener(), Shape(ShaderManager::getInstance().getShader("shader1di")) {
+    Player() : EventListener(), Shape(ShaderManager::getInstance().getShader("shader1")) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });
-        this->boundingBox = BoundingBox::fromPoints(shader, {
+        this->boundingBox = BoundingBox::fromPoints({
                 glm::vec3(1.0f),
                 glm::vec3(-1.0f),
         });
@@ -75,6 +75,9 @@ public:
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
             dirty = true;
+        }
+        if(dirty) {
+            std::cout << "$$$$$$$$$$$$$$$$$MOVE ALERT" << std::endl;
         }
         return dirty;
     }

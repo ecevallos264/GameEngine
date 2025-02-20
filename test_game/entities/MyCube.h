@@ -93,6 +93,7 @@ public:
 
 
     int update(float deltaTime) override {
+        std::cout << "Updating " << this->id << std::endl;
         Shape::update(deltaTime);
         this->updateBoundingBoxRegion(model);
         if(this->colliding) {

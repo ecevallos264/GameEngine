@@ -18,7 +18,7 @@ public:
         if (shaders.find(name) != shaders.end()) {
             return shaders[name];
         } else {
-            throw std::runtime_error("Shader not found");
+            throw std::runtime_error("Shader " + name + " not found");
         }
     }
 
