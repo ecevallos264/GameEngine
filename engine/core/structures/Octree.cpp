@@ -243,8 +243,8 @@ void Octree::render(glm::mat4 mat1, glm::mat4 mat2) {
 //    }
 
     for(Shape* shape: this->objects) {
-//        shape->boundingBox.render(mat1, mat2);
-        shape->render(mat1, mat2);
+        shape->boundingBox->render(mat1, mat2);
+//        shape->render(mat1, mat2);
     }
 
     for (int i = 0; i < 8; i++) {
