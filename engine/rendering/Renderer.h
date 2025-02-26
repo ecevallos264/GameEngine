@@ -8,6 +8,10 @@
 #include "glm/fwd.hpp"
 
 class Renderer {
+public:
+    virtual ~Renderer() = default;
+
+private:
     virtual int update(float deltaTime) = 0;
     virtual void render(glm::mat4 view, glm::mat4 projection) = 0;
 };

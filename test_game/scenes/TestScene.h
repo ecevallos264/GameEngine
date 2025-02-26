@@ -24,45 +24,45 @@ public:
         setup();
         float unit = 1.0f;
 
-        this->addEntity(new Line(
-                glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
-                glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
-                glm::vec3(1.0f, 0.0f, 0.0f),
-                1.0f), "X Line");
+        // this->addEntity(new Line(
+        //         glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
+        //         glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
+        //         glm::vec3(1.0f, 0.0f, 0.0f),
+        //         1.0f), "X Line");
+        //
+        // this->addEntity(new Line(
+        //         glm::vec3(0.0f, Settings::MAX_RENDER_DISTANCE, 0.0f),
+        //         glm::vec3(0.0f, -Settings::MAX_RENDER_DISTANCE, 0.0f),
+        //         glm::vec3(0.0f, 1.0f, 0.0f),
+        //         1.0f), "Y Line");
+        //
+        // this->addEntity(new Line(
+        //         glm::vec3(0.0f, 0.0f, Settings::MAX_RENDER_DISTANCE),
+        //         glm::vec3(0.0f, 0.0f, -Settings::MAX_RENDER_DISTANCE),
+        //         glm::vec3(0.0f, 0.0f, 1.0f),
+        //         1.0f), "Z Line");
 
-        this->addEntity(new Line(
-                glm::vec3(0.0f, Settings::MAX_RENDER_DISTANCE, 0.0f),
-                glm::vec3(0.0f, -Settings::MAX_RENDER_DISTANCE, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f),
-                1.0f), "Y Line");
-
-        this->addEntity(new Line(
-                glm::vec3(0.0f, 0.0f, Settings::MAX_RENDER_DISTANCE),
-                glm::vec3(0.0f, 0.0f, -Settings::MAX_RENDER_DISTANCE),
-                glm::vec3(0.0f, 0.0f, 1.0f),
-                1.0f), "Z Line");
-
-        for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
-            if (i == 0) continue;
-            float line = i * unit;
-            this->addEntity(new Line(
-                    glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, line),
-                    glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, line),
-                    glm::vec3(0.5f, 0.5f, 0.5f),
-                    1.0f), "Line");
-        }
-
-        for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
-            if (i == 0) continue;
-            float line = i * unit;
-            this->addEntity(
-                    new Line(glm::vec3(
-                            line,
-                            0.0f,
-                            Settings::MAX_RENDER_DISTANCE),
-                            glm::vec3(line, 0.0f, -Settings::MAX_RENDER_DISTANCE),glm::vec3(0.5f, 0.5f, 0.5f),
-                            1.0f), "Line");
-        }
+        // for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
+        //     if (i == 0) continue;
+        //     float line = i * unit;
+        //     this->addEntity(new Line(
+        //             glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, line),
+        //             glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, line),
+        //             glm::vec3(0.5f, 0.5f, 0.5f),
+        //             1.0f), "Line");
+        // }
+        //
+        // for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
+        //     if (i == 0) continue;
+        //     float line = i * unit;
+        //     this->addEntity(
+        //             new Line(glm::vec3(
+        //                     line,
+        //                     0.0f,
+        //                     Settings::MAX_RENDER_DISTANCE),
+        //                     glm::vec3(line, 0.0f, -Settings::MAX_RENDER_DISTANCE),glm::vec3(0.5f, 0.5f, 0.5f),
+        //                     1.0f), "Line");
+        // }
 
         Player* player = new Player();
         this->addEntity(player, "Player");
@@ -90,6 +90,7 @@ public:
                 cube1->position.x += deltaTime * 0.5;
                 dirty = true;
             }
+            cube1->flags->set(EntityFlags::ENTITY_MOVED);
             return dirty;
         });
         this->addEntity(cube1, "Main Cube");
@@ -99,14 +100,15 @@ public:
 
         auto* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), glm::vec3(0));
         prism->setOnUpdateCallback([prism](double deltaTime) {
-//            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+            prism->flags->set(EntityFlags::ENTITY_ROTATED);
+            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
             return 1;
         });
         this->addEntity(prism, "Hex Prism");
     }
 
     void setup() override {
-        this->root = new Octree(new BoundingBox(glm::vec3(-Settings::MAX_RENDER_DISTANCE, -Settings::MAX_RENDER_DISTANCE, -Settings::MAX_RENDER_DISTANCE), glm::vec3(Settings::MAX_RENDER_DISTANCE, Settings::MAX_RENDER_DISTANCE, Settings::MAX_RENDER_DISTANCE)));
+        this->root = new Octree(new BoundingBox(glm::vec3(-0.5f), glm::vec3(0.5f)));
         std::cout << "root dimensions: " << this->root->region->calculateDimensions().x << ":" << this->root->region->calculateDimensions().y << ":" << this->root->region->calculateDimensions().z << std::endl;
         this->root->build();
     }

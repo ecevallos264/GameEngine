@@ -49,6 +49,7 @@ public:
         };
         initializeBuffers();
         this->fixed = false;
+        this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
         this->updateBoundingBoxRegion(model);
     }
 
@@ -93,7 +94,7 @@ public:
 
 
     int update(float deltaTime) override {
-        std::cout << "Updating " << this->id << std::endl;
+        // std::cout << "Updating " << this->id << std::endl;
         Shape::update(deltaTime);
         this->updateBoundingBoxRegion(model);
         if(this->colliding) {

@@ -3,8 +3,10 @@
 #include "../engine/core/eventing/EventDispatcher.h"
 #include "scenes/TestScene.h"
 #include "../engine/rendering/SceneController.h"
+#include "scenes/PartitionScene.h"
 
 int main() {
+
     Engine::initGLFW();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,10 +30,15 @@ int main() {
     shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.frag";
     // shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.vert";
     // shaderInfo.FragmentShaderPath = "C:\\Users\\eceva\\CLionProjects\\3DGameEngineSolo1\\test_game\\shaders\\shader.frag";
-    std::shared_ptr<TestScene> scene = std::make_shared<TestScene>(
+    ShaderManager::getInstance().setShader("shader1", new Shader(
+                    shaderInfo.VertexShaderPath.c_str(),
+                    shaderInfo.FragmentShaderPath.c_str()));
+
+    std::shared_ptr<PartitionScene> scene = std::make_shared<PartitionScene>(
             new Shader(
                     shaderInfo.VertexShaderPath.c_str(),
                     shaderInfo.FragmentShaderPath.c_str()));
+
     SceneController::getInstance().addScene("testScene", scene);
     SceneController::getInstance().swapScene("testScene");
 

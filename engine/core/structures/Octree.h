@@ -4,7 +4,7 @@
 #include <queue>
 #include "../../entitities/Shape.h"
 
-#define MIN_SIZE 0.001
+#define MIN_SIZE 1
 
 enum class Octant : unsigned char {
     O1 = 0x01,	// = 0b00000001
@@ -36,12 +36,12 @@ public:
     Octree* parent = nullptr;
     BoundingBox* region;
 
-    Octree() : region(new BoundingBox(glm::vec3(0), glm::vec3(0))) {
+    Octree() : region(new BoundingBox(glm::vec3(-0.5), glm::vec3(0.5))) {
         this->currLife = -1;
     }
 
     Octree(BoundingBox* region) : region(region) {
-        std::cout << "Octree created with region: " << region->min.x << ", " << region->min.y << ", " << region->min.z << std::endl;
+        // std::cout << "Octree created with region: " << region->min.x << ", " << region->min.y << ", " << region->min.z << std::endl;
         this->currLife = -1;
     }
 

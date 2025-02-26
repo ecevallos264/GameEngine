@@ -76,9 +76,6 @@ public:
                     CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
             dirty = true;
         }
-        if(dirty) {
-            std::cout << "$$$$$$$$$$$$$$$$$MOVE ALERT" << std::endl;
-        }
         return dirty;
     }
 

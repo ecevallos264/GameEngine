@@ -10,9 +10,11 @@
 #include <typeindex>
 #include "Renderer.h"
 #include "../core/shaders/shader-compiler.h"
+#include "../core/state/FlagState.h"
 
 class Entity : public Renderer {
 public:
+    FlagState* flags = new FlagState();
     std::string id;
     bool fixed = true;
 
@@ -36,6 +38,10 @@ public:
     static std::type_index getType() {
         return typeid(Entity);
     };
+
+    bool isFixed() const {
+        return fixed;
+    }
 
 
 };

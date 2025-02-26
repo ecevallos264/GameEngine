@@ -11,7 +11,7 @@ public:
     constexpr static double IN_GAME_SENSITIVITY = 2.5f;
     constexpr static double IN_GAME_RUNNING_SENSITIVITY_FACTOR = 2.0f;
 
-    constexpr static float MAX_RENDER_DISTANCE = 100.0f;
+    constexpr static float MAX_RENDER_DISTANCE = 20.0f;
 //    constexpr static bool CURSOR_FOCUS_STATUS = false;
 
     constexpr static float CURSOR_SENSITIVITY = 0.1f;

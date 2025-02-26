@@ -19,7 +19,7 @@ public:
     glm::vec3 max;
     glm::vec3 min;
     BoundingBox(glm::vec3 min, glm::vec3 max) : RenderableEntity(ShaderManager::getInstance().getShader("shader1")), min(min), max(max) {
-        std::cout << "BoundingBox created with min: " << min.x << ", " << min.y << ", " << min.z << " and max: " << max.x << ", " << max.y << ", " << max.z << std::endl;
+        // std::cout << "BoundingBox created with min: " << min.x << ", " << min.y << ", " << min.z << " and max: " << max.x << ", " << max.y << ", " << max.z << std::endl;
         vertices = {
             Vertex(glm::vec3(min.x, min.y, min.z), color, 1.0f), // Bottom-left-back
             Vertex(glm::vec3(max.x, min.y, min.z), color, 1.0f), // Bottom-right-back
@@ -102,7 +102,7 @@ public:
     }
 
     void render(glm::mat4 view, glm::mat4 projection) override {
-        shader->use();
+        // std::cout << "Rendering bounding box dimensions: " << calculateDimensions().x << ":" << calculateDimensions().y << ":" << calculateDimensions().z << std::endl;        shader->use();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -118,7 +118,7 @@ public:
         shader->setMat4("view", view);
         shader->setMat4("projection", projection);
         shader->setMat4("model", model);
-        shader->setVec3("shapeColor", color);
+        shader->setVec3("shapeColor", glm::vec3(1.0f, 1.0, 1.0));
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -128,14 +128,17 @@ public:
 
         glBindVertexArray(0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-//        // Print errors if any
-//        std::cout << "dimensions: " << calculateDimensions().x << ":" << calculateDimensions().y << ":" << calculateDimensions().z << std::endl;
-//        GLenum err;
-//        while ((err = glGetError()) != GL_NO_ERROR) {
-//            std::cerr << "OpenGL error: " << err << std::endl;
-//        }
     }
+
+    void setColor(glm::vec3 color) {
+        for (Vertex& vertex : vertices) {
+            vertex.color = color;
+        }
+        updateVertexBuffer();
+        initializeBuffers();
+    }
+
+
 
     glm::vec3 calculateDimensions() {
         return max - min;

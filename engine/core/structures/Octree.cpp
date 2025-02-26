@@ -57,6 +57,7 @@ void Octree::updateTree() {
 }
 
 bool Octree::insert(Shape* obj) {
+    std::cout << "Inserting object of dimensions: " << obj->boundingBox->calculateDimensions().x << ":" << obj->boundingBox->calculateDimensions().y << ":" << obj->boundingBox->calculateDimensions().z << std::endl;
     if (objects.empty() && m_activeNodes == 0) {
         objects.add(obj);
 //        obj.cell = this;
@@ -71,8 +72,16 @@ bool Octree::insert(Shape* obj) {
     }
 
     if (!region->contains(obj->boundingBox)) {
-        return (parent != nullptr) ? parent->insert(obj) : false;
+        // If this is the root node, enlarge the octree.
+        if (parent == nullptr) {
+            // enlargeTreeToFit(obj->boundingBox);
+            std::cout << "Need to enlarge root bounding box." << std::endl;
+            return insert(obj);
+        } else {
+            return parent->insert(obj);
+        }
     }
+
 
     BoundingBox octants[8];
     List<Shape*> octLists[8];
@@ -144,8 +153,9 @@ void Octree::build() {
 
     for (int i = 0; i < 8; i++) {
         if (!octLists[i].empty()) {
-            children[i] = CreateNode(octants[i], octLists[i]);
+            children[i] = new Octree(&octants[i], octLists[i]);
             m_activeNodes |= (1 << i);
+            children[i]->parent = this;
             children[i]->build();
         }
     }
@@ -156,7 +166,6 @@ void Octree::build() {
             activeNodes++;
         }
     }
-    std::cout << "Octree built with " << objects.size() << " objects and " << activeNodes << " active nodes." << std::endl;
     this->tree_built = true;
     this->tree_ready = true;
 }
@@ -221,6 +230,9 @@ void Octree::processPending() {
         build();
     } else {
         int size = pendingInsertion.size();
+        if (size > 0) {
+            std::cout << "Processing pending insertions... size: " << pendingInsertion.size() << std::endl;
+        }
         for (int i = 0; i < size; i++) {
             Shape* front = pendingInsertion.front();
             pendingInsertion.pop();
@@ -241,10 +253,11 @@ void Octree::render(glm::mat4 mat1, glm::mat4 mat2) {
 //    if(!tree_ready || !tree_built) {
 //        return;
 //    }
-
+    region->setColor(glm::vec3(1, 0, 0));
+    region->render(mat1, mat2);
     for(Shape* shape: this->objects) {
-        shape->boundingBox->render(mat1, mat2);
-//        shape->render(mat1, mat2);
+        // shape->boundingBox->render(mat1, mat2);
+        shape->render(mat1, mat2);
     }
 
     for (int i = 0; i < 8; i++) {

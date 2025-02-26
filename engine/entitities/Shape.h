@@ -59,6 +59,10 @@ public:
     }
 
     void updateBoundingBoxRegion(glm::mat4 model) {
+        if (!(this->flags->getAndReset(EntityFlags::ENTITY_FIRST_UPDATE) || this->flags->getAndReset(EntityFlags::ENTITY_MOVED) || this->flags->getAndReset(EntityFlags::ENTITY_SCALED) ||
+              this->flags->getAndReset(EntityFlags::ENTITY_ROTATED))) {
+            return;
+        }
         double minX, maxX;
         double minY, maxY;
         double minZ, maxZ;
@@ -72,6 +76,8 @@ public:
 
         for (const auto& vertex : this->vertices) {
             glm::vec4 transformedPos = model * glm::vec4(vertex.position, 1.0f);
+
+
 
             if (!minXInitialized || transformedPos.x < minX) {
                 minX = transformedPos.x;

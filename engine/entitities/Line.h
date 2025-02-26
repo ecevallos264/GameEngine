@@ -15,6 +15,7 @@ public:
         this->vertices.push_back({end, color, opacity});
 
         indices = { 0, 1 };
+        this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
         updateBoundingBoxRegion(model);
         updateVertexBuffer();
         initializeBuffers();

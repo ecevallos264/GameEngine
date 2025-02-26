@@ -173,7 +173,7 @@ public:
         }
     }
 
-    glm::vec3 position;
+    glm::vec3 position = glm::vec3(0.0f);
     std::vector<Vertex> vertices;
 };
 

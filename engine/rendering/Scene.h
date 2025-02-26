@@ -11,7 +11,7 @@
 
 class Scene : Renderer {
 protected:
-    Octree* root;
+    Octree* root = new Octree();
     EntityController* entityController = new EntityController();
 public:
     virtual void setup() = 0;

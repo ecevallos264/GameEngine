@@ -76,6 +76,7 @@ public:
         };
 //        updateVertexBuffer();
         initializeBuffers();
+        this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
         updateBoundingBoxRegion(model);
         this->fixed = false;
 
