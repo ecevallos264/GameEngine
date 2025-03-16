@@ -24,24 +24,6 @@ public:
         setup();
         float unit = 1.0f;
 
-        // this->addEntity(new Line(
-        //         glm::vec3(Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
-        //         glm::vec3(-Settings::MAX_RENDER_DISTANCE, 0.0f, 0.0f),
-        //         glm::vec3(1.0f, 0.0f, 0.0f),
-        //         1.0f), "X Line");
-        //
-        // this->addEntity(new Line(
-        //         glm::vec3(0.0f, Settings::MAX_RENDER_DISTANCE, 0.0f),
-        //         glm::vec3(0.0f, -Settings::MAX_RENDER_DISTANCE, 0.0f),
-        //         glm::vec3(0.0f, 1.0f, 0.0f),
-        //         1.0f), "Y Line");
-        //
-        // this->addEntity(new Line(
-        //         glm::vec3(0.0f, 0.0f, Settings::MAX_RENDER_DISTANCE),
-        //         glm::vec3(0.0f, 0.0f, -Settings::MAX_RENDER_DISTANCE),
-        //         glm::vec3(0.0f, 0.0f, 1.0f),
-        //         1.0f), "Z Line");
-
         // for (float i = -Settings::MAX_RENDER_DISTANCE / unit; i <= Settings::MAX_RENDER_DISTANCE / unit; i++) {
         //     if (i == 0) continue;
         //     float line = i * unit;
@@ -64,8 +46,8 @@ public:
         //                     1.0f), "Line");
         // }
 
-        Player* player = new Player();
-        this->addEntity(player, "Player");
+//        Player* player = new Player();
+//        this->addEntity(player, "Player");
 
 
         MyCube* cube1 = new MyCube("Main Cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1, 0, 0));
@@ -98,19 +80,66 @@ public:
 //            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), glm::vec3(1, 0, 0)), "Cube");
 //        }
 
-        auto* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), glm::vec3(0));
-        prism->setOnUpdateCallback([prism](double deltaTime) {
-            prism->flags->set(EntityFlags::ENTITY_ROTATED);
-            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
-            return 1;
-        });
-        this->addEntity(prism, "Hex Prism");
+//        auto* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), glm::vec3(0));
+//        prism->setOnUpdateCallback([prism](double deltaTime) {
+//            prism->flags->set(EntityFlags::ENTITY_ROTATED);
+//            prism->setRotation({sin(glfwGetTime()) * 100, sin(glfwGetTime()) * 100, cos(glfwGetTime()) * 100});
+//            return 1;
+//        });
+//        this->addEntity(prism, "Hex Prism");
     }
 
     void setup() override {
         this->root = new Octree(new BoundingBox(glm::vec3(-0.5f), glm::vec3(0.5f)));
         std::cout << "root dimensions: " << this->root->region->calculateDimensions().x << ":" << this->root->region->calculateDimensions().y << ":" << this->root->region->calculateDimensions().z << std::endl;
         this->root->build();
+    }
+
+    int handleInput(GLFWwindow* window) {
+        if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
+            MouseHandler::getInstance().changeMouseMode(MouseCursorState::OUT_OF_WINDOW);
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            GameState::getInstance().CURSOR_FOCUS_STATUS = true;
+        }
+
+        if(InputHandler::isKeyActive(GLFW_KEY_ENTER)) {
+            MyCube* cube1 = new MyCube("Main Cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1, 0, 0));
+            cube1->fixed = false;
+            this->addEntity(cube1, "Main Cube");
+        }
+
+        bool dirty = false;
+        if (InputHandler::isKeyActive(GLFW_KEY_W)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_S)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_A)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_D)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        if (InputHandler::isKeyActive(GLFW_KEY_LEFT_SHIFT)) {
+            EventDispatcher::getInstance().dispatch(
+                    CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
+            dirty = true;
+        }
+        return dirty;
     }
 };
 

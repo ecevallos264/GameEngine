@@ -2,7 +2,7 @@
 #define GAMEENGINE_OCTREE_H
 
 #include <queue>
-#include "../../entitities/Shape.h"
+#include "../../physics/RigidBody.h"
 
 #define MIN_SIZE 1
 
@@ -19,8 +19,8 @@ enum class Octant : unsigned char {
 
 class Octree {
 protected:
-    List<Shape*> objects;
-    std::queue<Shape*> pendingInsertion;
+    List<BoundingBox*> objects;
+    std::queue<BoundingBox*> pendingInsertion;
     Octree* children[8] = {nullptr};
     unsigned char m_activeNodes = 0;
     bool tree_built = false;
@@ -45,7 +45,7 @@ public:
         this->currLife = -1;
     }
 
-    Octree(BoundingBox* region, List<Shape*> entities): region(region) {
+    Octree(BoundingBox* region, List<BoundingBox*> entities): region(region) {
         this->objects = entities;
         this->currLife = -1;
     }
@@ -54,14 +54,14 @@ public:
     void render(glm::mat4 mat1, glm::mat4 mat2);
     void updateTree();
     void update(double delta);
-    bool insert(Shape* entity);
+    bool insert(BoundingBox* entity);
     void processPending();
-    void addToPending(Shape* shape);
+    void addToPending(BoundingBox* shape);
     void calculateBounds(BoundingBox& out, Octant octant, BoundingBox* parentRegion);
 
 private:
-    Octree* CreateNode(BoundingBox region, List<Shape*> objList);
-    Octree* CreateNode(BoundingBox region, Shape* Item);
+    Octree* CreateNode(BoundingBox region, List<BoundingBox*> objList);
+    Octree* CreateNode(BoundingBox region, BoundingBox* Item);
 };
 
 #endif // GAMEENGINE_OCTREE_H

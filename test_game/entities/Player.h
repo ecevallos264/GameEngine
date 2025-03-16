@@ -15,17 +15,13 @@
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
-#include "../../engine/entitities/Shape.h"
+#include "../../engine/physics/RigidBody.h"
 
-class Player : public EventListener, public Shape {
+class Player : public EventListener, public RigidBody {
 public:
-    Player() : EventListener(), Shape(ShaderManager::getInstance().getShader("shader1")) {
+    Player() : EventListener(), RigidBody(ShaderManager::getInstance().getShader("shader1")) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
-        });
-        this->boundingBox = BoundingBox::fromPoints({
-                glm::vec3(1.0f),
-                glm::vec3(-1.0f),
         });
     }
 
@@ -33,11 +29,7 @@ public:
     }
 
     void onEvent(const KeyEvent &event) {
-        if (InputHandler::isKeyActive(GLFW_KEY_ESCAPE)) {
-            MouseHandler::getInstance().changeMouseMode(MouseCursorState::OUT_OF_WINDOW);
-            glfwSetInputMode(event.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            GameState::getInstance().CURSOR_FOCUS_STATUS = true;
-        }
+
     }
 
     void onEvent(const CursorEvent &event) {
@@ -45,38 +37,7 @@ public:
     }
 
     int update(float deltaTime) override {
-        bool dirty = false;
-        if (InputHandler::isKeyActive(GLFW_KEY_W)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::FORWARD, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        if (InputHandler::isKeyActive(GLFW_KEY_S)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::BACKWARD, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        if (InputHandler::isKeyActive(GLFW_KEY_A)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::LEFT, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        if (InputHandler::isKeyActive(GLFW_KEY_D)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::RIGHT, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        if (InputHandler::isKeyActive(GLFW_KEY_SPACE)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::UP, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        if (InputHandler::isKeyActive(GLFW_KEY_LEFT_SHIFT)) {
-            EventDispatcher::getInstance().dispatch(
-                    CameraKeyMovementEvent(CameraMovementDirection::DOWN, GameState::getInstance().deltaTime));
-            dirty = true;
-        }
-        return dirty;
+        return 0;
     }
 
     std::type_index getType() {

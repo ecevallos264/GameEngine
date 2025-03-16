@@ -14,6 +14,6 @@ void Scene::render(glm::mat4 view, glm::mat4 projection) {
     this->root->render(view, projection);
 }
 
-void Scene::addEntity(Shape* entity, std::string name) {
+void Scene::addEntity(RigidBody* entity, std::string name) {
     this->root->addToPending(entity);
 }

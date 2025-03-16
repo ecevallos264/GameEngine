@@ -9,20 +9,20 @@
 #include <GL/gl.h>
 
 #include "../../engine/core/shaders/ShaderManager.h"
-#include "../../engine/entitities/Shape.h"
+#include "../../engine/physics/RigidBody.h"
 #include "../../engine/physics/CollisionHandler.h"
 #include "../../engine/entitities/Point.h"
 
 
-class MyCube : public Shape {
+class MyCube : public RigidBody {
 public:
     bool colliding = false;
     std::string id;
 
 public:
     MyCube(std::string id, glm::vec3 pos, glm::vec3 color) :
-    Shape(ShaderManager::getInstance().getShader("shader1")),
-    id(id) {
+            RigidBody(ShaderManager::getInstance().getShader("shader1")),
+            id(id) {
 //        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
 //            this->onCollision(static_cast<MyCube*>(data.entityA));
 //        });
@@ -50,7 +50,6 @@ public:
         initializeBuffers();
         this->fixed = false;
         this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
-        this->updateBoundingBoxRegion(model);
     }
 
     void render(glm::mat4 view, glm::mat4 projection) override {
@@ -95,8 +94,7 @@ public:
 
     int update(float deltaTime) override {
         // std::cout << "Updating " << this->id << std::endl;
-        Shape::update(deltaTime);
-        this->updateBoundingBoxRegion(model);
+        RigidBody::update(deltaTime);
         if(this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;

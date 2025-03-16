@@ -3,7 +3,7 @@
 //
 #include <memory>
 #include "EntityController.h"
-#include "../entitities/Shape.h"
+#include "../physics/RigidBody.h"
 #include "../entitities/Point.h"
 
 int EntityController::update(float deltaTime) {
@@ -25,7 +25,7 @@ void EntityController::addEntity(Entity* entity) {
 
 void EntityController::debugRender(glm::mat4 view, glm::mat4 projection) {
     for(Entity* entity: this->entities) {
-        Shape* shape = static_cast<Shape*>(entity);
+        RigidBody* shape = static_cast<RigidBody*>(entity);
         for (const auto& vertex : shape->getVertices()) {
             Point point(vertex.position, glm::vec3(1.0f, 0.0f, 0.0f), shape->shader); // Red point for debugging
             point.render(view, projection);

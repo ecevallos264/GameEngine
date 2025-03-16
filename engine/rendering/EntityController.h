@@ -9,7 +9,7 @@
 #include "Entity.h"
 #include "Renderer.h"
 #include "memory"
-#include "../entitities/Shape.h"
+#include "../physics/RigidBody.h"
 
 class EntityController : Renderer {
 public:

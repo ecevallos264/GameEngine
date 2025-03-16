@@ -23,6 +23,10 @@ public:
     void setup() override {
 
     }
+
+    int handleInput(GLFWwindow* window) override {
+        return 0;
+    }
 };
 
 #endif //PARTITIONSCENE_H

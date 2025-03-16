@@ -17,6 +17,7 @@ void Game::run(GLFWwindow* window) {
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
 
+        SceneController::getInstance().getCurrentScene()->handleInput(window);
         SceneController::getInstance().getCurrentScene()->update(GameState::getInstance().deltaTime);
 
 //        for(int i = 0; i < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); i++) {
@@ -25,8 +26,8 @@ void Game::run(GLFWwindow* window) {
 //            for(int j = i + 1; j < SceneController::getInstance().getCurrentScene()->getEntityController()->entities.size(); j++) {
 //                Entity* entity2 = SceneController::getInstance().getCurrentScene()->getEntityController()->entities[j];
 //                if(entity2->fixed) continue;
-//                Shape* shape1 = static_cast<Shape*>(entity1);
-//                Shape* shape2 = static_cast<Shape*>(entity2);
+//                RigidBody* shape1 = static_cast<RigidBody*>(entity1);
+//                RigidBody* shape2 = static_cast<RigidBody*>(entity2);
 //                if(CollisionHandler::getInstance().checkForCollision(shape1, shape2)) {
 //                    MyCube* cube1 = static_cast<MyCube*>(entity1);
 //                    MyCube* cube2 = static_cast<MyCube*>(entity2);

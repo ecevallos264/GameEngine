@@ -1,22 +1,21 @@
 #ifndef GAME_ENGINE_LINE_H
 #define GAME_ENGINE_LINE_H
 
-#include "Shape.h"
+#include "../physics/RigidBody.h"
 #include "glad/glad.h"
 #include "../core/shaders/shader-compiler.h"
 #include "../core/shaders/ShaderManager.h"
 
-class Line : public Shape {
+class Line : public RigidBody {
     glm::vec3 rotation = glm::vec3(0.0f);
 public:
     Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color, float opacity) :
-        Shape(ShaderManager::getInstance().getShader("shader1")) {
+            RigidBody(ShaderManager::getInstance().getShader("shader1")) {
         this->vertices.push_back({start, color, opacity});
         this->vertices.push_back({end, color, opacity});
 
         indices = { 0, 1 };
         this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
-        updateBoundingBoxRegion(model);
         updateVertexBuffer();
         initializeBuffers();
     }
@@ -36,7 +35,7 @@ public:
 
     int update(float deltaTime) override {
         glm::mat4 model = glm::mat4(1.0f);
-        updateBoundingBoxRegion(model);
+//        updateBoundingBoxRegion(model);
         this->shader->setMat4("model", model);
         return 0;
     }

@@ -34,7 +34,7 @@ int main() {
                     shaderInfo.VertexShaderPath.c_str(),
                     shaderInfo.FragmentShaderPath.c_str()));
 
-    std::shared_ptr<PartitionScene> scene = std::make_shared<PartitionScene>(
+    std::shared_ptr<TestScene> scene = std::make_shared<TestScene>(
             new Shader(
                     shaderInfo.VertexShaderPath.c_str(),
                     shaderInfo.FragmentShaderPath.c_str()));

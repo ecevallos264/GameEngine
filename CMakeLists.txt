@@ -9,7 +9,7 @@ add_executable(GameEngine
         engine/camera/Camera.h
         engine/camera/CameraHandler.cpp
         engine/camera/CameraHandler.h
-        engine/entitities/Shape.h
+        engine/physics/RigidBody.h
         engine/core/eventing/Event.h
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h

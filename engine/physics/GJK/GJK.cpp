@@ -5,14 +5,14 @@
 #include <memory>
 
 // Computes the Minkowski difference's support point
-glm::vec3 minkowskiSupport(Shape* shapeA, Shape* shapeB, const glm::vec3& direction) {
+glm::vec3 minkowskiSupport(RigidBody* shapeA, RigidBody* shapeB, const glm::vec3& direction) {
     glm::vec3 supportA = shapeA->getSupportPoint(direction);
     glm::vec3 supportB = shapeB->getSupportPoint(-direction);
     return supportA - supportB;
 }
 
 // GJK collision detection function
-CollisionState GJK(Shape* shapeA, Shape* shapeB) {
+CollisionState GJK(RigidBody* shapeA, RigidBody* shapeB) {
     glm::vec3 direction = shapeB->getPosition() - shapeA->getPosition();
     if (glm::length(direction) == 0.0f) {
         direction = glm::vec3(1.0f, 0.0f, 0.0f); // Default direction
@@ -121,7 +121,7 @@ bool update_simplex4(glm::vec3 &a, glm::vec3 &b, glm::vec3 &c, glm::vec3 &d, int
 }
 
 // Function to check collision between two entities
-bool check(Shape* shapeA, Shape* shapeB) {
+bool check(RigidBody* shapeA, RigidBody* shapeB) {
     CollisionState result = GJK(shapeA, shapeB);
     return result == CollisionState::COLLISION;
 }

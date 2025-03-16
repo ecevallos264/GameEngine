@@ -5,7 +5,7 @@
 
 #include <memory>
 #include "glm/vec3.hpp"
-#include "../entitities/Shape.h"
+#include "RigidBody.h"
 
 struct Simplex {
     std::vector<glm::vec3> points;

@@ -7,7 +7,7 @@
 
 #include "../core/patterns/Singleton.h"
 #include "../rendering/Entity.h"
-#include "../entitities/Shape.h"
+#include "RigidBody.h"
 #include "GJK/GJK.h"
 #include "CollisionEvent.h"
 #include "../../test_game/entities/MyCube.h"
@@ -42,7 +42,7 @@ public:
 
     }
 
-    bool checkForCollision(Shape* entityA, Shape* entityB) {
+    bool checkForCollision(RigidBody* entityA, RigidBody* entityB) {
         return check(entityA, entityB);
     }
 

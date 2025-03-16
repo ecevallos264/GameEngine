@@ -25,8 +25,8 @@ private:
     float xPosition;
     float yPosition;
     float yaw = -90.0f;
-    float pitch;
-    float roll;
+    float pitch = 0.0f;
+    float roll = 0.0f;
 
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;

@@ -8,13 +8,13 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
-#include "../../engine/entitities/Shape.h"
+#include "../../engine/physics/RigidBody.h"
 #include "../../engine/physics/CollisionHandler.h"
 #include "../../engine/entitities/Point.h"
 #include "../../engine/core/settings/settings.h"
 #include <limits>
 
-class HexagonalPrism : public Shape {
+class HexagonalPrism : public RigidBody {
 private:
 
 public:
@@ -24,7 +24,7 @@ public:
 
 
 public:
-    HexagonalPrism(std::string id, glm::vec3 pos, glm::vec3 color) : Shape(ShaderManager::getInstance().getShader("shader1")), id(id), color(color) {
+    HexagonalPrism(std::string id, glm::vec3 pos, glm::vec3 color) : RigidBody(ShaderManager::getInstance().getShader("shader1")), id(id), color(color) {
         position = pos;
 
         this->vertices = {
@@ -77,7 +77,6 @@ public:
 //        updateVertexBuffer();
         initializeBuffers();
         this->flags->set(EntityFlags::ENTITY_FIRST_UPDATE);
-        updateBoundingBoxRegion(model);
         this->fixed = false;
 
     }
@@ -125,9 +124,8 @@ public:
 
     int update(float deltaTime) override {
         bool dirty = false;
-        dirty &= Shape::update(deltaTime);
+        dirty &= RigidBody::update(deltaTime);
         dirty &= this->onUpdate(deltaTime);
-        this->updateBoundingBoxRegion(model);
         if (this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;

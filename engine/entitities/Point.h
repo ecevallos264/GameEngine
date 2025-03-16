@@ -5,14 +5,14 @@
 
 #include <glm/vec3.hpp>
 #include <iostream>
-#include "Shape.h"
+#include "../physics/RigidBody.h"
 
-class Point : public Shape {
+class Point : public RigidBody {
 private:
     glm::vec3 color;
 
 public:
-    Point(glm::vec3 pos, glm::vec3 color, Shader* shader) : Shape(shader), color(color) {
+    Point(glm::vec3 pos, glm::vec3 color, Shader* shader) : RigidBody(shader), color(color) {
         position = pos;
         this->vertices.push_back({pos, color, 1.0f});
         updateVertexBuffer();
@@ -55,7 +55,7 @@ public:
     }
 
     int update(float deltaTime) override {
-        Shape::update(deltaTime);
+        RigidBody::update(deltaTime);
         // No additional logic for points currently
     }
 };

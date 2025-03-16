@@ -56,8 +56,8 @@ void Octree::updateTree() {
     this->tree_ready = true;
 }
 
-bool Octree::insert(Shape* obj) {
-    std::cout << "Inserting object of dimensions: " << obj->boundingBox->calculateDimensions().x << ":" << obj->boundingBox->calculateDimensions().y << ":" << obj->boundingBox->calculateDimensions().z << std::endl;
+bool Octree::insert(BoundingBox* obj) {
+//    std::cout << "Inserting object of dimensions: " << obj->boundingBox->calculateDimensions().x << ":" << obj->boundingBox->calculateDimensions().y << ":" << obj->boundingBox->calculateDimensions().z << std::endl;
     if (objects.empty() && m_activeNodes == 0) {
         objects.add(obj);
 //        obj.cell = this;
@@ -84,13 +84,13 @@ bool Octree::insert(Shape* obj) {
 
 
     BoundingBox octants[8];
-    List<Shape*> octLists[8];
+    List<RigidBody*> octLists[8];
 
     for (int i = 0; i < 8; i++) {
         calculateBounds(octants[i], (Octant)(1 << i), region);
     }
 
-    for (Shape* currentObj : objects) {
+    for (RigidBody* currentObj : objects) {
         for (int i = 0; i < 8; i++) {
             if (octants[i].contains(currentObj->boundingBox)) {
                 octLists[i].add(currentObj);
@@ -104,7 +104,7 @@ bool Octree::insert(Shape* obj) {
     for (int i = 0; i < 8; i++) {
         if (!octLists[i].empty()) {
             if (children[i]) {
-                for (Shape* br : octLists[i]) {
+                for (RigidBody* br : octLists[i]) {
                     children[i]->insert(br);
                 }
             } else {
@@ -134,10 +134,10 @@ void Octree::build() {
         calculateBounds(octants[i], (Octant)(1 << i), region);
     }
 
-    List<Shape*> octLists[8];
-    List<Shape*> deList;
+    List<RigidBody*> octLists[8];
+    List<RigidBody*> deList;
 
-    for (Shape* entity : objects) {
+    for (RigidBody* entity : objects) {
         for (int i = 0; i < 8; i++) {
             if (octants[i].contains(entity->boundingBox)) {
                 octLists[i].add(entity);
@@ -147,7 +147,7 @@ void Octree::build() {
         }
     }
 
-    for (Shape* entity : deList) {
+    for (RigidBody* entity : deList) {
         objects.remove(entity);
     }
 
@@ -171,15 +171,15 @@ void Octree::build() {
 }
 
 // Create a new octree node
-Octree* Octree::CreateNode(BoundingBox region, List<Shape*> objList) {
+Octree* Octree::CreateNode(BoundingBox region, List<RigidBody*> objList) {
     if (objList.empty()) return nullptr;
     Octree* ret = new Octree(&region, objList);
     ret->parent = this;
     return ret;
 }
 
-Octree* Octree::CreateNode(BoundingBox region, Shape* Item) {
-    List<Shape*> objList;
+Octree* Octree::CreateNode(BoundingBox region, RigidBody* Item) {
+    List<RigidBody*> objList;
     objList.add(Item);
     Octree* ret = new Octree(&region, objList);
     ret->parent = this;
@@ -234,7 +234,7 @@ void Octree::processPending() {
             std::cout << "Processing pending insertions... size: " << pendingInsertion.size() << std::endl;
         }
         for (int i = 0; i < size; i++) {
-            Shape* front = pendingInsertion.front();
+            RigidBody* front = pendingInsertion.front();
             pendingInsertion.pop();
             if (region->contains(front->boundingBox)) {
                 insert(front);
@@ -245,7 +245,7 @@ void Octree::processPending() {
     }
 }
 
-void Octree::addToPending(Shape *shape) {
+void Octree::addToPending(RigidBody *shape) {
     pendingInsertion.push(shape);
 }
 
@@ -254,10 +254,10 @@ void Octree::render(glm::mat4 mat1, glm::mat4 mat2) {
 //        return;
 //    }
     region->setColor(glm::vec3(1, 0, 0));
-    region->render(mat1, mat2);
-    for(Shape* shape: this->objects) {
-        // shape->boundingBox->render(mat1, mat2);
-        shape->render(mat1, mat2);
+//    region->render(mat1, mat2);
+    for(RigidBody* shape: this->objects) {
+        shape->boundingBox->render(mat1, mat2);
+//        shape->render(mat1, mat2);
     }
 
     for (int i = 0; i < 8; i++) {

@@ -1,16 +1,16 @@
 #ifndef GAMEENGINE_RECTANGLE_H
 #define GAMEENGINE_RECTANGLE_H
 
-#include "Shape.h"
+#include "../physics/RigidBody.h"
 
-class Rectangle : public Shape {
+class Rectangle : public RigidBody {
 protected:
     glm::vec3 min;
     glm::vec3 max;
 
 public:
     Rectangle(Shader* shader, glm::vec3 pos, glm::vec3 size, glm::vec3 color)
-            : Shape(shader), min(pos - size * 0.5f), max(pos + size * 0.5f) {
+            : RigidBody(shader), min(pos - size * 0.5f), max(pos + size * 0.5f) {
 
         glm::vec3 halfSize = size * 0.5f;
         vertices = {
@@ -60,7 +60,7 @@ public:
     }
 
     int update(float deltaTime) override {
-        Shape::update(deltaTime);
+        RigidBody::update(deltaTime);
         if(this->onUpdate) {
             this->onUpdate(deltaTime);
         }
