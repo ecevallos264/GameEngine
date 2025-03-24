@@ -55,11 +55,11 @@ public:
         std::srand(static_cast<unsigned>(std::time(0)));
 
         // Add 10 cubes at random positions within a 10x10x10 volume
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             glm::vec3 randomPos(
-                    static_cast<float>(std::rand() % 11 - 5),  // X position: -5 to +5
-                    static_cast<float>(std::rand() % 11 - 5),  // Y position: -5 to +5
-                    static_cast<float>(std::rand() % 11 - 5)   // Z position: -5 to +5
+                    static_cast<float>(std::rand() % 201 - 100),  // X position: -5 to +5
+                    static_cast<float>(std::rand() % 201 - 100),  // Y position: -5 to +5
+                    static_cast<float>(std::rand() % 201 - 100)   // Z position: -5 to +5
             );
 
             MyCube* cube = new MyCube("cube" + std::to_string(i + 1), randomPos, glm::vec3(1.0f, 0.0f, 0.0f));

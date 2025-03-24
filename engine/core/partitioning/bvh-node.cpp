@@ -3,7 +3,6 @@
 #include "../shaders/ShaderManager.h"
 namespace BVH {
     void Node::insert(BoundingVolume* boundingVolume) {
-        std::cout << "Inserting " << glm::to_string(boundingVolume->getCenter()) << std::endl;
         if (!boundingVolume) {
             std::cerr << "Error: Attempted to insert a nullptr bounding volume." << std::endl;
             return;

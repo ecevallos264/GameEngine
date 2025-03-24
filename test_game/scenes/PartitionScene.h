@@ -20,7 +20,7 @@ public:
         std::srand(static_cast<unsigned>(std::time(0)));
 
         // Add 10 cubes at random positions within a 10x10x10 volume
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             glm::vec3 randomPos(
                     static_cast<float>(std::rand() % 11 - 5),  // X position: -5 to +5
                     static_cast<float>(std::rand() % 11 - 5),  // Y position: -5 to +5

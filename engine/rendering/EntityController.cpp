@@ -7,9 +7,9 @@
 #include "../entitities/Point.h"
 
 int EntityController::update(float deltaTime) {
-    for(Entity* entity: this->entities) {
-        entity->update(deltaTime);
-    }
+//    for(Entity* entity: this->entities) {
+//        entity->update(deltaTime);
+//    }
     return 0;
 }
 
