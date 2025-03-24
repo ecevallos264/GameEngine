@@ -16,6 +16,7 @@
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
 #include "../../engine/physics/RigidBody.h"
+#include "../../engine/core/shaders/ShaderManager.h"
 
 class Player : public EventListener, public RigidBody {
 public:

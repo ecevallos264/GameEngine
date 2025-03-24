@@ -9,9 +9,7 @@
 #include "../entitities/Vertex.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
-#include "../rendering/BoundingRegion.h"
 #include "../rendering/RenderableEntity.h"
-#include "../core/structures/BoundingBox.h"
 
 //TODO rename to CollidableEntity or similar
 class RigidBody : public RenderableEntity {

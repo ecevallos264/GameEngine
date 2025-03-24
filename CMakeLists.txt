@@ -58,19 +58,18 @@ add_executable(GameEngine
         test_game/entities/MyCube.h
         engine/physics/CollisionEvent.h
         engine/entitities/Point.h
-        engine/rendering/BoundingRegion.h
         engine/entitities/Rectangle.h
         engine/rendering/RenderableEntity.h
         test_game/entities/HexagonalPrism.h
-        engine/core/structures/List.h
-        engine/core/structures/BoundingBox.h
-        engine/core/structures/Octree.cpp
-        engine/core/structures/Octree.h
         engine/rendering/EntityUpdateType.h
         engine/core/shaders/ShaderManager.h
         engine/core/state/FlagState.h
         engine/rendering/UpdateController.h
         test_game/scenes/PartitionScene.h
+        engine/core/partitioning/bvh-node.h
+        engine/core/partitioning/bvh-bounding-volume.h
+        engine/core/partitioning/bvh-bounding-volume.cpp
+        engine/core/partitioning/bvh-node.cpp
 
 )
 

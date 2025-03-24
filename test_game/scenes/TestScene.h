@@ -52,6 +52,20 @@ public:
 
         MyCube* cube1 = new MyCube("Main Cube", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1, 0, 0));
 
+        std::srand(static_cast<unsigned>(std::time(0)));
+
+        // Add 10 cubes at random positions within a 10x10x10 volume
+        for (int i = 0; i < 100; i++) {
+            glm::vec3 randomPos(
+                    static_cast<float>(std::rand() % 11 - 5),  // X position: -5 to +5
+                    static_cast<float>(std::rand() % 11 - 5),  // Y position: -5 to +5
+                    static_cast<float>(std::rand() % 11 - 5)   // Z position: -5 to +5
+            );
+
+            MyCube* cube = new MyCube("cube" + std::to_string(i + 1), randomPos, glm::vec3(1.0f, 0.0f, 0.0f));
+            this->addEntity(cube, "cube" + std::to_string(i + 1));
+        }
+
         cube1->fixed = false;
         cube1->setOnUpdateCallback([cube1](double deltaTime) {
             int dirty = false;
@@ -76,9 +90,9 @@ public:
             return dirty;
         });
         this->addEntity(cube1, "Main Cube");
-//        for(int i = 3; i < 10; i++) {
-//            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), glm::vec3(1, 0, 0)), "Cube");
-//        }
+        for(int i = 3; i < 10; i++) {
+            this->addEntity(new MyCube("Cube " + std::to_string(i), glm::vec3(i*2, i*2, 0), glm::vec3(1, 0, 0)), "Cube " + std::to_string(i));
+        }
 
 //        auto* prism = new HexagonalPrism("Hexagonal Prism", glm::vec3(-1, 1, -1), glm::vec3(0));
 //        prism->setOnUpdateCallback([prism](double deltaTime) {
@@ -90,9 +104,6 @@ public:
     }
 
     void setup() override {
-        this->root = new Octree(new BoundingBox(glm::vec3(-0.5f), glm::vec3(0.5f)));
-        std::cout << "root dimensions: " << this->root->region->calculateDimensions().x << ":" << this->root->region->calculateDimensions().y << ":" << this->root->region->calculateDimensions().z << std::endl;
-        this->root->build();
     }
 
     int handleInput(GLFWwindow* window) {

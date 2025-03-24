@@ -40,6 +40,36 @@ public:
         return vertices;
     }
 
+    virtual std::vector<Vertex> getTransformedVertices() const {
+        std::vector<Vertex> transformedVertices;
+
+        // Create rotation matrices for each axis (pitch, yaw, roll)
+        glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));  // Pitch
+        glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));  // Yaw
+        glm::mat4 rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));  // Roll
+
+        // Combine rotations in ZYX order (roll -> yaw -> pitch)
+        glm::mat4 rotationMatrix = rotationZ * rotationY * rotationX;
+
+        // Create the model matrix
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), position) *
+                          rotationMatrix *
+                          glm::scale(glm::mat4(1.0f), scale);
+
+        // Apply the model transformation to each vertex
+        for (const auto& vertex : vertices) {
+            glm::vec4 transformedPos = model * glm::vec4(vertex.position, 1.0f);
+            transformedVertices.push_back({
+                                                  {transformedPos.x, transformedPos.y, transformedPos.z},
+                                                  vertex.color,
+                                                  1.0f
+                                          });
+        }
+
+        return transformedVertices;
+    }
+
+
     virtual const std::vector<unsigned int>& getIndices() const {
         return indices;
     }

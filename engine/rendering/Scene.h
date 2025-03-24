@@ -8,11 +8,9 @@
 #include <glfw/glfw3.h>
 #include "Renderer.h"
 #include "EntityController.h"
-#include "../core/structures/Octree.h"
 
 class Scene : Renderer {
 protected:
-    Octree* root = new Octree();
     EntityController* entityController = new EntityController();
 public:
     virtual void setup() = 0;
