@@ -66,10 +66,11 @@ add_executable(GameEngine
         engine/core/state/FlagState.h
         engine/rendering/UpdateController.h
         test_game/scenes/PartitionScene.h
-        engine/core/partitioning/bvh-node.h
-        engine/core/partitioning/bvh-bounding-volume.h
-        engine/core/partitioning/bvh-bounding-volume.cpp
-        engine/core/partitioning/bvh-node.cpp
+        engine/rendering/partitioning/bvh-node.h
+        engine/rendering/partitioning/bvh-bounding-volume.h
+        engine/rendering/partitioning/bvh-bounding-volume.cpp
+        engine/rendering/partitioning/bvh-node.cpp
+        engine/rendering/Ray.h
 
 )
 

@@ -7,7 +7,7 @@
 
 #include "../../physics/RigidBody.h"
 #include "bvh-bounding-volume.h"
-#include "../shaders/ShaderManager.h"
+#include "../../core/shaders/ShaderManager.h"
 
 namespace BVH {
     class Node {

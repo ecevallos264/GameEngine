@@ -1,6 +1,6 @@
 #include "bvh-node.h"
 #include <iostream> // For debugging purposes
-#include "../shaders/ShaderManager.h"
+#include "../../core/shaders/ShaderManager.h"
 namespace BVH {
     void Node::insert(BoundingVolume* boundingVolume) {
         if (!boundingVolume) {

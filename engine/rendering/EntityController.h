@@ -10,7 +10,7 @@
 #include "Renderer.h"
 #include "memory"
 #include "../physics/RigidBody.h"
-#include "../core/partitioning/bvh-node.h"
+#include "../rendering/partitioning/bvh-node.h"
 
 class EntityController : Renderer {
     BVH::Node* bvhRoot = nullptr;
