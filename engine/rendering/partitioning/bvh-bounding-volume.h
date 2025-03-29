@@ -7,6 +7,7 @@
 
 #include "glm/vec3.hpp"
 #include "../../physics/RigidBody.h"
+#include "../../core/math/Plane.h"
 
 namespace BVH {
     class BoundingVolume {
@@ -26,10 +27,13 @@ namespace BVH {
         bool contains(const glm::vec3& point) const;
         float surfaceArea() const;
         glm::vec3 getCenter() const;
+        Plane getFront();
+        Plane getBack();
+        Plane getTop();
+        Plane getBottom();
+        Plane getLeft();
+        Plane getRight();
 
-        std::string toString() {
-            return "Min: " + std::to_string(min.x) + ", " + std::to_string(min.y) + ", " + std::to_string(min.z) + "; Max" + std::to_string(max.x) + ", " + std::to_string(max.x) + ", " + std::to_string(max.x);
-        }
     };
 }
 

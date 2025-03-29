@@ -77,4 +77,51 @@ namespace BVH {
         return max;
     }
 
+    Plane BoundingVolume::getFront() {
+        // Front face has a normal pointing in the -Z direction
+        glm::vec3 normal = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 point = glm::vec3((min.x + max.x) / 2.0f, (min.y + max.y) / 2.0f, min.z); // Center of the front face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
+
+    Plane BoundingVolume::getBack() {
+        // Back face has a normal pointing in the +Z direction
+        glm::vec3 normal = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 point = glm::vec3((min.x + max.x) / 2.0f, (min.y + max.y) / 2.0f, max.z); // Center of the back face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
+
+    Plane BoundingVolume::getTop() {
+        // Top face has a normal pointing in the +Y direction
+        glm::vec3 normal = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::vec3 point = glm::vec3((min.x + max.x) / 2.0f, max.y, (min.z + max.z) / 2.0f); // Center of the top face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
+
+    Plane BoundingVolume::getBottom() {
+        // Bottom face has a normal pointing in the -Y direction
+        glm::vec3 normal = glm::vec3(0.0f, -1.0f, 0.0f);
+        glm::vec3 point = glm::vec3((min.x + max.x) / 2.0f, min.y, (min.z + max.z) / 2.0f); // Center of the bottom face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
+
+    Plane BoundingVolume::getLeft() {
+        // Left face has a normal pointing in the -X direction
+        glm::vec3 normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+        glm::vec3 point = glm::vec3(min.x, (min.y + max.y) / 2.0f, (min.z + max.z) / 2.0f); // Center of the left face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
+
+    Plane BoundingVolume::getRight() {
+        // Right face has a normal pointing in the +X direction
+        glm::vec3 normal = glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 point = glm::vec3(max.x, (min.y + max.y) / 2.0f, (min.z + max.z) / 2.0f); // Center of the right face
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
 }

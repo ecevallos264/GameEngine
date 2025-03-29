@@ -1,6 +1,8 @@
 #include "bvh-node.h"
 #include <iostream> // For debugging purposes
 #include "../../core/shaders/ShaderManager.h"
+#include "../Ray.h"
+
 namespace BVH {
     void Node::insert(BoundingVolume* boundingVolume) {
         if (!boundingVolume) {
@@ -200,6 +202,14 @@ namespace BVH {
         glBindVertexArray(0);
     }
 
+    bool Node::intersectsWithRay(Ray ray) {
+        return boundingRegion->getFront().intersectsWithRay(ray) ||
+               boundingRegion->getBack().intersectsWithRay(ray) ||
+               boundingRegion->getTop().intersectsWithRay(ray) ||
+               boundingRegion->getBottom().intersectsWithRay(ray) ||
+               boundingRegion->getLeft().intersectsWithRay(ray) ||
+               boundingRegion->getRight().intersectsWithRay(ray);
+    }
 
 
     void Node::cleanupWireframeBox() {

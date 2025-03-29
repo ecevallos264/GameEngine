@@ -8,6 +8,7 @@
 #include "../../physics/RigidBody.h"
 #include "bvh-bounding-volume.h"
 #include "../../core/shaders/ShaderManager.h"
+#include "../Ray.h"
 
 namespace BVH {
     class Node {
@@ -34,6 +35,8 @@ namespace BVH {
         void setupWireframeBox(glm::vec3 color);
 
         void build(std::vector<BoundingVolume *> &volumes);
+
+        bool intersectsWithRay(Ray ray);
     };
 }
 

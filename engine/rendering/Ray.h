@@ -8,12 +8,20 @@
 #include "RenderableEntity.h"c
 #include "../core/shaders/ShaderManager.h"
 
-class Ray : public RenderableEntity {
+class Ray : private RenderableEntity {
 private:
     glm::vec3 origin;
     glm::vec3 direction;
 public:
     Ray(const glm::vec3& o, const glm::vec3& d) : RenderableEntity(ShaderManager::getInstance().getShader("shader1")), origin(o), direction(glm::normalize(d)) {}
+
+    glm::vec3 getOrigin() {
+        return origin;
+    }
+
+    glm::vec3 getDirection() {
+        return direction;
+    }
 };
 
 #endif //GAMEENGINE_RAY_H
