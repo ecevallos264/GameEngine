@@ -1,7 +1,3 @@
-//
-// Created by eceva on 1/9/2025.
-//
-
 #ifndef GAMEENGINE_CAMERA_H
 #define GAMEENGINE_CAMERA_H
 
@@ -21,18 +17,15 @@
 class Camera : EventListener {
 private:
     bool firstRenderingIteration = true;
-    
     float xPosition;
     float yPosition;
     float yaw = -90.0f;
     float pitch = 0.0f;
     float roll = 0.0f;
-
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
     glm::vec3 direction;
-
     float cameraSpeed;
 
 public:
@@ -44,70 +37,42 @@ public:
 
     void updatePosition(glm::vec3 updateVector);
 
-    glm::vec3 getPosition();
-    glm::vec3 getFront();
-    glm::vec3 getUp();
-    void setPosition(glm::vec3 vector);
-    void setFront(glm::vec3 vector);
-    void setUp(glm::vec3 vector);
-    void setSpeed(float speed);
+    glm::vec3 getPosition() const { return cameraPos; }
+    glm::vec3 getFront() const { return cameraFront; }
+    glm::vec3 getUp() const { return cameraUp; }
+    glm::vec3 getRight() const { return glm::normalize(glm::cross(cameraFront, cameraUp)); }
+    void setPosition(glm::vec3 vector) { cameraPos = vector; }
+    void setFront(glm::vec3 vector) { cameraFront = vector; }
+    void setUp(glm::vec3 vector) { cameraUp = vector; }
+    void setSpeed(float speed) { cameraSpeed = speed; }
 
     float getCalcSpeed(float deltaTime) const;
 
-    void setXPosition(float xPosition) {
-        this->xPosition = xPosition;
+    void setXPosition(float xPosition) { this->xPosition = xPosition; }
+    float getXPosition() const { return xPosition; }
+
+    void setYPosition(float yPosition) { this->yPosition = yPosition; }
+    float getYPosition() const { return yPosition; }
+
+    glm::mat4 getViewMatrix() const {
+        return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     }
 
-    float getXPosition() const {
-        return xPosition;
-    }
-
-    void setYPosition(float yPosition) {
-        this->yPosition = yPosition;
-    }
-
-    float getYPosition() const {
-        return yPosition;
-    }
-
-    glm::mat4 getViewMatrix() {
-        return glm::lookAt(
-                cameraPos,
-                cameraPos + cameraFront,
-                cameraUp
-        );
-    }
-
-    glm::mat4 getProjectionMatrix() {
+    glm::mat4 getProjectionMatrix() const {
         return glm::perspective(glm::radians(45.0f), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 0.1f, Settings::MAX_RENDER_DISTANCE);
     }
 
-    void setYaw(float yaw) {
-        this->yaw = yaw;
-    }
+    void setYaw(float yaw) { this->yaw = yaw; }
+    float getYaw() const { return yaw; }
 
-    float getYaw() const {
-        return yaw;
-    }
+    void setPitch(float pitch) { this->pitch = pitch; }
+    float getPitch() const { return pitch; }
 
-    void setPitch(float pitch) {
-        this->pitch = pitch;
-    }
-
-    float getPitch() const {
-        return pitch;
-    }
-
-    void setRoll(float roll) {
-        this->roll = roll;
-    }
-
-    float getRoll() const {
-        return roll;
-    }
+    void setRoll(float roll) { this->roll = roll; }
+    float getRoll() const { return roll; }
 
     void onEvent(const MouseMovementEvent& event);
     void onEvent(const Event& event) override;
 };
 
-#endif //GAMEENGINE_CAMERA_H
+#endif

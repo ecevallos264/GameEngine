@@ -11,34 +11,6 @@ float Camera::getCalcSpeed(float deltaTime) const {
     return cameraSpeed * deltaTime;
 }
 
-glm::vec3 Camera::getPosition() {
-    return cameraPos;
-}
-
-glm::vec3 Camera::getFront() {
-    return cameraFront;
-}
-
-glm::vec3 Camera::getUp() {
-    return cameraUp;
-}
-
-void Camera::setPosition(glm::vec3 vector) {
-    cameraPos = vector;
-}
-
-void Camera::setFront(glm::vec3 vector) {
-    this->cameraFront = vector;
-}
-
-void Camera::setUp(glm::vec3 vector) {
-    this->cameraUp = vector;
-}
-
-void Camera::setSpeed(float speed) {
-    this->cameraSpeed = speed;
-}
-
 void Camera::onEvent(const MouseMovementEvent &event) {
     if(MouseHandler::getInstance().getMouseCursorState() == MouseCursorState::OUT_OF_WINDOW) return;
     if(firstRenderingIteration) {
@@ -64,6 +36,11 @@ void Camera::onEvent(const MouseMovementEvent &event) {
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
+
+    glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
+
+    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, worldUp));
+    cameraUp    = glm::normalize(glm::cross(cameraRight, cameraFront));
 }
 
 void Camera::onEvent(const Event &event) {

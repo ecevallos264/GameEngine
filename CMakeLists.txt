@@ -71,8 +71,8 @@ add_executable(GameEngine
         engine/rendering/partitioning/bvh-bounding-volume.cpp
         engine/rendering/partitioning/bvh-node.cpp
         engine/rendering/Ray.h
-        engine/camera/Culling.h
         engine/core/math/Plane.h
+        engine/core/math/Frustrum.h
 
 )
 

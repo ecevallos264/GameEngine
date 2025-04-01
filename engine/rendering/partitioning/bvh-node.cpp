@@ -2,7 +2,7 @@
 #include <iostream> // For debugging purposes
 #include "../../core/shaders/ShaderManager.h"
 #include "../Ray.h"
-
+#include "../../core/math/Frustrum.h"
 namespace BVH {
     void Node::insert(BoundingVolume* boundingVolume) {
         if (!boundingVolume) {
@@ -110,8 +110,8 @@ namespace BVH {
         boundingRegion->expandToFit(*right->boundingRegion);
     }
 
-    void Node::render(glm::mat4 view, glm::mat4 projection, int level) {
-        if (boundingRegion) {
+    void Node::render(Frustum frustum, glm::mat4 view, glm::mat4 projection, int level) {
+        if (boundingRegion && frustum.isBoundingVolumeInside(boundingRegion)) {
             glm::vec3 center = boundingRegion->getCenter();
             glm::vec3 size = boundingRegion->getMax() - boundingRegion->getMin();
 
@@ -127,8 +127,8 @@ namespace BVH {
             drawWireframeBox(center, size, view, projection, color);
         }
 
-        if (left) left->render(view, projection, level + 1);
-        if (right) right->render(view, projection, level + 1);
+        if (left) left->render(frustum, view, projection, level + 1);
+        if (right) right->render(frustum, view, projection, level + 1);
     }
 
     void Node::drawWireframeBox(const glm::vec3& center, const glm::vec3& size, glm::mat4 view, glm::mat4 projection, glm::vec3 color) {
@@ -202,14 +202,14 @@ namespace BVH {
         glBindVertexArray(0);
     }
 
-    bool Node::intersectsWithRay(Ray ray) {
-        return boundingRegion->getFront().intersectsWithRay(ray) ||
-               boundingRegion->getBack().intersectsWithRay(ray) ||
-               boundingRegion->getTop().intersectsWithRay(ray) ||
-               boundingRegion->getBottom().intersectsWithRay(ray) ||
-               boundingRegion->getLeft().intersectsWithRay(ray) ||
-               boundingRegion->getRight().intersectsWithRay(ray);
-    }
+//    bool Node::intersectsWithRay(Ray ray) {
+//        return boundingRegion->getFront().intersectsWithRay(ray) ||
+//               boundingRegion->getBack().intersectsWithRay(ray) ||
+//               boundingRegion->getTop().intersectsWithRay(ray) ||
+//               boundingRegion->getBottom().intersectsWithRay(ray) ||
+//               boundingRegion->getLeft().intersectsWithRay(ray) ||
+//               boundingRegion->getRight().intersectsWithRay(ray);
+//    }
 
 
     void Node::cleanupWireframeBox() {

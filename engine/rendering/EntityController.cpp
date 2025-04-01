@@ -5,6 +5,7 @@
 #include "EntityController.h"
 #include "../physics/RigidBody.h"
 #include "../entitities/Point.h"
+#include "../camera/CameraHandler.h"
 
 int EntityController::update(float deltaTime) {
 //    for(Entity* entity: this->entities) {
@@ -14,10 +15,14 @@ int EntityController::update(float deltaTime) {
 }
 
 void EntityController::render(glm::mat4 view, glm::mat4 projection) {
-//    for(Entity* entity: this->entities) {
-//        entity->render(view, projection);
-//    }
-    debugRender(view, projection);
+    std::cout << "CAM POS: " << glm::to_string(CameraHandler::getInstance().getCamera()->getPosition()) << std::endl;
+    std::cout << "CAM Right: " << glm::to_string(CameraHandler::getInstance().getCamera()->getUp()) << std::endl;
+    std::cout << "CAM Up: " << glm::to_string(CameraHandler::getInstance().getCamera()->getRight()) << std::endl;
+    std::cout << "CAM FRONT: " << glm::to_string(CameraHandler::getInstance().getCamera()->getFront()) << std::endl;
+    Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 45, 0, 200);
+
+    frustum.drawFrusum(view, projection);
+    debugRender(frustum, view, projection);
 }
 
 void EntityController::addEntity(Entity* entity) {
@@ -25,10 +30,9 @@ void EntityController::addEntity(Entity* entity) {
     buildBVH();
 }
 
-void EntityController::debugRender(glm::mat4 view, glm::mat4 projection) {
-    // Render BVH tree for debugging
+void EntityController::debugRender(Frustum frustum, glm::mat4 view, glm::mat4 projection) {
     if (bvhRoot) {
-        bvhRoot->render(view, projection, 0);
+        bvhRoot->render(frustum, view, projection, 0);
     }
 }
 

@@ -23,6 +23,8 @@ public:
     void debugRender(glm::mat4 view, glm::mat4 projection);
 
     void buildBVH();
+
+    void debugRender(Frustum frustum, glm::mat4 view, glm::mat4 projection);
 };
 
 #endif //GAMEENGINE_ENTITYCONTROLLER_H

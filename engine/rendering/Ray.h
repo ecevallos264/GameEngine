@@ -5,7 +5,7 @@
 #ifndef GAMEENGINE_RAY_H
 #define GAMEENGINE_RAY_H
 
-#include "RenderableEntity.h"c
+#include "RenderableEntity.h"
 #include "../core/shaders/ShaderManager.h"
 
 class Ray : private RenderableEntity {

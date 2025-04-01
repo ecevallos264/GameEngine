@@ -9,6 +9,7 @@
 #include "bvh-bounding-volume.h"
 #include "../../core/shaders/ShaderManager.h"
 #include "../Ray.h"
+#include "../../core/math/Frustrum.h"
 
 namespace BVH {
     class Node {
@@ -26,7 +27,7 @@ namespace BVH {
 
         void cleanupWireframeBox();
 
-        void render(glm::mat4 view, glm::mat4 projection, int level);
+        void render(Frustum frustum, glm::mat4 view, glm::mat4 projection, int level);
 
         void
         drawWireframeBox(const glm::vec3 &center, const glm::vec3 &size, glm::mat4 view, glm::mat4 projection,

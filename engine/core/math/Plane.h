@@ -1,45 +1,33 @@
-//
-// Created by eceva on 3/25/2025.
-//
-
 #ifndef GAMEENGINE_PLANE_H
 #define GAMEENGINE_PLANE_H
 
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
-#include "../../rendering/Ray.h"
 
-struct Plane {
+class Plane {
+public:
     glm::vec3 normal;
     float distance;
 
-    Plane() : normal(glm::vec3()), distance(0.0f) {}
+    Plane() : normal(glm::vec3(0.0f)), distance(0.0f) {}
+    Plane(const glm::vec3& normal, float distance) : normal(glm::normalize(normal)), distance(distance) {}
 
-    Plane(const glm::vec3& n, float d) : normal(n), distance(d) {}
+    static Plane fromPointNormal(const glm::vec3& point, const glm::vec3& normal) {
+        float distance = -glm::dot(normal, point);
+        return Plane(normal, distance);
+    }
 
     float distanceToPoint(const glm::vec3& point) const {
         return glm::dot(normal, point) + distance;
     }
 
-    float findRayIntersectionScalar(Ray ray) const {
-        float denominator = glm::dot(normal, ray.getDirection());
-
-        if (fabs(denominator) < 1e-6) {
-            return -1.0f;
-        }
-
-        float t = -((glm::dot(normal, ray.getOrigin()) + distance) / denominator);
-        return t;
+    bool isInFront(const glm::vec3& point) const {
+        return distanceToPoint(point) > 0;
     }
 
-    bool intersectsWithRay(Ray ray) {
-        float t = findRayIntersectionScalar(ray);
-
-        if (t < 0.0f) {
-            return false;
-        }
-        return true;
+    bool isBehind(const glm::vec3& point) const {
+        return distanceToPoint(point) < 0;
     }
 };
 
-#endif //GAMEENGINE_PLANE_H
+#endif
