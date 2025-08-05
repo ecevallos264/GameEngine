@@ -77,6 +77,7 @@ class EngineBuilder {
 private:
     ShaderInfo shaderInfo;
     Camera* camera;
+    Camera* debugCamera;
     float cameraSpeed = 2.5f;
 
 public:
@@ -98,6 +99,7 @@ public:
     Engine build(GLFWwindow* window) {
 
         CameraHandler::getInstance().setCamera(camera);
+        CameraHandler::getInstance().setDebugCamera(debugCamera);
         CameraHandler::getInstance().getCamera()->setSpeed(this->cameraSpeed);
 
         return Engine(shaderInfo, window);

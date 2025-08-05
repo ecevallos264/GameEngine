@@ -73,6 +73,7 @@ add_executable(GameEngine
         engine/rendering/Ray.h
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
+        engine/core/eventing/events/DebugCameraKeyMovementEvent.h
 
 )
 

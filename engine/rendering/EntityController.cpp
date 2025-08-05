@@ -15,11 +15,11 @@ int EntityController::update(float deltaTime) {
 }
 
 void EntityController::render(glm::mat4 view, glm::mat4 projection) {
-    std::cout << "CAM POS: " << glm::to_string(CameraHandler::getInstance().getCamera()->getPosition()) << std::endl;
-    std::cout << "CAM Right: " << glm::to_string(CameraHandler::getInstance().getCamera()->getUp()) << std::endl;
-    std::cout << "CAM Up: " << glm::to_string(CameraHandler::getInstance().getCamera()->getRight()) << std::endl;
-    std::cout << "CAM FRONT: " << glm::to_string(CameraHandler::getInstance().getCamera()->getFront()) << std::endl;
-    Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 45, 0, 200);
+//    std::cout << "CAM POS: " << glm::to_string(CameraHandler::getInstance().getCamera()->getPosition()) << std::endl;
+//    std::cout << "CAM Right: " << glm::to_string(CameraHandler::getInstance().getCamera()->getUp()) << std::endl;
+//    std::cout << "CAM Up: " << glm::to_string(CameraHandler::getInstance().getCamera()->getRight()) << std::endl;
+//    std::cout << "CAM FRONT: " << glm::to_string(CameraHandler::getInstance().getCamera()->getFront()) << std::endl;
+    Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 45, 0, 10000);
 
     frustum.drawFrusum(view, projection);
     debugRender(frustum, view, projection);

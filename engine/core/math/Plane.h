@@ -13,9 +13,11 @@ public:
     Plane(const glm::vec3& normal, float distance) : normal(glm::normalize(normal)), distance(distance) {}
 
     static Plane fromPointNormal(const glm::vec3& point, const glm::vec3& normal) {
-        float distance = -glm::dot(normal, point);
-        return Plane(normal, distance);
+        glm::vec3 unitNormal = glm::normalize(normal);
+        float distance = -glm::dot(unitNormal, point);
+        return Plane(unitNormal, distance);
     }
+
 
     float distanceToPoint(const glm::vec3& point) const {
         return glm::dot(normal, point) + distance;
