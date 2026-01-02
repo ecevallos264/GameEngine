@@ -13,6 +13,9 @@ public:
     Plane(const glm::vec3& normal, float distance) : normal(glm::normalize(normal)), distance(distance) {}
 
     static Plane fromPointNormal(const glm::vec3& point, const glm::vec3& normal) {
+        if (glm::length(normal) == 0.0f) {
+            throw std::invalid_argument("Normal vector cannot be a zero vector.");
+        }
         glm::vec3 unitNormal = glm::normalize(normal);
         float distance = -glm::dot(unitNormal, point);
         return Plane(unitNormal, distance);

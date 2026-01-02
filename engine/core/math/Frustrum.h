@@ -7,6 +7,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include "../../rendering/partitioning/bvh-bounding-volume.h"
 #include "../../camera/Camera.h"
+#include <stdexcept>
 
 class Frustum {
 private:
@@ -26,44 +27,111 @@ public:
     Plane getFarFace() const { return farFace; }
 
     static Frustum createFrustumFromCamera(const Camera& cam, float aspect, float fovY, float zNear, float zFar) {
+        // Validate input parameters
+        if (aspect <= 0.0f) {
+            throw std::invalid_argument("Aspect ratio must be greater than 0.");
+        }
+        if (fovY <= 0.0f || fovY >= 180.0f) {
+            throw std::invalid_argument("Field of view (fovY) must be in the range (0, 180) degrees.");
+        }
+        if (zNear <= 0.0f || zFar <= zNear) {
+            throw std::invalid_argument("zNear must be greater than 0 and less than zFar.");
+        }
+
+        // Validate camera vectors
+        if (glm::length(cam.getFront()) == 0.0f) {
+            throw std::invalid_argument("Camera front vector must not be a zero vector.");
+        }
+        if (glm::length(cam.getUp()) == 0.0f) {
+            throw std::invalid_argument("Camera up vector must not be a zero vector.");
+        }
+        if (glm::length(glm::cross(cam.getFront(), cam.getUp())) == 0.0f) {
+            throw std::invalid_argument("Camera front and up vectors must not be collinear.");
+        }
+
         Frustum frustum;
-        const float halfVSide = zFar * tanf(fovY * 0.5f);
+        const float halfVSide = zFar * tanf(glm::radians(fovY) * 0.5f);
         const float halfHSide = halfVSide * aspect;
         const glm::vec3 frontMultFar = zFar * cam.getFront();
 
-        // Ensure all normals face outward
+//        // Near plane
+//        frustum.nearFace = Plane::fromPointNormal(
+//                cam.getPosition() + zNear * cam.getFront(),
+//                cam.getFront()
+//        );
+//
+//        // Far plane
+//        frustum.farFace = Plane::fromPointNormal(
+//                cam.getPosition() + frontMultFar,
+//                -cam.getFront()
+//        );
+//
+//        // Right plane
+//        frustum.rightFace = Plane::fromPointNormal(
+//                cam.getPosition(),
+//                glm::cross(cam.getUp(), frontMultFar - cam.getRight() * halfHSide)
+//        );
+//
+//        // Left plane
+//        frustum.leftFace = Plane::fromPointNormal(
+//                cam.getPosition(),
+//                glm::cross(frontMultFar + cam.getRight() * halfHSide, cam.getUp())
+//        );
+//
+//        // Top plane
+//        frustum.topFace = Plane::fromPointNormal(
+//                cam.getPosition(),
+//                glm::cross(cam.getRight(), frontMultFar - cam.getUp() * halfVSide)
+//        );
+//
+//        // Bottom plane
+//        frustum.bottomFace = Plane::fromPointNormal(
+//                cam.getPosition(),
+//                glm::cross(frontMultFar + cam.getUp() * halfVSide, cam.getRight())
+//        );
+
+        glm::vec3 pos = cam.getPosition();
+        glm::vec3 front = glm::normalize(cam.getFront());
+        glm::vec3 right = glm::normalize(cam.getRight());
+        glm::vec3 up    = glm::normalize(cam.getUp());
+
+        glm::vec3 farCenter  = pos + front * zFar;
+        glm::vec3 nearCenter = pos + front * zNear;
+
+        // Near
         frustum.nearFace = Plane::fromPointNormal(
-                cam.getPosition() + zNear * cam.getFront(),
-                cam.getFront()
+                nearCenter,
+                front
         );
 
+        // Far
         frustum.farFace = Plane::fromPointNormal(
-                cam.getPosition() + frontMultFar,
-                -cam.getFront()
+                farCenter,
+                -front
         );
 
-// RIGHT: should be cross(RIGHT, UP)
+        // Right
         frustum.rightFace = Plane::fromPointNormal(
-                cam.getPosition(),
-                glm::cross(cam.getRight(), frontMultFar - cam.getRight() * halfHSide)
+                pos,
+                glm::cross(up, farCenter + right * halfHSide - pos)
         );
 
-// LEFT: should be cross(UP, LEFT_VEC)
+        // Left
         frustum.leftFace = Plane::fromPointNormal(
-                cam.getPosition(),
-                glm::cross(frontMultFar + cam.getRight() * halfHSide, cam.getUp())
+                pos,
+                glm::cross(farCenter - right * halfHSide - pos, up)
         );
 
-// TOP: should be cross(RIGHT, TOP_VEC) ✅ you already fixed this
+        // Top
         frustum.topFace = Plane::fromPointNormal(
-                cam.getPosition(),
-                glm::cross(cam.getRight(), frontMultFar - cam.getUp() * halfVSide)
+                pos,
+                glm::cross(farCenter - up * halfVSide - pos, right)
         );
 
-// BOTTOM: flip order to cross(BOTTOM_VEC, RIGHT)
+        // Bottom
         frustum.bottomFace = Plane::fromPointNormal(
-                cam.getPosition(),
-                glm::cross(frontMultFar + cam.getUp() * halfVSide, cam.getRight())
+                pos,
+                glm::cross(right, farCenter + up * halfVSide - pos)
         );
 
         return frustum;
@@ -74,6 +142,7 @@ public:
             std::cout << "[FrustumCulling] Null bounding volume.\n";
             return false;
         }
+        constexpr float EPSILON = 1e-3f;
 
         glm::vec3 min = bounding_volume->getMin();
         glm::vec3 max = bounding_volume->getMax();
@@ -93,23 +162,7 @@ public:
 
             float distance = plane->distanceToPoint(positiveVertex);
 
-            if (distance < 0) {
-                // Only print if this cull is unusual
-                bool suspicious = false;
-
-                if (distance > -1.0f) suspicious = true;  // barely behind plane
-                if (glm::length((min + max) * 0.5f) < 5.0f) suspicious = true; // near origin
-                if (distance < -100.0f) suspicious = true; // extreme culling
-
-                if (suspicious) {
-                    std::cout << "\n[FrustumCulling] ❗Suspicious Cull on " << planeNames[i] << " Plane\n";
-                    std::cout << "  AABB Min: " << glm::to_string(min) << "\n";
-                    std::cout << "  AABB Max: " << glm::to_string(max) << "\n";
-                    std::cout << "  Normal:   " << glm::to_string(normal) << "\n";
-                    std::cout << "  PosVert:  " << glm::to_string(positiveVertex) << "\n";
-                    std::cout << "  Distance: " << distance << "\n";
-                }
-
+            if (distance < -EPSILON) {
                 return false;
             }
         }

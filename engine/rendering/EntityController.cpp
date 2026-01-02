@@ -15,13 +15,13 @@ int EntityController::update(float deltaTime) {
 }
 
 void EntityController::render(glm::mat4 view, glm::mat4 projection) {
-//    std::cout << "CAM POS: " << glm::to_string(CameraHandler::getInstance().getCamera()->getPosition()) << std::endl;
-//    std::cout << "CAM Right: " << glm::to_string(CameraHandler::getInstance().getCamera()->getUp()) << std::endl;
-//    std::cout << "CAM Up: " << glm::to_string(CameraHandler::getInstance().getCamera()->getRight()) << std::endl;
-//    std::cout << "CAM FRONT: " << glm::to_string(CameraHandler::getInstance().getCamera()->getFront()) << std::endl;
-    Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 45, 0, 10000);
+    float aspect = static_cast<float>(Settings::WINDOW_WIDTH) / Settings::WINDOW_HEIGHT;
+    float fovY = 45.0f; // Example FOV
+    float zNear = 0.1f;
+//    float zFar = Settings::MAX_RENDER_DISTANCE;
+    Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), aspect, fovY, zNear, /* zFar */ 9999);
 
-    frustum.drawFrusum(view, projection);
+//    frustum.drawFrusum(view, projection);
     debugRender(frustum, view, projection);
 }
 
