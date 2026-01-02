@@ -125,6 +125,7 @@ namespace BVH {
             );
 
             drawWireframeBox(center, size, view, projection, color);
+
         }
 
         if (left) left->render(frustum, view, projection, level + 1);

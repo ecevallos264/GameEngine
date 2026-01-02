@@ -17,7 +17,7 @@ int EntityController::update(float deltaTime) {
 void EntityController::render(glm::mat4 view, glm::mat4 projection) {
     float aspect = static_cast<float>(Settings::WINDOW_WIDTH) / Settings::WINDOW_HEIGHT;
     float fovY = 45.0f; // Example FOV
-    float zNear = 0.1f;
+    float zNear = 1.0f;
 //    float zFar = Settings::MAX_RENDER_DISTANCE;
     Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), aspect, fovY, zNear, /* zFar */ 9999);
 
