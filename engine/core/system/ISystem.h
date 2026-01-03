@@ -6,7 +6,9 @@
 #define GAMEENGINE_ISYSTEM_H
 
 /**
- *
+ * Physics System
+ * Rendering System
+ * Input System
  * */
 
 struct ISystem {
