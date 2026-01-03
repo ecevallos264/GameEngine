@@ -1,13 +1,25 @@
 #include <thread>
 #include "game.h"
-#include "camera/CameraHandler.h"
 #include "core/settings/settings.h"
 #include "entitities/Line.h"
 #include "core/observability/FPSCounter.h"
-#include "rendering/SceneController.h"
-#include "physics/CollisionHandler.h"
+#include "runtime/SystemManager.h"
+#include "runtime/systems/InputSystem.h"
+#include "runtime/systems/PhysicsSystem.h"
+#include "runtime/systems/RenderSystem.h"
+#include "runtime/systems/SceneSystem.h"
 
 void Game::run(GLFWwindow* window) {
+    SystemManager systemManager;
+    systemManager.addSystem<InputSystem>();
+    systemManager.addSystem<PhysicsSystem>();
+    systemManager.addSystem<SceneSystem>();
+    systemManager.addSystem<RenderSystem>();
+
+    SystemContext context;
+    context.window = window;
+    systemManager.initializeAll(context);
+
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
 
@@ -17,10 +29,9 @@ void Game::run(GLFWwindow* window) {
         GameState::getInstance().deltaTime = currentFrame - GameState::getInstance().lastFrame;
         GameState::getInstance().lastFrame = currentFrame;
 
-        SceneController::getInstance().getCurrentScene()->handleInput(window);
-        SceneController::getInstance().getCurrentScene()->update(GameState::getInstance().deltaTime);
-
-        SceneController::getInstance().getCurrentScene()->render(CameraHandler::getInstance().getCamera()->getViewMatrix(), CameraHandler::getInstance().getCamera()->getProjectionMatrix());
+        context.deltaTime = GameState::getInstance().deltaTime;
+        systemManager.updateAll(context);
+        systemManager.renderAll(context);
 
 //        FPSCounter::getInstance().increment();
 //        std::cout << FPSCounter::getInstance().fps << std::endl;
@@ -29,4 +40,6 @@ void Game::run(GLFWwindow* window) {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    systemManager.shutdownAll(context);
 }

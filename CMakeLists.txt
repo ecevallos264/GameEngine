@@ -35,6 +35,14 @@ add_executable(GameEngine
         engine/game.h
         engine/glad.c
         engine/stb.cpp
+        engine/runtime/ISystem.h
+        engine/runtime/SystemContext.h
+        engine/runtime/SystemManager.h
+        engine/runtime/SystemManager.cpp
+        engine/runtime/systems/InputSystem.h
+        engine/runtime/systems/PhysicsSystem.h
+        engine/runtime/systems/RenderSystem.h
+        engine/runtime/systems/SceneSystem.h
 
         test_game/entities/Player.h
         test_game/main.cpp
