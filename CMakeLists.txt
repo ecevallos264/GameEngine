@@ -74,6 +74,7 @@ add_executable(GameEngine
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
         engine/core/eventing/events/DebugCameraKeyMovementEvent.h
+        engine/core/system/ISystem.h
 
 )
 
