@@ -44,13 +44,6 @@ int main() {
 
     EngineBuilder builder;
 
-    InputHandler::setKeyPressCallback(window, [](GLFWwindow* window, int key, int scan, int action, int mods) {
-//       std::cout << "Key {" << key << "} was pressed" << std::endl;
-    });
-
-    InputHandler::setMouseMovementCallback(window, [](GLFWwindow* window, int x, int y) {
-
-    });
     glfwSwapInterval(0);
     Engine engine = builder
             .setShaderInfo(shaderInfo)

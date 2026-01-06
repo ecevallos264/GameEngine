@@ -8,7 +8,6 @@
 #include "../../physics/RigidBody.h"
 #include "bvh-bounding-volume.h"
 #include "../../core/shaders/ShaderManager.h"
-#include "../Ray.h"
 #include "../../core/math/Frustrum.h"
 
 namespace BVH {
@@ -37,7 +36,7 @@ namespace BVH {
 
         void build(std::vector<BoundingVolume *> &volumes);
 
-        bool intersectsWithRay(Ray ray);
+        // bool intersectsWithRay(Ray ray);
     };
 }
 

@@ -21,8 +21,11 @@ void EntityController::render(glm::mat4 view, glm::mat4 projection) {
 //    float zFar = Settings::MAX_RENDER_DISTANCE;
     Frustum frustum = Frustum::createFrustumFromCamera(*CameraHandler::getInstance().getCamera(), aspect, fovY, zNear, /* zFar */ 9999);
 
-//    frustum.drawFrusum(view, projection);
+    frustum.drawFrustrum(view, projection);
     debugRender(frustum, view, projection);
+    // for(Entity* entity: this->entities) {
+        // entity->render(view, projection);
+    // }
 }
 
 void EntityController::addEntity(Entity* entity) {

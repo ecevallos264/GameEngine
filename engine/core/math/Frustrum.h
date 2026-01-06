@@ -171,7 +171,7 @@ public:
     }
 
 
-    void drawFrusum(const glm::mat4& view, const glm::mat4& projection) {
+    void drawFrustrum(const glm::mat4& view, const glm::mat4& projection) {
         static bool showGhostFrustum = true;
         static bool gKeyPressed = false;
 

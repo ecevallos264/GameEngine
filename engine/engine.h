@@ -66,6 +66,9 @@ public:
         initGLFW();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+        InputHandler::setKeyPressCallback(window, [](GLFWwindow* window, int key, int scan, int action, int mods) {});
+        InputHandler::setMouseMovementCallback(window, [](GLFWwindow* window, int x, int y) {});
+
         initGLAD();
         validateShaders();
         setupDepthTest();

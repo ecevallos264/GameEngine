@@ -69,7 +69,6 @@ add_executable(GameEngine
         engine/entitities/Rectangle.h
         engine/rendering/RenderableEntity.h
         test_game/entities/HexagonalPrism.h
-        engine/rendering/EntityUpdateType.h
         engine/core/shaders/ShaderManager.h
         engine/core/state/FlagState.h
         engine/rendering/UpdateController.h
@@ -78,10 +77,10 @@ add_executable(GameEngine
         engine/rendering/partitioning/bvh-bounding-volume.h
         engine/rendering/partitioning/bvh-bounding-volume.cpp
         engine/rendering/partitioning/bvh-node.cpp
-        engine/rendering/Ray.h
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
         engine/core/eventing/events/DebugCameraKeyMovementEvent.h
+        engine/io/IOSystem.h
 
 )
 

@@ -13,6 +13,7 @@
 #include "glm/fwd.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
+#include "../rendering/Entity.h"
 
 class Camera : EventListener {
 private:
@@ -27,6 +28,8 @@ private:
     glm::vec3 cameraUp;
     glm::vec3 direction;
     float cameraSpeed;
+    Entity* cameraEntity = nullptr;
+    glm::vec3 cameraEntityOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 
 public:
     Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) : cameraPos(position), cameraFront(front), cameraUp(up) {
@@ -60,6 +63,11 @@ public:
 
     glm::mat4 getProjectionMatrix() const {
         return glm::perspective(glm::radians(45.0f), (float)Settings::WINDOW_WIDTH / (float)Settings::WINDOW_HEIGHT, 0.1f, Settings::MAX_RENDER_DISTANCE);
+    }
+
+    void attachEntity(Entity* entity, glm::vec3 offset) {
+        cameraEntity = entity;
+        cameraEntityOffset = offset;
     }
 
     void setYaw(float yaw) { this->yaw = yaw; }

@@ -1,7 +1,7 @@
 #include "bvh-node.h"
 #include <iostream> // For debugging purposes
 #include "../../core/shaders/ShaderManager.h"
-#include "../Ray.h"
+// #include "../Ray.h"
 #include "../../core/math/Frustrum.h"
 namespace BVH {
     void Node::insert(BoundingVolume* boundingVolume) {
