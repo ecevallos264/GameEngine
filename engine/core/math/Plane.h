@@ -1,6 +1,7 @@
 #ifndef GAMEENGINE_PLANE_H
 #define GAMEENGINE_PLANE_H
 
+#include <stdexcept>
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
 

@@ -8,13 +8,11 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
-#include "../../engine/physics/RigidBody.h"
-#include "../../engine/physics/CollisionHandler.h"
-#include "../../engine/entitities/Point.h"
+#include "../../engine/entities/Point.h"
 #include "../../engine/core/settings/settings.h"
 #include <limits>
 
-class HexagonalPrism : public RigidBody {
+class HexagonalPrism : public RenderableEntity {
 private:
 
 public:
@@ -24,7 +22,7 @@ public:
 
 
 public:
-    HexagonalPrism(std::string id, glm::vec3 pos, glm::vec3 color) : RigidBody(ShaderManager::getInstance().getShader("shader1")), id(id), color(color) {
+    HexagonalPrism(std::string id, glm::vec3 pos, glm::vec3 color) : RenderableEntity(ShaderManager::getInstance().getShader("shader1")), id(id), color(color) {
         position = pos;
 
         this->vertices = {
@@ -124,7 +122,7 @@ public:
 
     int update(float deltaTime) override {
         bool dirty = false;
-        dirty &= RigidBody::update(deltaTime);
+        dirty &= RenderableEntity::update(deltaTime);
         dirty &= this->onUpdate(deltaTime);
         if (this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));

@@ -2,6 +2,7 @@
 // Created by eceva on 3/22/2025.
 //
 #include "bvh-bounding-volume.h"
+#include "../RenderableEntity.h"
 #include <algorithm>
 
 namespace BVH {
@@ -12,7 +13,7 @@ namespace BVH {
         body = nullptr;
     }
 
-    BoundingVolume::BoundingVolume(RigidBody* body) : body(body) {
+    BoundingVolume::BoundingVolume(RenderableEntity* body) : body(body) {
         if (!body) {
             std::cerr << "Error: RigidBody is nullptr in BoundingVolume constructor." << std::endl;
             min = glm::vec3(0.0f);

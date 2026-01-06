@@ -6,8 +6,10 @@
 #define GAMEENGINE_RENDERABLEENTITY_H
 
 #include "Entity.h"
-#include "../entitities/Vertex.h"
+#include "../entities/Vertex.h"
+#include "glm/vec3.hpp"
 #include "../core/shaders/shader-compiler.h"
+#include "glm/ext/matrix_transform.hpp"
 
 /*
  * Should be able to render the entity without anything else

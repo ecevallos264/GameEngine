@@ -16,7 +16,7 @@ public:
     virtual void setup() = 0;
     int update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void addEntity(RigidBody* entity, std::string name);
+    void addEntity(RenderableEntity* entity, std::string name);
 
     virtual int handleInput(GLFWwindow* window) = 0;
 

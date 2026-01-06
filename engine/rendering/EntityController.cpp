@@ -3,8 +3,7 @@
 //
 #include <memory>
 #include "EntityController.h"
-#include "../physics/RigidBody.h"
-#include "../entitities/Point.h"
+#include "../entities/Point.h"
 #include "../camera/CameraHandler.h"
 
 int EntityController::update(float deltaTime) {
@@ -23,9 +22,9 @@ void EntityController::render(glm::mat4 view, glm::mat4 projection) {
 
     frustum.drawFrustrum(view, projection);
     debugRender(frustum, view, projection);
-    // for(Entity* entity: this->entities) {
-        // entity->render(view, projection);
-    // }
+     for(Entity* entity: this->entities) {
+         entity->render(view, projection);
+     }
 }
 
 void EntityController::addEntity(Entity* entity) {
@@ -44,7 +43,7 @@ void EntityController::buildBVH() {
     bvhRoot = new BVH::Node();    // Create a new root node
 
     for (Entity* entity : entities) {
-        RigidBody* shape = dynamic_cast<RigidBody*>(entity);
+        RenderableEntity* shape = dynamic_cast<RenderableEntity*>(entity);
         if (shape) {
             auto* volume = new BVH::BoundingVolume(shape);
             bvhRoot->insert(volume);

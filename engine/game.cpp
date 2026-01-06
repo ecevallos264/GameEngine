@@ -1,7 +1,7 @@
 #include <thread>
 #include "game.h"
 #include "core/settings/settings.h"
-#include "entitities/Line.h"
+#include "entities/Line.h"
 #include "core/observability/FPSCounter.h"
 #include "runtime/SystemManager.h"
 #include "runtime/systems/InputSystem.h"

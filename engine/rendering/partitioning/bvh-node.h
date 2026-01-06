@@ -5,7 +5,6 @@
 #ifndef GAMEENGINE_BVH_NODE_H
 #define GAMEENGINE_BVH_NODE_H
 
-#include "../../physics/RigidBody.h"
 #include "bvh-bounding-volume.h"
 #include "../../core/shaders/ShaderManager.h"
 #include "../../core/math/Frustrum.h"

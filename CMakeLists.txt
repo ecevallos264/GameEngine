@@ -3,13 +3,13 @@ project(GameEngine)
 set(ProjectDir ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
+add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
 
 add_executable(GameEngine
         engine/camera/Camera.cpp
         engine/camera/Camera.h
         engine/camera/CameraHandler.cpp
         engine/camera/CameraHandler.h
-        engine/physics/RigidBody.h
         engine/core/eventing/Event.h
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h
@@ -23,10 +23,8 @@ add_executable(GameEngine
         engine/core/settings/settings.h
         engine/core/shaders/ShaderInfo.h
         engine/core/shaders/shader-compiler.h
-        engine/core/state/MouseState.h
         engine/core/state/game_state.h
         engine/engine.h
-        engine/core/eventing/MouseEvents.h
         engine/core/eventing/events/CameraKeyMovementEvent.h
         engine/core/eventing/events/CursorEvent.h
         engine/core/eventing/events/MouseButtonClickEvent.h
@@ -46,7 +44,6 @@ add_executable(GameEngine
 
         test_game/entities/Player.h
         test_game/main.cpp
-        test_game/mouse.h
         engine/core/types/MouseState.h
         engine/rendering/Scene.h
         engine/rendering/EntityController.h
@@ -57,21 +54,16 @@ add_executable(GameEngine
         engine/rendering/Entity.cpp
         engine/rendering/SceneController.h
         test_game/scenes/TestScene.h
-        engine/entitities/Cube.h
-        engine/entitities/Vertex.h
-        engine/physics/Simplex.h
-        engine/physics/CollisionHandler.h
-        engine/physics/GJK/GJK.h
-        engine/physics/GJK/GJK.cpp
+        engine/entities/Cube.h
+        engine/entities/Vertex.h
+
         test_game/entities/MyCube.h
-        engine/physics/CollisionEvent.h
-        engine/entitities/Point.h
-        engine/entitities/Rectangle.h
+        engine/entities/Point.h
+        engine/entities/Rectangle.h
         engine/rendering/RenderableEntity.h
         test_game/entities/HexagonalPrism.h
         engine/core/shaders/ShaderManager.h
         engine/core/state/FlagState.h
-        engine/rendering/UpdateController.h
         test_game/scenes/PartitionScene.h
         engine/rendering/partitioning/bvh-node.h
         engine/rendering/partitioning/bvh-bounding-volume.h

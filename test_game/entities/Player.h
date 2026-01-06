@@ -15,12 +15,12 @@
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/rendering/Entity.h"
-#include "../../engine/physics/RigidBody.h"
 #include "../../engine/core/shaders/ShaderManager.h"
+#include "../../engine/rendering/RenderableEntity.h"
 
-class Player : public EventListener, public RigidBody {
+class Player : public EventListener, public RenderableEntity {
 public:
-    Player() : EventListener(), RigidBody(ShaderManager::getInstance().getShader("shader1")) {
+    Player() : EventListener(), RenderableEntity(ShaderManager::getInstance().getShader("shader1")) {
         EventDispatcher::getInstance().registerListener<KeyEvent>([this](const Event& event) {
             this->onEvent(static_cast<const KeyEvent&>(event));
         });

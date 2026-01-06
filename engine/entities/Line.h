@@ -1,16 +1,16 @@
 #ifndef GAME_ENGINE_LINE_H
 #define GAME_ENGINE_LINE_H
 
-#include "../physics/RigidBody.h"
 #include "glad/glad.h"
 #include "../core/shaders/shader-compiler.h"
 #include "../core/shaders/ShaderManager.h"
+#include "../rendering/RenderableEntity.h"
 
-class Line : public RigidBody {
+class Line : public RenderableEntity {
     glm::vec3 rotation = glm::vec3(0.0f);
 public:
     Line(const glm::vec3& start, const glm::vec3& end, glm::vec3 color, float opacity) :
-            RigidBody(ShaderManager::getInstance().getShader("shader1")) {
+            RenderableEntity(ShaderManager::getInstance().getShader("shader1")) {
         this->vertices.push_back({start, color, opacity});
         this->vertices.push_back({end, color, opacity});
 

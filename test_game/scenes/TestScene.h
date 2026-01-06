@@ -7,13 +7,12 @@
 
 #include "../entities/MyCube.h"
 #include "../../engine/rendering/Scene.h"
-#include "../../engine/entitities/Line.h"
+#include "../../engine/entities/Line.h"
 #include "../../engine/core/shaders/shader-compiler.h"
 #include "../../engine/core/patterns/Singleton.h"
 #include "../../engine/core/shaders/ShaderManager.h"
-#include "../../engine/physics/CollisionHandler.h"
 
-#include "../../engine/entitities/Point.h"
+#include "../../engine/entities/Point.h"
 #include "../entities/HexagonalPrism.h"
 
 class TestScene : public Scene {

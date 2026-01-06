@@ -1,8 +1,0 @@
-//
-// Created by eceva on 1/7/2025.
-//
-
-#ifndef GAMEENGINE_MOUSEEVENTS_H
-#define GAMEENGINE_MOUSEEVENTS_H
-
-#endif //GAMEENGINE_MOUSEEVENTS_H

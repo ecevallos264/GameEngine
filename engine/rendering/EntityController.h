@@ -9,7 +9,6 @@
 #include "Entity.h"
 #include "Renderer.h"
 #include "memory"
-#include "../physics/RigidBody.h"
 #include "../rendering/partitioning/bvh-node.h"
 
 class EntityController : Renderer {

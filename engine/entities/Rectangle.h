@@ -1,16 +1,16 @@
 #ifndef GAMEENGINE_RECTANGLE_H
 #define GAMEENGINE_RECTANGLE_H
 
-#include "../physics/RigidBody.h"
+#include "../rendering/RenderableEntity.h"
 
-class Rectangle : public RigidBody {
+class Rectangle : public RenderableEntity {
 protected:
     glm::vec3 min;
     glm::vec3 max;
 
 public:
     Rectangle(Shader* shader, glm::vec3 pos, glm::vec3 size, glm::vec3 color)
-            : RigidBody(shader), min(pos - size * 0.5f), max(pos + size * 0.5f) {
+            : RenderableEntity(shader), min(pos - size * 0.5f), max(pos + size * 0.5f) {
 
         glm::vec3 halfSize = size * 0.5f;
         vertices = {

@@ -9,19 +9,17 @@
 #include <GL/gl.h>
 
 #include "../../engine/core/shaders/ShaderManager.h"
-#include "../../engine/physics/RigidBody.h"
-#include "../../engine/physics/CollisionHandler.h"
-#include "../../engine/entitities/Point.h"
+#include "../../engine/entities/Point.h"
 
 
-class MyCube : public RigidBody {
+class MyCube : public RenderableEntity {
 public:
     bool colliding = false;
     std::string id;
 
 public:
     MyCube(std::string id, glm::vec3 pos, glm::vec3 color) :
-            RigidBody(ShaderManager::getInstance().getShader("shader1")),
+            RenderableEntity(ShaderManager::getInstance().getShader("shader1")),
             id(id) {
 //        CollisionHandler::getInstance().subscribe<MyCube>(typeid(MyCube), [this](CollisionData data) {
 //            this->onCollision(static_cast<MyCube*>(data.entityA));
@@ -94,7 +92,7 @@ public:
 
     int update(float deltaTime) override {
         // std::cout << "Updating " << this->id << std::endl;
-        RigidBody::update(deltaTime);
+        RenderableEntity::update(deltaTime);
         if(this->colliding) {
             this->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
             this->colliding = false;
