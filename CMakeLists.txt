@@ -14,9 +14,12 @@ add_executable(GameEngine
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h
         engine/core/eventing/events/KeyEvent.h
-        engine/input/InputHandler.cpp
         engine/input/InputHandler.h
         engine/input/MouseHandler.h
+
+        # IO System
+        engine/io/InputState.h
+        engine/io/IOSystem.h
         engine/core/observability/CalcTime.h
         engine/core/observability/FPSCounter.h
         engine/core/patterns/Singleton.h
@@ -69,7 +72,6 @@ add_executable(GameEngine
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
         engine/core/eventing/events/DebugCameraKeyMovementEvent.h
-        engine/io/IOSystem.h
         engine/runtime/IApplication.h
         engine/runtime/ApplicationConfig.h
         engine/runtime/ApplicationRunner.h

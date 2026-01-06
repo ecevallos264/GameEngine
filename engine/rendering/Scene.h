@@ -5,9 +5,10 @@
 #ifndef GAMEENGINE_SCENE_H
 #define GAMEENGINE_SCENE_H
 
-#include <glfw/glfw3.h>
 #include "Renderer.h"
 #include "../ecs/Registry.h"
+
+class Window;  // Forward declaration
 
 class Scene : Renderer {
 protected:
@@ -20,7 +21,8 @@ public:
     int update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
 
-    virtual int handleInput(GLFWwindow* window) = 0;
+    // Handle input using the abstracted Window class
+    virtual int handleInput(Window* window) = 0;
 
     // ECS Registry access
     ECS::Registry& getRegistry() { return registry; }

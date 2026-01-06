@@ -1,40 +1,48 @@
 #ifndef GAMEENGINE_INPUTHANDLER_H
 #define GAMEENGINE_INPUTHANDLER_H
 
-#include <glfw/glfw3.h>
 #include <unordered_map>
 #include <memory>
 #include <functional>
 #include "../core/patterns/Singleton.h"
+#include "../io/IOSystem.h"
 
-struct KeyState {
-    bool state = false;
-    bool isDirty = false;
-};
-
-struct KeyboardState {
-    std::unordered_map<int, std::unique_ptr<KeyState>> keyState;
-};
-
+// Legacy compatibility - delegates to IOSystem
 class InputHandler : public Singleton<InputHandler> {
-protected:
-    KeyboardState keyboardState;
-
-    // window, xPos, yPos
-    std::function<void(GLFWwindow*, int, int)> onMouseMovementCallback;
-    // window, int key, int scancode, int action, int mods
-    std::function<void(GLFWwindow*, int, int, int, int)> onKeyPressCallback;
 public:
-    InputHandler() : Singleton<InputHandler>() {};
-    static void setKeyState(int key, bool state);
-    static void setKeyDirty(int key);
+    InputHandler() : Singleton<InputHandler>() {}
 
-    static bool isKeyActive(int key);
-    static bool isKeyDirty(int key);
+    // Check if a key is currently pressed
+    static bool isKeyActive(int key) {
+        return IO::IOSystem::getInstance().isKeyPressed(key);
+    }
 
-    // Parameters are window, xPos, yPos
-    static void setMouseMovementCallback(GLFWwindow* window, std::function<void(GLFWwindow*, int, int)>);
-    static void setKeyPressCallback(GLFWwindow* window, std::function<void(GLFWwindow*, int, int, int, int)>);
+    // Check if key was just pressed this frame
+    static bool wasKeyJustPressed(int key) {
+        return IO::IOSystem::getInstance().wasKeyJustPressed(key);
+    }
+
+    // Check if key was just released this frame
+    static bool wasKeyJustReleased(int key) {
+        return IO::IOSystem::getInstance().wasKeyJustReleased(key);
+    }
+
+    // Mouse queries
+    static bool isMouseButtonPressed(int button) {
+        return IO::IOSystem::getInstance().isMouseButtonPressed(button);
+    }
+
+    static glm::vec2 getMousePosition() {
+        return IO::IOSystem::getInstance().getMousePosition();
+    }
+
+    static glm::vec2 getMouseDelta() {
+        return IO::IOSystem::getInstance().getMouseDelta();
+    }
+
+    static glm::vec2 getScrollDelta() {
+        return IO::IOSystem::getInstance().getScrollDelta();
+    }
 };
 
 #endif //GAMEENGINE_INPUTHANDLER_H

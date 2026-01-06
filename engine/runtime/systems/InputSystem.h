@@ -4,7 +4,6 @@
 #include "../ISystem.h"
 #include "../../rendering/SceneController.h"
 #include "../../platform/Window.h"
-#include <glfw/glfw3.h>
 
 class InputSystem : public ISystem {
 public:
@@ -13,8 +12,7 @@ public:
         if (!currentScene || !context.window) {
             return;
         }
-        auto* glfwWindow = static_cast<GLFWwindow*>(context.window->getNativeHandle());
-        currentScene->handleInput(glfwWindow);
+        currentScene->handleInput(context.window);
     }
 };
 

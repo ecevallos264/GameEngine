@@ -39,7 +39,7 @@ public:
     void setup() override {
     }
 
-    int handleInput(GLFWwindow* window) override {
+    int handleInput(Window* window) override {
         (void)window;
         return 0;
     }
