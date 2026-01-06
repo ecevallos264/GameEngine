@@ -39,34 +39,33 @@ add_executable(GameEngine
         engine/runtime/systems/RenderSystem.h
         engine/runtime/systems/SceneSystem.h
 
-        test_game/entities/Player.h
         test_game/main.cpp
         test_game/TestApplication.h
         engine/core/types/MouseState.h
         engine/rendering/Scene.h
-        engine/rendering/EntityController.h
-        engine/rendering/Entity.h
         engine/rendering/Renderer.h
         engine/rendering/Scene.cpp
-        engine/rendering/EntityController.cpp
-        engine/rendering/Entity.cpp
         engine/rendering/SceneController.h
         test_game/scenes/TestScene.h
-        engine/entities/Cube.h
         engine/entities/Vertex.h
 
-        test_game/entities/MyCube.h
-        engine/entities/Point.h
-        engine/entities/Rectangle.h
-        engine/rendering/RenderableEntity.h
-        test_game/entities/HexagonalPrism.h
+        # ECS Core
+        engine/ecs/Entity.h
+        engine/ecs/Component.h
+        engine/ecs/ComponentPool.h
+        engine/ecs/Registry.h
+        engine/ecs/ECS.h
+
+        # ECS Components
+        engine/ecs/components/TransformComponent.h
+        engine/ecs/components/MeshComponent.h
+        engine/ecs/components/RenderComponent.h
+
+        # ECS Systems
+        engine/ecs/systems/MeshRenderSystem.h
+
         engine/core/shaders/ShaderManager.h
-        engine/core/state/FlagState.h
         test_game/scenes/PartitionScene.h
-        engine/rendering/partitioning/bvh-node.h
-        engine/rendering/partitioning/bvh-bounding-volume.h
-        engine/rendering/partitioning/bvh-bounding-volume.cpp
-        engine/rendering/partitioning/bvh-node.cpp
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
         engine/core/eventing/events/DebugCameraKeyMovementEvent.h

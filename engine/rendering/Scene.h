@@ -7,26 +7,30 @@
 
 #include <glfw/glfw3.h>
 #include "Renderer.h"
-#include "EntityController.h"
+#include "../ecs/Registry.h"
 
 class Scene : Renderer {
 protected:
-    EntityController* entityController = new EntityController();
+    ECS::Registry registry;
+
 public:
+    virtual ~Scene() = default;
+
     virtual void setup() = 0;
     int update(float deltaTime) override;
     void render(glm::mat4 view, glm::mat4 projection) override;
-    void addEntity(RenderableEntity* entity, std::string name);
 
     virtual int handleInput(GLFWwindow* window) = 0;
 
-    EntityController* getEntityController() {
-        return this->entityController;
-    }
+    // ECS Registry access
+    ECS::Registry& getRegistry() { return registry; }
+    const ECS::Registry& getRegistry() const { return registry; }
 
-    EntityController* getController() {
-        return this->entityController;
-    }
+    // Create an entity in this scene
+    ECS::Entity createEntity() { return registry.create(); }
+
+    // Destroy an entity
+    void destroyEntity(ECS::Entity entity) { registry.destroy(entity); }
 };
 
 #endif //GAMEENGINE_SCENE_H

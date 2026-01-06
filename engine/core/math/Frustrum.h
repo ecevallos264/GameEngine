@@ -5,7 +5,6 @@
 #include "Plane.h"
 #include "glm/glm.hpp"
 #include <glm/gtx/string_cast.hpp>
-#include "../../rendering/partitioning/bvh-bounding-volume.h"
 #include "../../camera/Camera.h"
 #include <stdexcept>
 
@@ -137,18 +136,11 @@ public:
         return frustum;
     }
 
-    bool isBoundingVolumeInside(const BVH::BoundingVolume* bounding_volume) const {
-        if (!bounding_volume) {
-            std::cout << "[FrustumCulling] Null bounding volume.\n";
-            return false;
-        }
+    // Check if an AABB is inside the frustum
+    bool isAABBInside(const glm::vec3& min, const glm::vec3& max) const {
         constexpr float EPSILON = 1e-3f;
 
-        glm::vec3 min = bounding_volume->getMin();
-        glm::vec3 max = bounding_volume->getMax();
-
         const Plane* planes[6] = { &topFace, &bottomFace, &leftFace, &rightFace, &nearFace, &farFace };
-        const char* planeNames[6] = { "Top", "Bottom", "Left", "Right", "Near", "Far" };
 
         for (int i = 0; i < 6; ++i) {
             const Plane* plane = planes[i];
