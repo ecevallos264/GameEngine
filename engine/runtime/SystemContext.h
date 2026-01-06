@@ -1,10 +1,10 @@
 #ifndef GAMEENGINE_SYSTEM_CONTEXT_H
 #define GAMEENGINE_SYSTEM_CONTEXT_H
 
-#include <GLFW/glfw3.h>
+class Window;
 
 struct SystemContext {
-    GLFWwindow* window = nullptr;
+    Window* window = nullptr;
     float deltaTime = 0.0f;
 };
 

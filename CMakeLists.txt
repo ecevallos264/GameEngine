@@ -73,6 +73,13 @@ add_executable(GameEngine
         engine/core/math/Frustrum.h
         engine/core/eventing/events/DebugCameraKeyMovementEvent.h
         engine/io/IOSystem.h
+        engine/runtime/IApplication.h
+        engine/runtime/ApplicationConfig.h
+        engine/runtime/ApplicationRunner.h
+        engine/runtime/ApplicationRunner.cpp
+        engine/platform/Window.h
+        engine/platform/Window.cpp
+        engine/platform/WindowConfig.h
 
 )
 
