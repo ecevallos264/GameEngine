@@ -9,6 +9,12 @@ enum class CursorMode {
     Disabled
 };
 
+namespace KeyAction {
+    constexpr int Release = 0;
+    constexpr int Press = 1;
+    constexpr int Repeat = 2;
+}
+
 struct WindowConfig {
     int width = 1280;
     int height = 720;

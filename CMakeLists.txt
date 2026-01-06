@@ -24,13 +24,10 @@ add_executable(GameEngine
         engine/core/shaders/ShaderInfo.h
         engine/core/shaders/shader-compiler.h
         engine/core/state/game_state.h
-        engine/engine.h
         engine/core/eventing/events/CameraKeyMovementEvent.h
         engine/core/eventing/events/CursorEvent.h
         engine/core/eventing/events/MouseButtonClickEvent.h
         engine/core/eventing/events/MouseMovementEvent.h
-        engine/game.cpp
-        engine/game.h
         engine/glad.c
         engine/stb.cpp
         engine/runtime/ISystem.h
@@ -44,6 +41,7 @@ add_executable(GameEngine
 
         test_game/entities/Player.h
         test_game/main.cpp
+        test_game/TestApplication.h
         engine/core/types/MouseState.h
         engine/rendering/Scene.h
         engine/rendering/EntityController.h
