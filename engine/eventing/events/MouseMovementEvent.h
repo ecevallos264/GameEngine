@@ -3,9 +3,9 @@
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
-#include "../../state/game_state.h"
+#include "../../core/state/game_state.h"
 #include "MouseMovementEvent.h"
-#include "../../types/MouseState.h"
+#include "../../core/types/MouseState.h"
 
 struct MouseMovementEvent : public Event {
     double deltaX;

@@ -2,6 +2,7 @@
 // Created by eceva on 1/10/2025.
 //
 #include "Camera.h"
+#include "../io/IOSystem.h"
 
 void Camera::updatePosition(glm::vec3 updateVector) {
     cameraPos += updateVector;
@@ -12,7 +13,6 @@ float Camera::getCalcSpeed(float deltaTime) const {
 }
 
 void Camera::onEvent(const MouseMovementEvent &event) {
-    if(MouseHandler::getInstance().getMouseCursorState() == MouseCursorState::OUT_OF_WINDOW) return;
     if(firstRenderingIteration) {
         firstRenderingIteration = false;
         return;

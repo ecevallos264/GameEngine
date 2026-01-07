@@ -2,7 +2,7 @@
 // Created by eceva on 4/30/2025.
 //
 #include "../Event.h"
-#include "../../state/game_state.h"
+#include "../../core/state/game_state.h"
 #include "CameraKeyMovementEvent.h"
 
 #ifndef GAMEENGINE_DEBUGCAMERAKEYMOVEMENTEVENT_H

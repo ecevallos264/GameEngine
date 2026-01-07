@@ -7,7 +7,7 @@
 
 #include <glfw/glfw3.h>
 #include "../Event.h"
-#include "../../state/game_state.h"
+#include "../../core/state/game_state.h"
 
 enum CameraMovementDirection {
     UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD

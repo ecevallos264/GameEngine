@@ -10,11 +10,10 @@ add_executable(GameEngine
         engine/camera/Camera.h
         engine/camera/CameraHandler.cpp
         engine/camera/CameraHandler.h
-        engine/core/eventing/Event.h
-        engine/core/eventing/EventDispatcher.h
-        engine/core/eventing/EventListener.h
-        engine/core/eventing/events/KeyEvent.h
-        engine/input/MouseHandler.h
+        engine/eventing/Event.h
+        engine/eventing/EventDispatcher.h
+        engine/eventing/EventListener.h
+        engine/eventing/events/KeyEvent.h
 
         # IO System
         engine/io/InputState.h
@@ -26,10 +25,10 @@ add_executable(GameEngine
         engine/core/shaders/ShaderInfo.h
         engine/core/shaders/shader-compiler.h
         engine/core/state/game_state.h
-        engine/core/eventing/events/CameraKeyMovementEvent.h
-        engine/core/eventing/events/CursorEvent.h
-        engine/core/eventing/events/MouseButtonClickEvent.h
-        engine/core/eventing/events/MouseMovementEvent.h
+        engine/eventing/events/CameraKeyMovementEvent.h
+        engine/eventing/events/CursorEvent.h
+        engine/eventing/events/MouseButtonClickEvent.h
+        engine/eventing/events/MouseMovementEvent.h
         engine/glad.c
         engine/stb.cpp
         engine/runtime/ISystem.h
@@ -70,7 +69,7 @@ add_executable(GameEngine
         test_game/scenes/PartitionScene.h
         engine/core/math/Plane.h
         engine/core/math/Frustrum.h
-        engine/core/eventing/events/DebugCameraKeyMovementEvent.h
+        engine/eventing/events/DebugCameraKeyMovementEvent.h
         engine/runtime/IApplication.h
         engine/runtime/ApplicationConfig.h
         engine/runtime/ApplicationRunner.h

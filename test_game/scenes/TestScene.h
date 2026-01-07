@@ -10,10 +10,9 @@
 #include "../../engine/core/shaders/shader-compiler.h"
 #include "../../engine/core/patterns/Singleton.h"
 #include "../../engine/core/shaders/ShaderManager.h"
-#include "../../engine/input/MouseHandler.h"
 #include "../../engine/core/state/game_state.h"
-#include "../../engine/core/eventing/EventDispatcher.h"
-#include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
+#include "../../engine/eventing/EventDispatcher.h"
+#include "../../engine/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/platform/Window.h"
 #include "../../engine/io/InputState.h"
 #include "../../engine/io/IOSystem.h"
@@ -72,7 +71,6 @@ public:
 
     int handleInput(Window* window) override {
         if (IO::IOSystem::getInstance().wasKeyJustPressed(IO::Key::Escape)) {
-            MouseHandler::getInstance().changeMouseMode(MouseCursorState::OUT_OF_WINDOW);
             window->setCursorMode(CursorMode::Normal);
             GameState::getInstance().CURSOR_FOCUS_STATUS = true;
         }

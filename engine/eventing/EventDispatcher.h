@@ -12,6 +12,12 @@
 #include "Event.h"
 #include "EventListener.h"
 
+/**
+ * TODO Have 2 types of dispatching:
+ * Immediate - event is dispatched as soon as it's fired
+ * Queued - event is queued and dispatched at the end of the frame
+ * */
+
 class EventDispatcher : public Singleton<EventDispatcher> {
 private:
     std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> listeners;

@@ -7,7 +7,6 @@
 #include "glm/geometric.hpp"
 #include "../core/settings/settings.h"
 #include "glm/trigonometric.hpp"
-#include "../input/MouseHandler.h"
 
 void CameraHandler::setCamera(Camera* camera) {
     this->camera = camera;

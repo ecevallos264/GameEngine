@@ -14,9 +14,8 @@
 #include "../engine/core/shaders/ShaderInfo.h"
 #include "../engine/core/state/game_state.h"
 #include "../engine/rendering/SceneController.h"
-#include "../engine/input/MouseHandler.h"
-#include "../engine/core/eventing/EventDispatcher.h"
-#include "../engine/core/eventing/events/MouseMovementEvent.h"
+#include "../engine/eventing/EventDispatcher.h"
+#include "../engine/eventing/events/MouseMovementEvent.h"
 #include "../engine/io/IOSystem.h"
 #include "scenes/TestScene.h"
 
@@ -108,7 +107,7 @@ private:
                     MouseMovementEvent(
                         x - camera->getXPosition(),
                         camera->getYPosition() - y,
-                        MouseHandler::getInstance().getMouseCursorState(),
+                        MouseCursorState::IN_WINDOW,
                         GameState::getInstance().deltaTime));
 
                 camera->setXPosition(x);
