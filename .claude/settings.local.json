@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(cmake:*)",
+      "Bash(\"/c/Users/eceva/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe\" -C /c/Users/eceva/CLionProjects/GameEngine/cmake-build-debug)",
+      "Bash(\"/c/Users/eceva/AppData/Local/Programs/CLion/bin/mingw/bin/g++.exe\" -DGLFW_INCLUDE_NONE -DGLM_ENABLE_EXPERIMENTAL -I./externals/GLAD/include -I./externals/GLM/include -I./externals/KHR/include -I./externals/STB/include -I./externals/GLFW/include -c engine/platform/Window.cpp -o /dev/null)",
+      "Bash(\"/c/Users/eceva/AppData/Local/Programs/CLion/bin/mingw/bin/g++.exe\" -DGLFW_INCLUDE_NONE -DGLM_ENABLE_EXPERIMENTAL -I./externals/GLAD/include -I./externals/GLM/include -I./externals/KHR/include -I./externals/STB/include -I./externals/GLFW/include -fsyntax-only engine/platform/Window.cpp)",
+      "Bash(/c/Users/eceva/AppData/Local/Programs/CLion/bin/mingw/bin/g++.exe:*)",
+      "Bash(cat:*)",
+      "Bash(\"/c/Users/eceva/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe\" -C /c/Users/eceva/CLionProjects/GameEngine/cmake-build-debug -t clean)",
+      "Bash(/c/Users/eceva/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -v -j1 CMakeFiles/GameEngine.dir/engine/platform/Window.cpp.obj)",
+      "Bash(tee:*)",
+      "Bash(echo:*)",
+      "Bash(powershell.exe -Command \"& ''C:\\\\Users\\\\eceva\\\\AppData\\\\Local\\\\Programs\\\\CLion\\\\bin\\\\mingw\\\\bin\\\\g++.exe'' --version\")",
+      "Bash(powershell.exe -Command \"cd ''C:\\\\Users\\\\eceva\\\\CLionProjects\\\\GameEngine''; & ''C:\\\\Users\\\\eceva\\\\AppData\\\\Local\\\\Programs\\\\CLion\\\\bin\\\\mingw\\\\bin\\\\g++.exe'' -std=c++17 -DGLFW_INCLUDE_NONE -DGLM_ENABLE_EXPERIMENTAL -I./externals/GLAD/include -I./externals/GLM/include -I./externals/KHR/include -I./externals/STB/include -I./externals/GLFW/include -c engine/platform/Window.cpp -o temp.obj 2>&1\")",
+      "Bash(git rm:*)"
+    ]
+  }
+}

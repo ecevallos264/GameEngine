@@ -10,13 +10,13 @@
 #include "../../engine/core/shaders/shader-compiler.h"
 #include "../../engine/core/patterns/Singleton.h"
 #include "../../engine/core/shaders/ShaderManager.h"
-#include "../../engine/input/InputHandler.h"
 #include "../../engine/input/MouseHandler.h"
 #include "../../engine/core/state/game_state.h"
 #include "../../engine/core/eventing/EventDispatcher.h"
 #include "../../engine/core/eventing/events/CameraKeyMovementEvent.h"
 #include "../../engine/platform/Window.h"
 #include "../../engine/io/InputState.h"
+#include "../../engine/io/IOSystem.h"
 
 #include "../../engine/ecs/ECS.h"
 
@@ -71,14 +71,14 @@ public:
     }
 
     int handleInput(Window* window) override {
-        if (InputHandler::isKeyActive(IO::Key::Escape)) {
+        if (IO::IOSystem::getInstance().wasKeyJustPressed(IO::Key::Escape)) {
             MouseHandler::getInstance().changeMouseMode(MouseCursorState::OUT_OF_WINDOW);
             window->setCursorMode(CursorMode::Normal);
             GameState::getInstance().CURSOR_FOCUS_STATUS = true;
         }
 
         // Spawn new cube with Enter key (only on just pressed to avoid spam)
-        if (InputHandler::wasKeyJustPressed(IO::Key::Enter)) {
+        if (IO::IOSystem::getInstance().wasKeyJustPressed(IO::Key::Enter)) {
             ECS::Entity newCube = createEntity();
             registry.emplace<ECS::TransformComponent>(newCube, glm::vec3(0.0f, 0.0f, 0.0f));
             registry.emplace<ECS::MeshComponent>(newCube,
@@ -93,47 +93,47 @@ public:
         float deltaTime = GameState::getInstance().deltaTime;
         auto* transform = registry.get<ECS::TransformComponent>(mainCube);
         if (transform) {
-            if (InputHandler::isKeyActive(IO::Key::Up)) {
+            if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::Up)) {
                 transform->position.y += deltaTime * 0.5f;
             }
-            if (InputHandler::isKeyActive(IO::Key::Down)) {
+            if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::Down)) {
                 transform->position.y -= deltaTime * 0.5f;
             }
-            if (InputHandler::isKeyActive(IO::Key::Left)) {
+            if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::Left)) {
                 transform->position.x -= deltaTime * 0.5f;
             }
-            if (InputHandler::isKeyActive(IO::Key::Right)) {
+            if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::Right)) {
                 transform->position.x += deltaTime * 0.5f;
             }
         }
 
         bool dirty = false;
-        if (InputHandler::isKeyActive(IO::Key::W)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::W)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::FORWARD, deltaTime));
             dirty = true;
         }
-        if (InputHandler::isKeyActive(IO::Key::S)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::S)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::BACKWARD, deltaTime));
             dirty = true;
         }
-        if (InputHandler::isKeyActive(IO::Key::A)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::A)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::LEFT, deltaTime));
             dirty = true;
         }
-        if (InputHandler::isKeyActive(IO::Key::D)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::D)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::RIGHT, deltaTime));
             dirty = true;
         }
-        if (InputHandler::isKeyActive(IO::Key::Space)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::Space)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::UP, deltaTime));
             dirty = true;
         }
-        if (InputHandler::isKeyActive(IO::Key::LeftShift)) {
+        if (IO::IOSystem::getInstance().isKeyPressed(IO::Key::LeftShift)) {
             EventDispatcher::getInstance().dispatch(
                     CameraKeyMovementEvent(CameraMovementDirection::DOWN, deltaTime));
             dirty = true;

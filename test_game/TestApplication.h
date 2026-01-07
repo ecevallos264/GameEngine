@@ -14,10 +14,10 @@
 #include "../engine/core/shaders/ShaderInfo.h"
 #include "../engine/core/state/game_state.h"
 #include "../engine/rendering/SceneController.h"
-#include "../engine/input/InputHandler.h"
 #include "../engine/input/MouseHandler.h"
 #include "../engine/core/eventing/EventDispatcher.h"
 #include "../engine/core/eventing/events/MouseMovementEvent.h"
+#include "../engine/io/IOSystem.h"
 #include "scenes/TestScene.h"
 
 class TestApplication : public IApplication {
@@ -31,8 +31,13 @@ public:
 
     void initialize(Window& window) override {
         this->window = &window;
+        context.window = &window;
 
-        setupInput(window);
+        // Initialize IOSystem singleton first (sets up input callbacks)
+        IO::IOSystem::getInstance().initialize(context);
+
+        // Setup camera mouse movement callback
+        setupCameraMouseCallback(window);
 
         ShaderInfo shaderInfo;
         shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
@@ -56,12 +61,12 @@ public:
             glm::vec3(0.0f, 1.0f, 0.0f)));
         CameraHandler::getInstance().getCamera()->setSpeed(5.0f);
 
+        // Add other systems (not IOSystem - it's a singleton initialized above)
         systemManager.addSystem<InputSystem>();
         systemManager.addSystem<PhysicsSystem>();
         systemManager.addSystem<SceneSystem>();
         systemManager.addSystem<RenderSystem>();
 
-        context.window = &window;
         systemManager.initializeAll(context);
     }
 
@@ -71,6 +76,9 @@ public:
 
         context.deltaTime = deltaTime;
         systemManager.updateAll(context);
+
+        // Clear per-frame input state at end of frame
+        IO::IOSystem::getInstance().endFrame();
     }
 
     void render() override {
@@ -79,6 +87,7 @@ public:
 
     void shutdown() override {
         systemManager.shutdownAll(context);
+        IO::IOSystem::getInstance().shutdown(context);
     }
 
 private:
@@ -86,28 +95,25 @@ private:
     SystemManager systemManager;
     SystemContext context;
 
-    void setupInput(Window& window) {
-        window.setKeyCallback([](int key, int scancode, int action, int mods) {
-            if (action == KeyAction::Press || action == KeyAction::Repeat) {
-                InputHandler::setKeyState(key, true);
-            } else if (action == KeyAction::Release) {
-                InputHandler::setKeyDirty(key);
-                InputHandler::setKeyState(key, false);
-            }
-        });
-
+    void setupCameraMouseCallback(Window& window) {
+        // Set mouse callback that updates both IOSystem and camera
         window.setMouseMoveCallback([](double x, double y) {
+            // Update IOSystem mouse state
+            IO::IOSystem::getInstance().getInputState().mouse.setPosition(x, y);
+
+            // Handle camera movement
             Camera* camera = CameraHandler::getInstance().getCamera();
+            if (camera) {
+                EventDispatcher::getInstance().dispatch(
+                    MouseMovementEvent(
+                        x - camera->getXPosition(),
+                        camera->getYPosition() - y,
+                        MouseHandler::getInstance().getMouseCursorState(),
+                        GameState::getInstance().deltaTime));
 
-            EventDispatcher::getInstance().dispatch(
-                MouseMovementEvent(
-                    x - camera->getXPosition(),
-                    camera->getYPosition() - y,
-                    MouseHandler::getInstance().getMouseCursorState(),
-                    GameState::getInstance().deltaTime));
-
-            camera->setXPosition(x);
-            camera->setYPosition(y);
+                camera->setXPosition(x);
+                camera->setYPosition(y);
+            }
         });
     }
 };

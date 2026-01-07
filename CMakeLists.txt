@@ -14,7 +14,6 @@ add_executable(GameEngine
         engine/core/eventing/EventDispatcher.h
         engine/core/eventing/EventListener.h
         engine/core/eventing/events/KeyEvent.h
-        engine/input/InputHandler.h
         engine/input/MouseHandler.h
 
         # IO System
