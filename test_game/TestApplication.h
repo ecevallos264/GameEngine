@@ -22,7 +22,9 @@
 #include "../engine/debug/EditorLayout.h"
 #include "../engine/ecs/systems/BVHSystem.h"
 #include "../engine/rendering/Scene.h"
+#include "../engine/scripting/ScriptSystem.h"
 #include "scenes/TestScene.h"
+#include "scenes/ScriptedScene.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
@@ -68,6 +70,12 @@ public:
             new Shader(
                 shaderInfo.VertexShaderPath.c_str(),
                 shaderInfo.FragmentShaderPath.c_str()));
+        // auto scene = std::make_shared<ScriptedScene>(
+        //   new Shader(
+        //       shaderInfo.VertexShaderPath.c_str(),
+        //       shaderInfo.FragmentShaderPath.c_str()),
+        //   "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\scripts");
+
 
         SceneController::getInstance().addScene("testScene", scene);
         SceneController::getInstance().swapScene("testScene");
@@ -95,6 +103,9 @@ public:
 
         // Set camera system in context for other systems to use
         context.cameraSystem = cameraSystem;
+
+        // Add scripting system (must be after scene is set up)
+        systemManager.addSystem<Scripting::ScriptSystem>();
 
         // Add other systems
         systemManager.addSystem<InputSystem>();

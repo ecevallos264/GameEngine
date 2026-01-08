@@ -86,7 +86,7 @@ public:
         mainCube = createCube(shader, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
         // Create 10 random cubes scattered around the scene
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             glm::vec3 position(
                 randomFloat(-10.0f, 10.0f),
                 randomFloat(-5.0f, 5.0f),

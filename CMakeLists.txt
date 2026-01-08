@@ -5,6 +5,32 @@ set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
 
+# Enable big object files for MinGW (needed for sol2 templates)
+if(MINGW)
+    add_compile_options(-Wa,-mbig-obj)
+endif()
+
+# Fetch Lua and sol2 for scripting
+include(FetchContent)
+
+# Lua - using lua-cmake wrapper for easier building
+FetchContent_Declare(
+    lua
+    GIT_REPOSITORY https://github.com/walterschell/Lua.git
+    GIT_TAG v5.4.5
+)
+set(LUA_BUILD_COMPILER OFF CACHE BOOL "" FORCE)
+set(LUA_BUILD_INTERPRETER OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(lua)
+
+# sol2 - C++ Lua bindings (header-only)
+FetchContent_Declare(
+    sol2
+    GIT_REPOSITORY https://github.com/ThePhD/sol2.git
+    GIT_TAG v3.3.0
+)
+FetchContent_MakeAvailable(sol2)
+
 add_executable(GameEngine
         engine/eventing/Event.h
         engine/eventing/EventDispatcher.h
@@ -91,6 +117,11 @@ add_executable(GameEngine
         # Debug UI System
         engine/debug/DebugUI.h
         engine/debug/DebugUI.cpp
+
+        # Scripting System
+        engine/scripting/ScriptComponent.h
+        engine/scripting/ScriptSystem.h
+        engine/scripting/LuaBindings.h
 )
 
 
@@ -126,4 +157,4 @@ target_include_directories(imgui INTERFACE
         "${ProjectDir}/imgui/backends")
 
 # Link Libraries
-target_link_libraries(GameEngine glfw glad glm khr stb imgui)
+target_link_libraries(GameEngine glfw glad glm khr stb imgui lua_static sol2)

@@ -78,28 +78,38 @@ public:
         // Far
         frustum.farFace = Plane::fromPointNormal(farCenter, -front);
 
-        // Right
+        // Calculate vectors from camera to far plane corners
+        glm::vec3 toFarRight = farCenter + right * halfHSide - position;
+        glm::vec3 toFarLeft = farCenter - right * halfHSide - position;
+        glm::vec3 toFarTop = farCenter + up * halfVSide - position;
+        glm::vec3 toFarBottom = farCenter - up * halfVSide - position;
+
+        // Right plane: normal points left (into frustum)
+        // cross(up, toFarRight) points left when looking down -Z
         frustum.rightFace = Plane::fromPointNormal(
             position,
-            glm::cross(up, farCenter + right * halfHSide - position)
+            glm::normalize(glm::cross(up, toFarRight))
         );
 
-        // Left
+        // Left plane: normal points right (into frustum)
+        // cross(toFarLeft, up) points right when looking down -Z
         frustum.leftFace = Plane::fromPointNormal(
             position,
-            glm::cross(farCenter - right * halfHSide - position, up)
+            glm::normalize(glm::cross(toFarLeft, up))
         );
 
-        // Top
+        // Top plane: normal points down (into frustum)
+        // cross(toFarTop, right) points down when looking down -Z
         frustum.topFace = Plane::fromPointNormal(
             position,
-            glm::cross(farCenter - up * halfVSide - position, right)
+            glm::normalize(glm::cross(toFarTop, right))
         );
 
-        // Bottom
+        // Bottom plane: normal points up (into frustum)
+        // cross(right, toFarBottom) points up when looking down -Z
         frustum.bottomFace = Plane::fromPointNormal(
             position,
-            glm::cross(right, farCenter + up * halfVSide - position)
+            glm::normalize(glm::cross(right, toFarBottom))
         );
 
         return frustum;
