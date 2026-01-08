@@ -7,14 +7,16 @@
 #include "../components/TransformComponent.h"
 #include "../components/MeshComponent.h"
 #include "../components/RenderComponent.h"
-#include "../../camera/CameraHandler.h"
+#include "../components/BoundsComponent.h"
+#include "CameraSystem.h"
 #include "../../core/settings/settings.h"
 
 namespace ECS {
 
 class MeshRenderSystem : public ISystem {
 public:
-    explicit MeshRenderSystem(Registry& registry) : registry(registry) {}
+    MeshRenderSystem(Registry& registry, CameraSystem& cameraSystem)
+        : registry(registry), cameraSystem(cameraSystem) {}
 
     void initialize(SystemContext& context) override {
         (void)context;
@@ -30,11 +32,11 @@ public:
     void render(SystemContext& context) override {
         (void)context;
 
-        auto* camera = CameraHandler::getInstance().getCamera();
-        if (!camera) return;
+        // Get camera matrices from CameraSystem
+        if (!cameraSystem.getActiveCamera().isValid()) return;
 
-        glm::mat4 view = camera->getViewMatrix();
-        glm::mat4 projection = camera->getProjectionMatrix();
+        glm::mat4 view = cameraSystem.getViewMatrix();
+        glm::mat4 projection = cameraSystem.getProjectionMatrix();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -44,6 +46,10 @@ public:
             [&](Entity entity, TransformComponent& transform, MeshComponent& mesh, RenderComponent& render) {
                 if (!render.visible) return;
                 if (!render.shader) return;
+
+                // Check frustum culling via BoundsComponent if present
+                auto* bounds = registry.get<BoundsComponent>(entity);
+                if (bounds && !bounds->visible) return;  // Frustum culled
 
                 // Initialize mesh if needed
                 if (!mesh.initialized) {
@@ -97,6 +103,7 @@ public:
 
 private:
     Registry& registry;
+    CameraSystem& cameraSystem;
 };
 
 } // namespace ECS

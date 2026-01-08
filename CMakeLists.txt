@@ -6,10 +6,6 @@ add_definitions(-DPROJECT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/")
 add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
 
 add_executable(GameEngine
-        engine/camera/Camera.cpp
-        engine/camera/Camera.h
-        engine/camera/CameraHandler.cpp
-        engine/camera/CameraHandler.h
         engine/eventing/Event.h
         engine/eventing/EventDispatcher.h
         engine/eventing/EventListener.h
@@ -61,8 +57,13 @@ add_executable(GameEngine
         engine/ecs/components/TransformComponent.h
         engine/ecs/components/MeshComponent.h
         engine/ecs/components/RenderComponent.h
+        engine/ecs/components/CameraComponent.h
+        engine/ecs/components/BoundsComponent.h
 
         # ECS Systems
+        engine/ecs/systems/CameraSystem.h
+        engine/ecs/systems/CameraInputSystem.h
+        engine/ecs/systems/FrustumCullingSystem.h
         engine/ecs/systems/MeshRenderSystem.h
 
         engine/core/shaders/ShaderManager.h
@@ -78,7 +79,20 @@ add_executable(GameEngine
         engine/platform/Window.cpp
         engine/platform/WindowConfig.h
 
+        # Dear ImGui
+        externals/imgui/imgui.cpp
+        externals/imgui/imgui_draw.cpp
+        externals/imgui/imgui_tables.cpp
+        externals/imgui/imgui_widgets.cpp
+        externals/imgui/imgui_demo.cpp
+        externals/imgui/backends/imgui_impl_glfw.cpp
+        externals/imgui/backends/imgui_impl_opengl3.cpp
+
+        # Debug UI System
+        engine/debug/DebugUI.h
+        engine/debug/DebugUI.cpp
 )
+
 
 target_compile_definitions(GameEngine PRIVATE GLFW_INCLUDE_NONE)
 
@@ -105,5 +119,11 @@ target_include_directories(khr INTERFACE "${ProjectDir}/KHR/include")
 add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE "${ProjectDir}/STB/include")
 
+# Dear ImGui
+add_library(imgui INTERFACE)
+target_include_directories(imgui INTERFACE
+        "${ProjectDir}/imgui"
+        "${ProjectDir}/imgui/backends")
+
 # Link Libraries
-target_link_libraries(GameEngine glfw glad glm khr stb)
+target_link_libraries(GameEngine glfw glad glm khr stb imgui)

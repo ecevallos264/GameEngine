@@ -5,7 +5,6 @@
 #include "../ecs/components/TransformComponent.h"
 #include "../ecs/components/MeshComponent.h"
 #include "../ecs/components/RenderComponent.h"
-#include "../camera/CameraHandler.h"
 #include "../core/settings/settings.h"
 #include <glad/glad.h>
 

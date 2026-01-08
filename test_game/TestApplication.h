@@ -7,8 +7,7 @@
 #include "../engine/runtime/systems/PhysicsSystem.h"
 #include "../engine/runtime/systems/RenderSystem.h"
 #include "../engine/runtime/systems/SceneSystem.h"
-#include "../engine/camera/Camera.h"
-#include "../engine/camera/CameraHandler.h"
+#include "../engine/ecs/ECS.h"
 #include "../engine/core/shaders/shader-compiler.h"
 #include "../engine/core/shaders/ShaderManager.h"
 #include "../engine/core/shaders/ShaderInfo.h"
@@ -17,7 +16,9 @@
 #include "../engine/eventing/EventDispatcher.h"
 #include "../engine/eventing/events/MouseMovementEvent.h"
 #include "../engine/io/IOSystem.h"
+#include "../engine/debug/DebugUI.h"
 #include "scenes/TestScene.h"
+#include <imgui.h>
 
 class TestApplication : public IApplication {
 public:
@@ -54,13 +55,28 @@ public:
         SceneController::getInstance().addScene("testScene", scene);
         SceneController::getInstance().swapScene("testScene");
 
-        CameraHandler::getInstance().setCamera(new Camera(
-            glm::vec3(0.0f, 0.0f, 3.0f),
-            glm::vec3(0.0f, 0.0f, -1.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f)));
-        CameraHandler::getInstance().getCamera()->setSpeed(5.0f);
+        // Create ECS camera entity
+        cameraEntity = registry.create();
+        registry.emplace<ECS::TransformComponent>(cameraEntity, glm::vec3(0.0f, 0.0f, 3.0f));
 
-        // Add other systems (not IOSystem - it's a singleton initialized above)
+        auto& cam = registry.emplace<ECS::CameraComponent>(cameraEntity);
+        cam.tag = ECS::CameraTag::Main;
+        cam.mode = ECS::CameraMode::FPS;
+        cam.moveSpeed = 5.0f;
+        cam.fov = 45.0f;
+
+        // Make camera controllable
+        registry.emplace<ECS::CameraControllerComponent>(cameraEntity);
+
+        // Add ECS camera systems first (order matters!)
+        cameraSystem = &systemManager.addSystem<ECS::CameraSystem>(registry);
+        systemManager.addSystem<ECS::CameraInputSystem>(registry, *cameraSystem);
+        systemManager.addSystem<ECS::FrustumCullingSystem>(registry, *cameraSystem);
+
+        // Set camera system in context for other systems to use
+        context.cameraSystem = cameraSystem;
+
+        // Add other systems
         systemManager.addSystem<InputSystem>();
         systemManager.addSystem<PhysicsSystem>();
         systemManager.addSystem<SceneSystem>();
@@ -93,26 +109,40 @@ private:
     Window* window = nullptr;
     SystemManager systemManager;
     SystemContext context;
+    ECS::Registry registry;
+    ECS::Entity cameraEntity;
+    ECS::CameraSystem* cameraSystem = nullptr;
+    double lastMouseX = 0.0;
+    double lastMouseY = 0.0;
+    bool firstMouse = true;
 
     void setupCameraMouseCallback(Window& window) {
-        // Set mouse callback that updates both IOSystem and camera
-        window.setMouseMoveCallback([](double x, double y) {
+        // Set mouse callback that updates IOSystem and dispatches mouse events
+        window.setMouseMoveCallback([this](double x, double y) {
             // Update IOSystem mouse state
             IO::IOSystem::getInstance().getInputState().mouse.setPosition(x, y);
 
-            // Handle camera movement
-            Camera* camera = CameraHandler::getInstance().getCamera();
-            if (camera) {
-                EventDispatcher::getInstance().dispatch(
-                    MouseMovementEvent(
-                        x - camera->getXPosition(),
-                        camera->getYPosition() - y,
-                        MouseCursorState::IN_WINDOW,
-                        GameState::getInstance().deltaTime));
-
-                camera->setXPosition(x);
-                camera->setYPosition(y);
+            // Calculate delta for mouse movement event
+            if (firstMouse) {
+                lastMouseX = x;
+                lastMouseY = y;
+                firstMouse = false;
+                return;
             }
+
+            double deltaX = x - lastMouseX;
+            double deltaY = lastMouseY - y;  // Inverted for natural feel
+
+            lastMouseX = x;
+            lastMouseY = y;
+
+            // Dispatch mouse movement event for CameraInputSystem
+            EventDispatcher::getInstance().dispatch(
+                MouseMovementEvent(
+                    deltaX,
+                    deltaY,
+                    MouseCursorState::IN_WINDOW,
+                    GameState::getInstance().deltaTime));
         });
     }
 };

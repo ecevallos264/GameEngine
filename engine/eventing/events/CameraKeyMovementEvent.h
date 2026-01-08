@@ -19,9 +19,10 @@ struct CameraKeyMovementEvent : public Event {
 
     CameraKeyMovementEvent(
             CameraMovementDirection direction,
-            double deltaTime) :
+            double dt) :
+            Event(static_cast<float>(dt)),
             direction(direction),
-            Event(deltaTime) {}
+            deltaTime(dt) {}
 };
 
 #endif //GAMEENGINE_CAMERAKEYMOVEMENTEVENT_H
