@@ -33,6 +33,12 @@ public:
 
     // Destroy an entity
     void destroyEntity(ECS::Entity entity) { registry.destroy(entity); }
+
+    // Static debug/culling settings (shared across all scenes)
+    static bool frustumCullingEnabled;
+    static bool showCulledObjects;
+    static int renderedCount;
+    static int culledCount;
 };
 
 #endif //GAMEENGINE_SCENE_H

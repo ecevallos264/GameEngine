@@ -21,6 +21,7 @@
 #include "../engine/debug/SceneViewport.h"
 #include "../engine/debug/EditorLayout.h"
 #include "../engine/ecs/systems/BVHSystem.h"
+#include "../engine/rendering/Scene.h"
 #include "scenes/TestScene.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -213,6 +214,28 @@ public:
                     if (ImGui::Button("Rebuild BVH")) {
                         bvhSystem->markDirty();
                     }
+                }
+            }
+
+            // Frustum Culling Settings
+            if (ImGui::CollapsingHeader("Frustum Culling", ImGuiTreeNodeFlags_DefaultOpen)) {
+                // Stats
+                ImGui::Text("Rendered: %d", Scene::renderedCount);
+                ImGui::Text("Culled: %d", Scene::culledCount);
+                int total = Scene::renderedCount + Scene::culledCount;
+                if (total > 0) {
+                    float cullPercent = (Scene::culledCount / static_cast<float>(total)) * 100.0f;
+                    ImGui::Text("Cull Rate: %.1f%%", cullPercent);
+                }
+
+                ImGui::Separator();
+
+                // Controls
+                ImGui::Checkbox("Enable Frustum Culling", &Scene::frustumCullingEnabled);
+                ImGui::Checkbox("Show Culled Objects (Wireframe)", &Scene::showCulledObjects);
+
+                if (Scene::showCulledObjects) {
+                    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Culled objects shown as wireframe");
                 }
             }
         });

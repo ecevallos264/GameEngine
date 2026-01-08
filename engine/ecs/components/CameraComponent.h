@@ -29,7 +29,7 @@ struct CameraComponent {
     // Projection parameters
     float fov = 45.0f;                  // Field of view in degrees (perspective)
     float nearPlane = 0.1f;
-    float farPlane = 20000.0f;
+    float farPlane = 2000000.0f;
     float aspectRatio = 16.0f / 9.0f;
     float orthoSize = 10.0f;            // Half-height of ortho view
     CameraProjection projection = CameraProjection::Perspective;
