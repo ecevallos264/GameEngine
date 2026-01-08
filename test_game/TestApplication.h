@@ -15,9 +15,11 @@
 #include "../engine/rendering/SceneController.h"
 #include "../engine/eventing/EventDispatcher.h"
 #include "../engine/eventing/events/MouseMovementEvent.h"
+#include "../engine/ecs/events/CameraFocusEvent.h"
 #include "../engine/io/IOSystem.h"
 #include "../engine/debug/DebugUI.h"
 #include "scenes/TestScene.h"
+#include <GLFW/glfw3.h>
 #include <imgui.h>
 
 class TestApplication : public IApplication {
@@ -36,8 +38,15 @@ public:
         // Initialize IOSystem singleton first (sets up input callbacks)
         IO::IOSystem::getInstance().initialize(context);
 
+        // Initialize Debug UI
+        Debug::DebugUI::getInstance().initialize(
+            static_cast<GLFWwindow*>(window.getNativeHandle()));
+
         // Setup camera mouse movement callback
         setupCameraMouseCallback(window);
+
+        // Setup ESC key callback for camera focus toggle
+        setupKeyCallback(window);
 
         ShaderInfo shaderInfo;
         shaderInfo.VertexShaderPath = "C:\\Users\\eceva\\CLionProjects\\GameEngine\\test_game\\shaders\\shader.vert";
@@ -98,9 +107,14 @@ public:
 
     void render() override {
         systemManager.renderAll(context);
+
+        // Render Debug UI
+        Debug::DebugUI::getInstance().beginFrame();
+        Debug::DebugUI::getInstance().endFrame();
     }
 
     void shutdown() override {
+        Debug::DebugUI::getInstance().shutdown();
         systemManager.shutdownAll(context);
         IO::IOSystem::getInstance().shutdown(context);
     }
@@ -115,6 +129,7 @@ private:
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;
     bool firstMouse = true;
+    bool cameraFocused = true;
 
     void setupCameraMouseCallback(Window& window) {
         // Set mouse callback that updates IOSystem and dispatches mouse events
@@ -143,6 +158,34 @@ private:
                     deltaY,
                     MouseCursorState::IN_WINDOW,
                     GameState::getInstance().deltaTime));
+        });
+    }
+
+    void setupKeyCallback(Window& window) {
+        window.setKeyCallback([this](int key, int scancode, int action, int mods) {
+            (void)scancode;
+            (void)mods;
+
+            // ESC toggles camera focus
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+                cameraFocused = !cameraFocused;
+
+                // Dispatch focus event
+                EventDispatcher::getInstance().dispatch(ECS::CameraFocusEvent(cameraFocused));
+
+                // Toggle cursor mode
+                if (cameraFocused) {
+                    this->window->setCursorMode(CursorMode::Disabled);
+                    firstMouse = true;  // Reset to avoid camera jump on refocus
+                } else {
+                    this->window->setCursorMode(CursorMode::Normal);
+                }
+            }
+
+            // F3 toggles debug UI
+            if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
+                Debug::DebugUI::getInstance().toggle();
+            }
         });
     }
 };

@@ -9,6 +9,7 @@
 #include "../../eventing/EventDispatcher.h"
 #include "../../eventing/events/CameraKeyMovementEvent.h"
 #include "../../eventing/events/MouseMovementEvent.h"
+#include "../events/CameraFocusEvent.h"
 
 namespace ECS {
 
@@ -17,6 +18,7 @@ struct CameraControllerComponent {
     bool mouseControlEnabled = true;
     bool keyboardControlEnabled = true;
     bool firstMouse = true;
+    bool focused = true;  // When false, camera ignores input (ESC to toggle)
 
     CameraControllerComponent() = default;
 };
@@ -42,6 +44,13 @@ public:
                 this->onMouseMovement(dynamic_cast<const MouseMovementEvent&>(event));
             }
         );
+
+        // Register for camera focus events
+        EventDispatcher::getInstance().registerListener<CameraFocusEvent>(
+            [this](const Event& event) {
+                this->onCameraFocusChanged(dynamic_cast<const CameraFocusEvent&>(event));
+            }
+        );
     }
 
 private:
@@ -55,10 +64,26 @@ private:
                 CameraComponent& camera, CameraControllerComponent& controller) {
                 (void)entity;
 
+                if (!controller.focused) return;
                 if (!controller.keyboardControlEnabled) return;
                 if (!camera.active) return;
 
                 processMovement(transform, camera, event.direction, static_cast<float>(event.deltaTime));
+            }
+        );
+    }
+
+    void onCameraFocusChanged(const CameraFocusEvent& event) {
+        // Update focus state for all controllable cameras
+        registry.view<CameraControllerComponent>().each(
+            [&](Entity entity, CameraControllerComponent& controller) {
+                (void)entity;
+                controller.focused = event.focused;
+
+                // Reset firstMouse when regaining focus to avoid camera jump
+                if (event.focused) {
+                    controller.firstMouse = true;
+                }
             }
         );
     }
@@ -71,6 +96,7 @@ private:
             [&](Entity entity, CameraComponent& camera, CameraControllerComponent& controller) {
                 (void)entity;
 
+                if (!controller.focused) return;
                 if (!controller.mouseControlEnabled) return;
                 if (!camera.active) return;
 
