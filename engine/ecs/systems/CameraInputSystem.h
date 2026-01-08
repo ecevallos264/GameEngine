@@ -18,7 +18,7 @@ struct CameraControllerComponent {
     bool mouseControlEnabled = true;
     bool keyboardControlEnabled = true;
     bool firstMouse = true;
-    bool focused = true;  // When false, camera ignores input (ESC to toggle)
+    bool focused = false;  // Start unfocused for editor mode (ESC to toggle)
 
     CameraControllerComponent() = default;
 };

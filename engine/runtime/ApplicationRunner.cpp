@@ -18,7 +18,8 @@ int ApplicationRunner::run(IApplication* app) {
         return -1;
     }
 
-    window.setCursorMode(CursorMode::Disabled);
+    // Start with cursor visible for editor mode
+    window.setCursorMode(CursorMode::Normal);
 
     app->initialize(window);
 

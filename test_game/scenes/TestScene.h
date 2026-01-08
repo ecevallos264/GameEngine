@@ -50,20 +50,50 @@ class TestScene : public Scene {
 private:
     ECS::Entity mainCube;
 
+    // Helper to create a cube with all required components
+    ECS::Entity createCube(Shader* shader, const glm::vec3& position, const glm::vec3& color) {
+        ECS::Entity cube = createEntity();
+        registry.emplace<ECS::TransformComponent>(cube, position);
+        registry.emplace<ECS::MeshComponent>(cube,
+            CubeMesh::createVertices(color),
+            CubeMesh::getIndices());
+        registry.emplace<ECS::RenderComponent>(cube, shader, color);
+        // Add bounds for BVH - cube vertices are -0.5 to 0.5
+        registry.emplace<ECS::BoundsComponent>(cube,
+            glm::vec3(-0.5f, -0.5f, -0.5f),
+            glm::vec3(0.5f, 0.5f, 0.5f));
+        return cube;
+    }
+
+    // Generate random float in range
+    float randomFloat(float min, float max) {
+        return min + static_cast<float>(std::rand()) / (static_cast<float>(RAND_MAX / (max - min)));
+    }
+
+    // Generate random color
+    glm::vec3 randomColor() {
+        return glm::vec3(randomFloat(0.2f, 1.0f), randomFloat(0.2f, 1.0f), randomFloat(0.2f, 1.0f));
+    }
+
 public:
     TestScene(Shader* shader) : Scene() {
         ShaderManager::getInstance().setShader("shader1", shader);
         setup();
 
-        // Create main cube using ECS
-        mainCube = createEntity();
-        registry.emplace<ECS::TransformComponent>(mainCube, glm::vec3(0.0f, 0.0f, 0.0f));
-        registry.emplace<ECS::MeshComponent>(mainCube,
-            CubeMesh::createVertices(glm::vec3(1.0f, 0.0f, 0.0f)),
-            CubeMesh::getIndices());
-        registry.emplace<ECS::RenderComponent>(mainCube, shader, glm::vec3(1.0f, 0.0f, 0.0f));
-
         std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+        // Create main cube at origin (red)
+        mainCube = createCube(shader, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        // Create 10 random cubes scattered around the scene
+        for (int i = 0; i < 10; ++i) {
+            glm::vec3 position(
+                randomFloat(-10.0f, 10.0f),
+                randomFloat(-5.0f, 5.0f),
+                randomFloat(-10.0f, 10.0f)
+            );
+            createCube(shader, position, randomColor());
+        }
     }
 
     void setup() override {
@@ -77,14 +107,13 @@ public:
 
         // Spawn new cube with Enter key (only on just pressed to avoid spam)
         if (IO::IOSystem::getInstance().wasKeyJustPressed(IO::Key::Enter)) {
-            ECS::Entity newCube = createEntity();
-            registry.emplace<ECS::TransformComponent>(newCube, glm::vec3(0.0f, 0.0f, 0.0f));
-            registry.emplace<ECS::MeshComponent>(newCube,
-                CubeMesh::createVertices(glm::vec3(1.0f, 0.0f, 0.0f)),
-                CubeMesh::getIndices());
-            registry.emplace<ECS::RenderComponent>(newCube,
-                ShaderManager::getInstance().getShader("shader1"),
-                glm::vec3(1.0f, 0.0f, 0.0f));
+            // Spawn at random position with random color
+            glm::vec3 position(
+                randomFloat(-10.0f, 10.0f),
+                randomFloat(-5.0f, 5.0f),
+                randomFloat(-10.0f, 10.0f)
+            );
+            createCube(ShaderManager::getInstance().getShader("shader1"), position, randomColor());
         }
 
         // Move the main cube with arrow keys

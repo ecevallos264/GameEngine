@@ -18,7 +18,11 @@
 #include "../engine/ecs/events/CameraFocusEvent.h"
 #include "../engine/io/IOSystem.h"
 #include "../engine/debug/DebugUI.h"
+#include "../engine/debug/SceneViewport.h"
+#include "../engine/debug/EditorLayout.h"
+#include "../engine/ecs/systems/BVHSystem.h"
 #include "scenes/TestScene.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 
@@ -41,6 +45,9 @@ public:
         // Initialize Debug UI
         Debug::DebugUI::getInstance().initialize(
             static_cast<GLFWwindow*>(window.getNativeHandle()));
+
+        // Initialize scene viewport for rendering to ImGui window
+        sceneViewport.initialize(window.getWidth(), window.getHeight());
 
         // Setup camera mouse movement callback
         setupCameraMouseCallback(window);
@@ -82,6 +89,9 @@ public:
         systemManager.addSystem<ECS::CameraInputSystem>(registry, *cameraSystem);
         systemManager.addSystem<ECS::FrustumCullingSystem>(registry, *cameraSystem);
 
+        // Add BVH system for spatial acceleration
+        bvhSystem = &systemManager.addSystem<ECS::BVHSystem>(*cameraSystem);
+
         // Set camera system in context for other systems to use
         context.cameraSystem = cameraSystem;
 
@@ -92,6 +102,9 @@ public:
         systemManager.addSystem<RenderSystem>();
 
         systemManager.initializeAll(context);
+
+        // Initialize BVH debug renderer
+        bvhDebugRenderer.initialize();
     }
 
     void update(float deltaTime) override {
@@ -106,14 +119,125 @@ public:
     }
 
     void render() override {
+        // Render scene to framebuffer
+        sceneViewport.beginSceneRender();
         systemManager.renderAll(context);
 
-        // Render Debug UI
+        // Render BVH visualization if enabled
+        if (showBVH && bvhSystem && cameraSystem) {
+            glm::mat4 view = cameraSystem->getViewMatrix();
+            glm::mat4 projection = cameraSystem->getProjectionMatrix();
+            bvhDebugRenderer.render(bvhSystem->getBVHTree(), view, projection, bvhMaxDepth, showBVHLeafOnly);
+        }
+
+        sceneViewport.endSceneRender();
+
+        // Restore viewport to window size for ImGui
+        glViewport(0, 0, window->getWidth(), window->getHeight());
+
+        // Render Editor UI
         Debug::DebugUI::getInstance().beginFrame();
+
+        // Begin editor layout
+        editorLayout.beginFrame(window->getWidth(), window->getHeight());
+
+        // Left panel - Hierarchy
+        editorLayout.renderLeftPanel("Hierarchy", [this]() {
+            ImGui::Text("Scene Objects");
+            ImGui::Separator();
+            if (ImGui::TreeNode("Main Camera")) {
+                ImGui::Text("Entity ID: %llu", cameraEntity.id);
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Test Scene")) {
+                ImGui::Text("Active Scene");
+                ImGui::TreePop();
+            }
+        });
+
+        // Right panel - Inspector
+        editorLayout.renderRightPanel("Inspector", [this]() {
+            ImGui::Text("Properties");
+            ImGui::Separator();
+
+            if (cameraSystem && cameraSystem->getActiveCamera().isValid()) {
+                auto* cam = registry.get<ECS::CameraComponent>(cameraEntity);
+                auto* transform = registry.get<ECS::TransformComponent>(cameraEntity);
+
+                if (transform) {
+                    ImGui::Text("Transform");
+                    ImGui::DragFloat3("Position", &transform->position.x, 0.1f);
+                }
+
+                if (cam) {
+                    ImGui::Separator();
+                    ImGui::Text("Camera");
+                    ImGui::DragFloat("FOV", &cam->fov, 1.0f, 1.0f, 120.0f);
+                    ImGui::DragFloat("Move Speed", &cam->moveSpeed, 0.1f, 0.1f, 50.0f);
+                    ImGui::DragFloat("Near Plane", &cam->nearPlane, 0.01f, 0.01f, 10.0f);
+                    ImGui::DragFloat("Far Plane", &cam->farPlane, 1.0f, 10.0f, 10000.0f);
+                }
+            }
+
+            ImGui::Separator();
+            ImGui::Text("Camera: %s", cameraFocused ? "Focused (ESC to release)" : "Released (ESC to focus)");
+
+            // BVH Settings
+            ImGui::Separator();
+            if (ImGui::CollapsingHeader("BVH Spatial Tree", ImGuiTreeNodeFlags_DefaultOpen)) {
+                if (bvhSystem) {
+                    // Stats
+                    ImGui::Text("Visible: %d / %d", bvhSystem->getVisibleCount(), bvhSystem->getTotalCount());
+                    ImGui::Text("Nodes: %d", bvhSystem->getNodeCount());
+                    ImGui::Text("Tree Depth: %d", bvhSystem->getTreeDepth());
+
+                    ImGui::Separator();
+
+                    // Controls
+                    bool bvhEnabled = bvhSystem->isEnabled();
+                    if (ImGui::Checkbox("Enable BVH Culling", &bvhEnabled)) {
+                        bvhSystem->setEnabled(bvhEnabled);
+                    }
+
+                    ImGui::Checkbox("Show BVH Wireframe", &showBVH);
+
+                    if (showBVH) {
+                        ImGui::Checkbox("Leaf Nodes Only", &showBVHLeafOnly);
+                        ImGui::SliderInt("Max Depth", &bvhMaxDepth, -1, 10);
+                        if (bvhMaxDepth == -1) {
+                            ImGui::SameLine();
+                            ImGui::TextDisabled("(All)");
+                        }
+                    }
+
+                    if (ImGui::Button("Rebuild BVH")) {
+                        bvhSystem->markDirty();
+                    }
+                }
+            }
+        });
+
+        // Bottom panel - Console
+        editorLayout.renderBottomPanel("Console", []() {
+            ImGui::Text("Output Log");
+            ImGui::Separator();
+            ImGui::TextWrapped("Game Engine initialized successfully.");
+            ImGui::TextWrapped("Scene loaded: TestScene");
+        });
+
+        // Center viewport - Scene
+        editorLayout.renderCenterViewport("Scene", [this]() {
+            sceneViewport.renderContent(cameraSystem);
+        });
+
+        editorLayout.endFrame();
+
         Debug::DebugUI::getInstance().endFrame();
     }
 
     void shutdown() override {
+        bvhDebugRenderer.shutdown();
+        sceneViewport.shutdown();
         Debug::DebugUI::getInstance().shutdown();
         systemManager.shutdownAll(context);
         IO::IOSystem::getInstance().shutdown(context);
@@ -126,10 +250,19 @@ private:
     ECS::Registry registry;
     ECS::Entity cameraEntity;
     ECS::CameraSystem* cameraSystem = nullptr;
+    ECS::BVHSystem* bvhSystem = nullptr;
+    ECS::BVHDebugRenderer bvhDebugRenderer;
+    Debug::SceneViewport sceneViewport;
+    Debug::EditorLayout editorLayout;
+
+    // BVH visualization settings
+    bool showBVH = false;
+    bool showBVHLeafOnly = false;
+    int bvhMaxDepth = -1;
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;
     bool firstMouse = true;
-    bool cameraFocused = true;
+    bool cameraFocused = false;  // Start unfocused for editor mode
 
     void setupCameraMouseCallback(Window& window) {
         // Set mouse callback that updates IOSystem and dispatches mouse events
@@ -165,6 +298,9 @@ private:
         window.setKeyCallback([this](int key, int scancode, int action, int mods) {
             (void)scancode;
             (void)mods;
+
+            // Forward to IOSystem for input state tracking
+            IO::IOSystem::getInstance().getInputState().keyboard.setKeyState(key, action);
 
             // ESC toggles camera focus
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
